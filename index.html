@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fdfbe2"><title>Recipe Denoiser — a little less prose</title><link rel="stylesheet" href="styles.css"><script type="module" src="src/app.js"></script></head>
+<body>
+<header class="masthead"><a class="brand" href="./"><span class="brand-icon" aria-hidden="true">▦</span> Recipe Denoiser</a><span class="local-note">Made in your browser · No cloud AI</span></header>
+<main>
+<section class="intro"><p class="eyebrow">LESS SCROLLING. MORE COOKING.</p><h1>A recipe, without the life story.</h1><p>Turn the long version into a clear, left-to-right cooking grid.</p></section>
+<div class="status-bar"><span id="ai-status" class="badge">Checking local AI…</span><span id="ai-help">Demo and manual mode always work.</span><progress id="progress" max="1" hidden aria-label="Model download progress"></progress></div>
+<div class="workspace">
+<section class="panel input-panel" aria-labelledby="source-heading"><div class="panel-heading"><div><span class="step-label">01 / THE SOURCE</span><h2 id="source-heading">Bring your recipe</h2></div><button id="sample" class="quiet">Load sample</button></div>
+<label for="editor" class="sr-only">Recipe source, rich text editor</label>
+<div id="editor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Recipe source" data-placeholder="Paste a recipe here. Formatting and local images are welcome."></div>
+<div class="editor-footer"><label class="image-button" for="image-input">＋ Add image</label><input id="image-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden multiple><span id="source-count">0 characters</span></div>
+<p class="hint">Images stay here for reference. Only recipe text goes to the local model.</p>
+<div class="convert-row"><button id="convert" class="primary">Convert to Recipe Grid <span aria-hidden="true">→</span></button><button id="cancel" hidden>Cancel</button><button id="demo">Try demo</button></div>
+<details id="json-drawer"><summary>Inspect / Edit Extracted JSON</summary><p class="hint">Paste your own recipe graph or edit a result. Valid changes update the grid automatically.</p><label class="sr-only" for="json-input">Recipe graph JSON</label><textarea id="json-input" spellcheck="false" placeholder='{"title": "…", "setup": [], "ingredients": […], "steps": […]}'></textarea><p id="json-error" class="error" role="status"></p></details>
+</section>
+<section class="panel output-panel" aria-labelledby="output-heading"><div class="panel-heading"><div><span class="step-label">02 / THE GOOD PART</span><h2 id="output-heading">Your cooking grid</h2></div><span id="result-label" class="result-label">Ready when you are</span></div>
+<div id="output" class="output"><div class="empty"><div class="empty-icon" aria-hidden="true">▤</div><h3>All the recipe. None of the noise.</h3><p>Paste your recipe and convert it, or try the banana bread demo to see the grid in action.</p></div></div>
+<details id="text-view" hidden><summary>Read as ingredient and step lists</summary><div id="text-content"></div></details>
+<div class="output-footer"><span>Read from left to right →</span><div><button id="copy" disabled>Copy HTML</button><button id="print" disabled>Print / Save PDF</button></div></div>
+</section></div>
+<p id="message" role="status" aria-live="polite"></p>
+<footer class="page-footer">Inspired by Cooking for Engineers tabular recipe notation.<span>Local first. Kitchen ready.</span></footer>
+</main></body></html>
