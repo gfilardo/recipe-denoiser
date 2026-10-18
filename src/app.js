@@ -32,7 +32,7 @@ $('convert').addEventListener('click', async () => {
   clearTimeout(timer); cancel(); const current = generation, sourceRevision = revision; controller = new AbortController(); busy(true);
   try {
     const recipe = await convertRecipe(text, { signal: controller.signal,
-      onPhase: text => { if (current === generation) message(text); },
+      onPhase: text => { if (current === generation) { message(text); if (text.startsWith('Converting')) $('progress').hidden = true; } },
       onProgress: progress => { if (current === generation) { $('progress').hidden = false; $('progress').value = progress; message(`Downloading local model… ${Math.round(progress * 100)}%`); } } });
     if (current !== generation) return;
     $('json-input').value = JSON.stringify(recipe, null, 2);

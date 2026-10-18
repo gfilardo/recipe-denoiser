@@ -58,3 +58,20 @@ test('AI destroys session on invalid output and abort', async () => {
     await assert.rejects(convertRecipe('text',{api,signal:controller.signal})); assert.ok(destroyed);
   }
 });
+test('stalled initialization times out even when Chrome ignores abort; late session cleaned up', async () => {
+  let resolveCreate, destroyed = 0;
+  const api = { create: () => new Promise(resolve => { resolveCreate = resolve; }) };
+  await assert.rejects(convertRecipe('text', { api, initializationTimeoutMs: 10 }), /did not finish initializing/);
+  resolveCreate({destroy(){destroyed++;}});
+  await Promise.resolve(); assert.equal(destroyed,1);
+});
+test('cancel exits a create promise that ignores AbortSignal', async () => {
+  const controller = new AbortController();
+  const pending = convertRecipe('text', {api:{create:()=>new Promise(()=>{})},signal:controller.signal});
+  controller.abort(); await assert.rejects(pending, { name:'AbortError' });
+});
+test('inference timeout destroys session', async () => {
+  let destroyed = false;
+  await assert.rejects(convertRecipe('text', {inferenceTimeoutMs:10,api:{create:async()=>({prompt:()=>new Promise(()=>{}),destroy(){destroyed=true;}})}}), /inference took longer/);
+  assert.ok(destroyed);
+});

@@ -12,7 +12,7 @@ Run `npm start`, then open http://localhost:8000. Python 3 serves the static pag
 
 Use **Try demo** for the reference Banana Bread grid, or expand **Inspect / Edit Extracted JSON** to supply your own graph. **Convert to Recipe Grid** requires a compatible Chrome installation with local AI available. The editor accepts rich text and local raster images; inference uses text only. Pasted remote images become placeholders. Export supports Copy HTML, Download HTML, and the browser print dialog.
 
-Validation: 14 automated checks cover reference spans, rectangular grid coverage, malformed graphs, and AI adapter cleanup. The demo was also exercised in the browser. Real model inference remains unverified because the test browser reports the model unavailable. The Chrome extension is a later milestone.
+Validation: 17 automated checks cover reference spans, rectangular grid coverage, malformed graphs, and AI adapter cleanup. The demo was also exercised in the browser. Real model inference remains unverified because the test browser reports the model unavailable. The Chrome extension is a later milestone.
 
 ## Architecture decisions
 
@@ -197,3 +197,7 @@ Add the MV3 shell, load-unpacked instructions, and shared app packaging. Gate: p
 ## Initial scope boundaries
 
 No cloud inference, backend, automatic URL fetching, arbitrary DAG splitting/reuse, OCR/image understanding, or full word-processor behavior. Rich source images are preserved for the user's reference. The schema carries recipe text and dependencies only. These choices keep the first standalone release small while preserving a direct path to the extension.
+
+### Local model startup troubleshooting
+
+If startup waits on Chrome, the app displays elapsed time and download progress beside Convert. It cancels initialization after two minutes without download progress and inference after three minutes. Keep the page visible during startup. To inspect Chrome model readiness, open `chrome://on-device-internals` in Chrome. A timeout identifies a stalled API call, not its underlying cause; device eligibility, model downloads, and browser runtime issues need to be checked there. Cancel and retry after the model is ready, or use Demo / Manual JSON.
