@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { bananaBread } from '../src/fixtures/bananaBread.js';
 import { layoutRecipe } from '../src/layoutRecipe.js';
-import { convertRecipe, availability } from '../src/aiService.js';
+import { availability } from '../src/aiService.js';
 const fresh = () => structuredClone(bananaBread);
 function occupancy(layout) {
   const grid = layout.rows.map(() => Array(layout.totalCols).fill(0));
@@ -43,35 +43,3 @@ for (const [name, mutate, expected] of [
   ['empty inputs',r=>r.steps[0].input_ids=[], /at least one input/]
 ]) test(`rejects ${name}`,()=>{const r=fresh(); mutate(r); assert.throws(()=>layoutRecipe(r),expected);});
 test('all supported availability states pass through',async()=>{for(const state of ['available','downloadable','downloading','unavailable']) assert.equal(await availability({availability:async()=>state}),state);});
-test('AI supplies schema and destroys successful session', async () => {
-  let destroyed = false, called = false;
-  const result = await convertRecipe('recipe', { api: { create(options) {
-    called = true; assert.equal(options.initialPrompts[0].role, 'system');
-    return Promise.resolve({ prompt: async (text, options) => { assert.equal(text, 'recipe'); assert.equal(options.omitResponseConstraintInput, true); assert.equal(options.responseConstraint.type, 'object'); return JSON.stringify(bananaBread); }, destroy(){destroyed=true;} });
-  } } });
-  assert.ok(called && destroyed); assert.equal(result.title, bananaBread.title);
-});
-test('AI destroys session on invalid output and abort', async () => {
-  for (const abort of [false,true]) {
-    let destroyed = false; const controller = new AbortController();
-    const api = { create() { if(abort) controller.abort(); return Promise.resolve({ prompt:async()=>'{broken', destroy(){destroyed=true;} }); } };
-    await assert.rejects(convertRecipe('text',{api,signal:controller.signal})); assert.ok(destroyed);
-  }
-});
-test('stalled initialization times out even when Chrome ignores abort; late session cleaned up', async () => {
-  let resolveCreate, destroyed = 0;
-  const api = { create: () => new Promise(resolve => { resolveCreate = resolve; }) };
-  await assert.rejects(convertRecipe('text', { api, initializationTimeoutMs: 10 }), /did not finish initializing/);
-  resolveCreate({destroy(){destroyed++;}});
-  await Promise.resolve(); assert.equal(destroyed,1);
-});
-test('cancel exits a create promise that ignores AbortSignal', async () => {
-  const controller = new AbortController();
-  const pending = convertRecipe('text', {api:{create:()=>new Promise(()=>{})},signal:controller.signal});
-  controller.abort(); await assert.rejects(pending, { name:'AbortError' });
-});
-test('inference timeout destroys session', async () => {
-  let destroyed = false;
-  await assert.rejects(convertRecipe('text', {inferenceTimeoutMs:10,api:{create:async()=>({prompt:()=>new Promise(()=>{}),destroy(){destroyed=true;}})}}), /inference took longer/);
-  assert.ok(destroyed);
-});

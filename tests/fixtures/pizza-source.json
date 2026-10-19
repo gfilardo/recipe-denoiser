@@ -1,0 +1,42 @@
+{
+  "source": "INGREDIENTS\nIngredients for a 16x12 in sheet pan (40x30 cm)Type 0 flour 4.3 cups (550 g) - Approximately 4 1/3 cups.Water 1.8 cups (440 g)Extra virgin olive oil 2 tbsp (30 g)Fresh brewer's yeast 0.4 oz (10 g)Fine salt 1.7 tsp (10 g)For the toppingTomato purée 1 ¼ cup (300 g)Extra virgin olive oil 2 tbsp (25 g)Oregano to tasteFine salt to tasteFior di latte mozzarella cheese 9 oz (250 g)Basil to tasteBlack pepper to tasteFor the panExtra virgin olive oil to taste\nPreparation\nHow to prepare Sheet-pan pizza made with a spoon\nTo prepare the sheet-pan pizza made with a spoon, start by working the flour and yeast 1 in a bowl together with the water 2 and mix with a spoon or spatula 3.\nAs soon as the dough becomes sticky, cover with plastic wrap and let rest for 10 minutes 4.\nThen add the oil 5 and the salt 6.\nThen mix again with a spatula or a spoon 7, cover and let rest another 10 minutes 8.\nAt this point you can do folds, still in the bowl with the spatula: lift the edges of the dough and bring them to the center 9.\nYou will notice the dough has changed texture and will be smoother 10.\nCover with plastic wrap 11 and let rise at a temperature of 77–81°F (25–27°C) for about 3 hours or until doubled 12.\nGrease a rectangular 12x16 in (30x40 cm) pan 13 and turn the dough into it 14.\nStart spreading it with your hands 15.\nThen cover again for 10 minutes 16.\nMeanwhile prepare the topping: mix tomato passata, salt, oregano and about half the oil 17.\nRetrieve the dough and spread it further with your fingers 18.\nSpread the topping over the surface 19, drizzle with a little more oil and let rest for half an hour.\nThen bake at 428°F for 30 minutes (220°C → 428°F) 20.\nMeanwhile cut the fiordilatte and let it drain in a colander 21.\nAfter the baking time 22 place the fiordilatte (fresh mozzarella) on the pizza and bake for another 10 minutes 23.\nFinish with basil and a pinch of pepper and your sheet-pan pizza made with a spoon is ready 24.\nStorage\nSheet-pan pizza made with a spoon can be stored in the fridge for 1 day or frozen after baking.\nTip\nChoose a different topping each time for your sheet-pan pizza made with a spoon: grilled vegetables, ham and mushrooms or four cheeses.",
+  "ingredients": {
+    "title": "Ingredients for a 16x12 in sheet pan (40x30 cm)",
+    "ingredients": [
+      "Type 0 flour 4.3 cups (550 g) - Approximately 4 1/3 cups",
+      "Water 1.8 cups (440 g)",
+      "Extra virgin olive oil 2 tbsp (30 g)",
+      "Fresh brewer's yeast 0.4 oz (10 g)",
+      "Fine salt 1.7 tsp (10 g)",
+      "Tomato purée 1 ¼ cup (300 g)",
+      "Extra virgin olive oil 2 tbsp (25 g)",
+      "Oregano to taste",
+      "Fine salt to taste",
+      "Fior di latte mozzarella cheese 9 oz (250 g)",
+      "Basil to taste",
+      "Black pepper to taste",
+      "Extra virgin olive oil to taste"
+    ]
+  },
+  "actions": {
+    "passage_ids": [
+      "p_5",
+      "p_6",
+      "p_7",
+      "p_8",
+      "p_9",
+      "p_10",
+      "p_11",
+      "p_12",
+      "p_13",
+      "p_14",
+      "p_15",
+      "p_16",
+      "p_17",
+      "p_18",
+      "p_19",
+      "p_20",
+      "p_21"
+    ]
+  }
+}

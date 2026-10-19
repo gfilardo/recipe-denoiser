@@ -55,3 +55,5 @@ export function validateRecipe(recipe) {
   if (leaves.some((id, i) => id !== recipe.ingredients[i].id)) throw Error('Ingredient order must match the dependency tree input order. Reorder ingredients or input_ids.');
   return { nodes, root };
 }
+
+export { shape as validateShape };

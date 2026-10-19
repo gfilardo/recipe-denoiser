@@ -1,0 +1,213 @@
+{
+  "title": "Sheet-pan pizza made with a spoon — 16×12 in (40×30 cm)",
+  "setup": [
+    "Use a bowl, spoon or spatula, plastic wrap, a rectangular sheet pan and a colander.",
+    "The topping has ONE 25 g oil allowance (2 tbsp total), used partly in the sauce and partly for drizzling. The two oil-use rows are not two full quantities."
+  ],
+  "ingredients": [
+    {
+      "id": "dough_flour",
+      "text": "Dough: type 0 flour — 550 g (about 4⅓ cups)",
+      "prep": ""
+    },
+    {
+      "id": "dough_water",
+      "text": "Dough: water — 440 g (1.8 cups)",
+      "prep": ""
+    },
+    {
+      "id": "dough_yeast",
+      "text": "Dough: fresh brewer’s yeast — 10 g (0.4 oz)",
+      "prep": ""
+    },
+    {
+      "id": "dough_oil",
+      "text": "Dough: extra virgin olive oil — 30 g (2 tbsp)",
+      "prep": ""
+    },
+    {
+      "id": "dough_salt",
+      "text": "Dough: fine salt — 10 g (1.7 tsp)",
+      "prep": ""
+    },
+    {
+      "id": "pan_oil",
+      "text": "Pan: extra virgin olive oil — as needed",
+      "prep": ""
+    },
+    {
+      "id": "topping_tomato",
+      "text": "Topping: tomato purée — 300 g (1¼ cups)",
+      "prep": ""
+    },
+    {
+      "id": "topping_oil_mix",
+      "text": "Topping oil, use A: about half of the listed 25 g (2 tbsp total)",
+      "prep": ""
+    },
+    {
+      "id": "topping_oregano",
+      "text": "Topping: oregano — to taste",
+      "prep": ""
+    },
+    {
+      "id": "topping_salt",
+      "text": "Topping: fine salt — to taste",
+      "prep": ""
+    },
+    {
+      "id": "topping_oil_drizzle",
+      "text": "Topping oil, use B: a little more from that SAME 25 g total, for drizzling",
+      "prep": ""
+    },
+    {
+      "id": "mozzarella",
+      "text": "Fior di latte mozzarella — 250 g (9 oz)",
+      "prep": ""
+    },
+    {
+      "id": "basil",
+      "text": "Basil — to taste",
+      "prep": ""
+    },
+    {
+      "id": "pepper",
+      "text": "Black pepper — to taste",
+      "prep": ""
+    }
+  ],
+  "steps": [
+    {
+      "id": "mix_dough",
+      "action": "Mix the flour, yeast and water in a bowl with a spoon or spatula until sticky.",
+      "input_ids": [
+        "dough_flour",
+        "dough_water",
+        "dough_yeast"
+      ]
+    },
+    {
+      "id": "rest_1",
+      "action": "Cover with plastic wrap and rest for 10 minutes.",
+      "input_ids": [
+        "mix_dough"
+      ]
+    },
+    {
+      "id": "add_oil_salt",
+      "action": "Add the dough oil and salt, then mix again with a spoon or spatula.",
+      "input_ids": [
+        "rest_1",
+        "dough_oil",
+        "dough_salt"
+      ]
+    },
+    {
+      "id": "rest_2",
+      "action": "Cover and rest for another 10 minutes.",
+      "input_ids": [
+        "add_oil_salt"
+      ]
+    },
+    {
+      "id": "fold_dough",
+      "action": "Fold in the bowl with a spatula: lift the edges and bring them to the center. The dough becomes smoother.",
+      "input_ids": [
+        "rest_2"
+      ]
+    },
+    {
+      "id": "rise",
+      "action": "Cover with plastic wrap; let rise at 77–81°F (25–27°C) for about 3 hours, or until doubled.",
+      "input_ids": [
+        "fold_dough"
+      ]
+    },
+    {
+      "id": "grease_pan",
+      "action": "Grease a 16×12 in (40×30 cm) rectangular pan.",
+      "input_ids": [
+        "pan_oil"
+      ]
+    },
+    {
+      "id": "spread_dough",
+      "action": "Turn the risen dough into the greased pan and start spreading it with your hands.",
+      "input_ids": [
+        "rise",
+        "grease_pan"
+      ]
+    },
+    {
+      "id": "rest_3",
+      "action": "Cover again and rest for 10 minutes. Prepare the topping during this rest.",
+      "input_ids": [
+        "spread_dough"
+      ]
+    },
+    {
+      "id": "mix_topping",
+      "action": "Meanwhile, mix the tomato purée, oregano, topping salt and about half the topping oil.",
+      "input_ids": [
+        "topping_tomato",
+        "topping_oil_mix",
+        "topping_oregano",
+        "topping_salt"
+      ]
+    },
+    {
+      "id": "spread_again",
+      "action": "Retrieve the dough and spread it further with your fingers.",
+      "input_ids": [
+        "rest_3"
+      ]
+    },
+    {
+      "id": "add_topping",
+      "action": "Spread the prepared topping over the dough.",
+      "input_ids": [
+        "spread_again",
+        "mix_topping"
+      ]
+    },
+    {
+      "id": "rest_topped",
+      "action": "Drizzle with a little more of the topping oil and rest for half an hour.",
+      "input_ids": [
+        "add_topping",
+        "topping_oil_drizzle"
+      ]
+    },
+    {
+      "id": "bake_1",
+      "action": "Bake at 428°F (220°C) for 30 minutes. Prepare the mozzarella during this bake.",
+      "input_ids": [
+        "rest_topped"
+      ]
+    },
+    {
+      "id": "drain_cheese",
+      "action": "Meanwhile, cut the fiordilatte and let it drain in a colander.",
+      "input_ids": [
+        "mozzarella"
+      ]
+    },
+    {
+      "id": "bake_2",
+      "action": "After the first bake, add the drained mozzarella and bake for another 10 minutes.",
+      "input_ids": [
+        "bake_1",
+        "drain_cheese"
+      ]
+    },
+    {
+      "id": "finish",
+      "action": "Finish with basil and a pinch of black pepper.",
+      "input_ids": [
+        "bake_2",
+        "basil",
+        "pepper"
+      ]
+    }
+  ]
+}
