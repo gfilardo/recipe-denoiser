@@ -72,7 +72,7 @@ export function setupConversionDialog(onCancel) {
       el('conversion-debug-show').textContent = 'Show current output'; el('conversion-debug-status').textContent = '';
       el('conversion-history').replaceChildren(); el('conversion-stage').classList.remove('error');
       el('conversion-stage').textContent = 'Preparing local model…';
-      el('conversion-inputs').textContent = `Conversion limit: ${minutes} minutes (shared by extraction, per-action linking and at most one correction).`;
+      el('conversion-inputs').textContent = `Conversion limit: ${minutes} minutes (shared by extraction, per-action linking, procedure labels and at most one correction).`;
       el('conversion-first').textContent = 'Not yet'; el('conversion-output').textContent = '0 characters';
       el('conversion-activity').textContent = 'Waiting for the model session.'; el('conversion-copy-status').textContent = '';
       el('conversion-cancel').hidden = false; el('conversion-close').hidden = true;
@@ -127,6 +127,9 @@ export function setupConversionDialog(onCancel) {
         case 'correction': log(`Using the single conversion correction for ${event.label.toLowerCase()}. Accepted earlier work stays unchanged.`); break;
         case 'stage-validated': log(`${event.label}: validation passed.`); break;
         case 'invalid': log(`Validation failed: ${event.message}`); break;
+        case 'simplification-start': log('Graph complete. Checking shorter procedure labels.'); break;
+        case 'simplification-fallback': log(`Keeping original wording for remaining labels: ${event.message}`); break;
+        case 'simplification-complete': log(`Shortened ${event.shortened} procedure labels; graph unchanged.`); break;
         case 'validated': log('Recipe validation passed.'); break;
         case 'failed':
           log(`Model operation stopped during ${event.stage} / ${event.phase}: ${event.message}`);

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { convertRecipe } from '../src/aiService.js';
+import { convertRecipe as convertWithLabels } from '../src/aiService.js';
 import { createOutputGuard, MAX_FORMATTING_WHITESPACE } from '../src/outputGuard.js';
 import { source, ingredients, actions, links } from './fixtures/staged.js';
 const linkResponses = links.inputs.map(input_ids => ({input_ids}));
@@ -164,7 +164,7 @@ test('duplicate passage selection gets one scoped correction and original text r
   assert.equal(f.prompts[3].current_action.action,'Mix lemon juice and salt.');
   assert.equal(result.steps[0].action,'Mix lemon juice and salt.');
   assert.equal(events.find(e=>e.type==='passages').passages.length,6);
-  assert.equal(events.find(e=>e.type==='initializing').pipeline,'staged-v10-preparation-roles');
+  assert.equal(events.find(e=>e.type==='initializing').pipeline,'staged-v11-procedure-labels');
 });
 
 test('unfinished invalid linking stream is canceled early, retained, and corrected only once', async () => {
@@ -249,3 +249,6 @@ test('cancel between linked actions prevents starting the next request', async (
   await assert.rejects(convertRecipe(source,{api:f.api,signal:controller.signal,onDiagnostic(e){if(e.type==='connection-validated')controller.abort();}}),{name:'AbortError'});
   assert.equal(f.created,3);assert.equal(f.destroyed,3);
 });
+
+// These regressions isolate extraction/linking; presentation is tested separately.
+function convertRecipe(source, options) { return convertWithLabels(source, { ...options, simplifyProcedures: false }); }

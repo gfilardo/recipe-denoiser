@@ -1,3 +1,4 @@
+import { procedureBatches, labelChoices, labelSchema, acceptLabels } from './procedureLabels.js';
 import { buildConnectionRequest, actionConnectionSchema, acceptConnection, connectionChoices } from './actionConnections.js';
 import { createActionConnectionGuard, ConnectionOutputError } from './connectionGuard.js';
 import { SYSTEM_PROMPTS } from './systemPrompt.js';
@@ -13,6 +14,7 @@ export async function availability(api = globalThis.LanguageModel) {
 const labels = { ingredients: 'Extracting ingredients', actions: 'Selecting cooking passages', connections: 'Connecting ingredients and actions' };
 export async function convertRecipe(text, {
   signal, onProgress = () => {}, onPhase = () => {}, onDiagnostic = () => {}, api = globalThis.LanguageModel,
+  simplifyProcedures = true, onProcedureLabels = () => {},
   initializationTimeoutMs = 120000, inferenceTimeoutMs = 180000
 } = {}) {
   if (!api) throw Error('Chrome local AI is not exposed in this browser. Try Demo or Manual JSON.');
@@ -131,7 +133,7 @@ export async function convertRecipe(text, {
     }
   }
   try {
-    report('initializing', { sourceChars: text.length, pipeline: 'staged-v10-preparation-roles', schemaGuidance: true });
+    report('initializing', { sourceChars: text.length, pipeline: 'staged-v11-procedure-labels', schemaGuidance: true });
     onPhase('Preparing local model…'); arm(initializationTimeoutMs, startupMessage);
     ticker = setInterval(() => {
       if (!task.signal.aborted) onPhase(`${stageLabel}${correcting ? ' · correction' : ''}… ${Math.floor((Date.now() - started) / 1000)}s elapsed. Cancel remains available.`);
@@ -160,6 +162,26 @@ export async function convertRecipe(text, {
       report('connection-validated', { completed: rows.length, total: actions.steps.length });
     }
     const recipe = assembleRecipe(inventory, actions, { inputs: rows });
+    if (simplifyProcedures) {
+      const batches = procedureBatches(recipe), labels = {};
+      stage = 'simplification'; correcting = false;
+      report('simplification-start', { batches: batches.length });
+      for (let i = 0; i < batches.length; i++) {
+        stageLabel = `Shortening procedure labels ${i + 1} of ${batches.length}`;
+        try {
+          await openSession();
+          const response = await generate(JSON.stringify({ procedures: batches[i] }), labelSchema(batches[i]), createActionConnectionGuard(labelChoices(batches[i])));
+          Object.assign(labels, acceptLabels(JSON.parse(response), batches[i]));
+        } catch (error) {
+          task.signal.throwIfAborted();
+          // Presentation must not spend the graph correction or invalidate it.
+          report('simplification-fallback', { message: error.message });
+          break;
+        } finally { destroy(); }
+      }
+      onProcedureLabels(labels);
+      report('simplification-complete', { shortened: Object.keys(labels).length });
+    }
     report('validated');
     return recipe;
   } catch (error) {

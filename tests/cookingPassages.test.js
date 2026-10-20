@@ -6,7 +6,7 @@ import { cookingPassages } from '../src/cookingPassages.js';
 import { acceptIngredients, acceptActions, actionSchema } from '../src/recipeExtraction.js';
 import { prepareIngredientUses } from '../src/ingredientUses.js';
 import { buildConnectionRequest, connectionChoices, acceptConnection } from '../src/actionConnections.js';
-import { convertRecipe } from '../src/aiService.js';
+import { convertRecipe as convertWithLabels } from '../src/aiService.js';
 
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/autumn-cake-source.json', import.meta.url)));
 const inventory = acceptIngredients(fixture.ingredients, fixture.source);
@@ -88,3 +88,6 @@ test('the reported invalid selection is corrected before linking, then heating m
   assert.match(requests[2].correction, /Unknown source passage: p_2/);
   assert.equal(events.filter(e => e.type === 'connection-validated').length, 1);
 });
+
+// These regressions isolate extraction/linking; presentation is tested separately.
+function convertRecipe(source, options) { return convertWithLabels(source, { ...options, simplifyProcedures: false }); }

@@ -8,7 +8,7 @@ import { sourcePassages } from '../src/sourcePassages.js';
 import { cookingPassages } from '../src/cookingPassages.js';
 import { prepareIngredientUses } from '../src/ingredientUses.js';
 import { buildConnectionRequest, connectionChoices, acceptConnection } from '../src/actionConnections.js';
-import { convertRecipe } from '../src/aiService.js';
+import { convertRecipe as convertWithLabels } from '../src/aiService.js';
 import { layoutRecipe } from '../src/layoutRecipe.js';
 const read = name => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url)));
 const fixture = read('autumn-cake-source'), recorded = read('cake-reported-links'), expected = read('cake-expected-links');
@@ -133,3 +133,6 @@ test('an explicit garnish preparation takes precedence over later cake context',
   assert.deepEqual(connectionChoices(request).ing_6, ['']);
   assert.deepEqual(connectionChoices(request).ing_13, ['pistachios']);
 });
+
+// These regressions isolate extraction/linking; presentation is tested separately.
+function convertRecipe(source, options) { return convertWithLabels(source, { ...options, simplifyProcedures: false }); }

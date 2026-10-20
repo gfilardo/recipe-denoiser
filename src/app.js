@@ -6,17 +6,18 @@ import { availability, convertRecipe } from './aiService.js';
 import { setupConversionDialog } from './conversionDialog.js';
 import { copyRecipe, downloadRecipe } from './exportRecipe.js';
 const $ = id => document.getElementById(id);
+const CONVERSION_LIMIT_MINUTES = 10;
 let controller, generation = 0, revision = 0, hasResult = false, timer;
 function message(text, error = false) { $('message').textContent = text; $('message').classList.toggle('error', error); }
 const editor = setupEditor($('editor'), $('image-input'), text => {
   revision++; $('source-count').textContent = `${text.length.toLocaleString()} characters`;
   if (hasResult) $('result-label').textContent = 'Source changed · convert to update';
 }, text => message(text, true));
-function busy(value) { $('conversion-limit').disabled = value; $('convert').disabled = value; $('cancel').hidden = !value; $('progress').hidden = true; }
+function busy(value) { $('convert').disabled = value; $('cancel').hidden = !value; $('progress').hidden = true; }
 function cancel() { generation++; controller?.abort(); controller = null; busy(false); }
 const conversionDialog = setupConversionDialog(() => { cancel(); message('Conversion canceled.'); });
-function apply(recipe, label) {
-  const layout = layoutRecipe(recipe); renderRecipe(recipe, layout, $('output')); renderText(recipe, $('text-content'));
+function apply(recipe, label, procedureLabels = {}) {
+  const layout = layoutRecipe(recipe); renderRecipe(recipe, layout, $('output'), procedureLabels); renderText(recipe, $('text-content'));
   hasResult = true; $('copy').disabled = false; $('print').disabled = false; $('download').disabled = false; $('text-view').hidden = false;
   $('result-label').textContent = label; $('json-error').textContent = '';
 }
@@ -32,17 +33,18 @@ $('convert').addEventListener('click', async () => {
   const text = editor.text(); if (!text) { message('Paste a recipe or load the sample first.', true); $('editor').focus(); return; }
   if (text.length > 30000) { message('Please shorten the source to 30,000 characters or fewer.', true); return; }
   clearTimeout(timer); cancel(); const current = generation, sourceRevision = revision; controller = new AbortController(); busy(true);
-  conversionDialog.open(Number($('conversion-limit').value));
+  conversionDialog.open(CONVERSION_LIMIT_MINUTES);
   try {
-    const recipe = await convertRecipe(text, { signal: controller.signal,
-      inferenceTimeoutMs: Number($('conversion-limit').value) * 60000,
+    let procedureLabels = {};
+    const recipe = await convertRecipe(text, { onProcedureLabels: labels => { procedureLabels = labels; }, signal: controller.signal,
+      inferenceTimeoutMs: CONVERSION_LIMIT_MINUTES * 60000,
       onDiagnostic: event => { if (current === generation) conversionDialog.event(event); },
       onPhase: text => { if (current === generation) { message(text); if (text.startsWith('Converting')) $('progress').hidden = true; } },
       onProgress: progress => { if (current === generation) { $('progress').hidden = false; $('progress').value = progress; message(`Downloading local model… ${Math.round(progress * 100)}%`); } } });
     if (current !== generation) return;
     conversionDialog.rendering();
     $('json-input').value = JSON.stringify(recipe, null, 2);
-    apply(recipe, sourceRevision === revision ? 'Converted on this device' : 'Source changed · convert to update'); message('Recipe converted. Check quantities and steps against your source.');
+    apply(recipe, sourceRevision === revision ? 'Converted on this device' : 'Source changed · convert to update', procedureLabels); message('Recipe converted. Check quantities and steps against your source.');
     conversionDialog.success();
   } catch (error) {
     if (current === generation) { conversionDialog.fail(error.message || 'Conversion failed. Try again or use Manual JSON.'); message(error.message || 'Conversion failed. Try Demo or Manual JSON.', true); if ($('json-input').value) $('json-drawer').open = true; }

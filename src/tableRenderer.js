@@ -1,4 +1,4 @@
-export function renderRecipe(recipe, layout, target) {
+export function renderRecipe(recipe, layout, target, procedureLabels = {}) {
   const title = document.createElement('h3'); title.className = 'recipe-title'; title.textContent = recipe.title;
   const table = document.createElement('table'); table.className = 'recipe-table'; table.setAttribute('aria-label', recipe.title + ', dependency grid read left to right');
   const body = table.createTBody();
@@ -15,6 +15,11 @@ export function renderRecipe(recipe, layout, target) {
     for (const descriptor of row) {
       const cell = tr.insertCell(); cell.textContent = descriptor.text; cell.rowSpan = descriptor.rowSpan; cell.colSpan = descriptor.colSpan; cell.className = descriptor.kind; cell.dataset.node = descriptor.id;
       if (descriptor.kind === 'action') {
+        if (procedureLabels[descriptor.id]) {
+          cell.textContent = procedureLabels[descriptor.id];
+          cell.title = descriptor.text;
+          cell.setAttribute('aria-label', descriptor.text);
+        }
         cell.tabIndex = 0;
         cell.addEventListener('mouseenter', () => highlight(descriptor.id)); cell.addEventListener('mouseleave', () => highlight(null));
         cell.addEventListener('focus', () => highlight(descriptor.id)); cell.addEventListener('blur', () => highlight(null));

@@ -6,7 +6,7 @@ import { sourcePassages } from '../src/sourcePassages.js';
 import { prepareIngredientUses } from '../src/ingredientUses.js';
 import { buildConnectionRequest, connectionChoices, acceptConnection } from '../src/actionConnections.js';
 import { layoutRecipe } from '../src/layoutRecipe.js';
-import { convertRecipe } from '../src/aiService.js';
+import { convertRecipe as convertWithLabels } from '../src/aiService.js';
 
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/pizza-source.json', import.meta.url)));
 const original = acceptIngredients(fixture.ingredients, fixture.source);
@@ -145,8 +145,11 @@ test('streaming conversion integrates roles and portions without extra inference
   assert.equal(calls, 19);
   assert.equal(destroyed, 19);
   assert.equal(events.filter(e => e.type === 'correction').length, 0);
-  assert.equal(events.find(e => e.type === 'initializing').pipeline, 'staged-v10-preparation-roles');
+  assert.equal(events.find(e => e.type === 'initializing').pipeline, 'staged-v11-procedure-labels');
   assert.equal(requests[4].available_inputs.find(n => n.id === 'ing_13').evidence.length, 0);
   assert.equal(recipe.ingredients.length, 14);
   assert.equal(recipe.steps.length, 17);
 });
+
+// These regressions isolate extraction/linking; presentation is tested separately.
+function convertRecipe(source, options) { return convertWithLabels(source, { ...options, simplifyProcedures: false }); }

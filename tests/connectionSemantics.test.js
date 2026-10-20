@@ -6,7 +6,7 @@ import { buildConnectionRequest, connectionChoices, acceptConnection } from '../
 import { acceptIngredients, acceptActions, assembleRecipe } from '../src/recipeExtraction.js';
 import { prepareIngredientUses } from '../src/ingredientUses.js';
 import { sourcePassages } from '../src/sourcePassages.js';
-import { convertRecipe } from '../src/aiService.js';
+import { convertRecipe as convertWithLabels } from '../src/aiService.js';
 import { createActionConnectionGuard } from '../src/connectionGuard.js';
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/pizza-source.json', import.meta.url)));
 const reported = JSON.parse(readFileSync(new URL('./fixtures/pizza-reported-links.json', import.meta.url)));
@@ -138,5 +138,8 @@ test('guided replay of the real bad decisions preserves separate preparations an
   assert.equal(destroyed,19);
   assert.equal(events.filter(e=>e.type==='correction').length,0);
   recipe.steps.forEach((step,index)=>assert.deepEqual([...step.input_ids].sort(),[...correct[index]].sort(),`action ${index+1}`));
-  assert.equal(events.find(e=>e.type==='initializing').pipeline,'staged-v10-preparation-roles');
+  assert.equal(events.find(e=>e.type==='initializing').pipeline,'staged-v11-procedure-labels');
 });
+
+// These regressions isolate extraction/linking; presentation is tested separately.
+function convertRecipe(source, options) { return convertWithLabels(source, { ...options, simplifyProcedures: false }); }
