@@ -24,6 +24,8 @@ const joiningWords = new Set(['di', 'de', 'del', 'della', 'da', 'du', 'des', 'la
 const fold = value => value.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().replace(/[’']s$/u, '');
 function forms(value) {
   const variants = new Set([value]);
+  // Explicit spelling variant, not fuzzy matching of arbitrary food names.
+  if (value === 'cardamon' || value === 'cardamom') { variants.add('cardamon'); variants.add('cardamom'); }
   // Conservative English plural alternatives; no culinary synonym guessing.
   if (value.length > 3 && /s$/u.test(value) && !/(ss|us|is)$/u.test(value)) variants.add(value.slice(0, -1));
   if (value.length > 4 && /ies$/u.test(value)) variants.add(`${value.slice(0, -3)}y`);
@@ -64,13 +66,27 @@ export function ingredientEvidence(ingredientText, actionText) {
   const found = names(actionText, actionWords)
     .filter(name => [...name.forms].some(form => identity.has(form)))
     .map(name => name.phrase);
+  // "Peel them" is an operation, not an addition of listed fruit peel.
+  const peelOccurrences = [...actionText.matchAll(/\bpeel\b/giu)];
+  const onlyPeelingPronouns = peelOccurrences.length && peelOccurrences.every(m => /^\s+(?:them|it)\b/iu.test(actionText.slice(m.index + m[0].length)));
+  const filtered = found.filter(phrase => !(/^peel$/iu.test(phrase) && onlyPeelingPronouns));
+  // Preserve the exact action phrase while recognizing the source's own
+  // peel/zest naming variation. Do not rewrite the ingredient or its quantity.
+  if (/\borange\s+peel\b/iu.test(ingredientText)) {
+    filtered.push(...[...actionText.matchAll(/\borange\s+zest\b/giu)].map(m => m[0]));
+  }
+  // Scented water is not plain blanching water. A generic "water" mention
+  // alone cannot establish the use of a separately listed rose water.
+  if (/\brose\s+water\b/iu.test(ingredientText) && !/\brose\b/iu.test(actionText)) {
+    return filtered.filter(phrase => !/^water$/iu.test(phrase));
+  }
   // A narrow preparation alias: greasing can mention the use of a listed fat
   // without naming it. This does not choose between multiple fat portions.
   const ingredientForms = new Set(ingredientWords.flatMap(word => [...forms(word.normalized)]));
   const fat = ['oil', 'butter', 'lard', 'shortening'].some(name => ingredientForms.has(name));
   const butterBeans = ingredientForms.has('butter') && ingredientForms.has('bean');
   if (fat && !butterBeans) {
-    found.push(...actionWords.filter(word => /^(grease|greases|greased|greasing)$/u.test(word.normalized)).map(word => word.text));
+    filtered.push(...actionWords.filter(word => /^(grease|greases|greased|greasing)$/u.test(word.normalized)).map(word => word.text));
   }
-  return [...new Set(found)];
+  return [...new Set(filtered)];
 }

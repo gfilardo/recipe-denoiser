@@ -1,0 +1,161 @@
+{
+  "source": "Preparation\n\nHow to prepare Halloween Muffins\n\nTo prepare the Halloween muffins, pour the sugar into a bowl and add the softened butter 1.\n\nScent with grated orange zest 2, then start beating the mixture with an electric whisk, adding the eggs one at a time 3.\n\nWork with the electric whisk until you get a light and fluffy mixture 4.\n\nNow sift the flour, baking powder, and baking soda directly into the bowl with the mixture 5.\n\nAlso, add the pinch of salt and turn on the whisk again to incorporate the powders.\n\nYou will notice that the batter becomes thicker, so thin it with the milk poured in a trickle 6.\n\nWhen the mixture is soft and homogeneous 7, add the chocolate chips 8 and mix with a spatula to combine them 9.\n\nTransfer the mixture to a disposable piping bag without a nozzle 10, this way you can work more precisely.\n\nPlace the paper cases in a 12-muffin tray and fill them two-thirds full 11, leaving about half an inch from the edge 12.\n\nBake in a preheated oven at 350\u00b0F for 18-20 minutes in static mode.\n\nRemove from the oven and let cool completely 13.\n\nAt this point, your chocolate chip muffins are ready to be decorated.\n\nRemove the paper cases 14, then apply the sugar eyes 15.\n\nStack the muffins on a small plate 16 and prepare the glaze: bring some water to a boil in a saucepan.\n\nTurn off the heat and place the cocoa glaze packet inside for 7-8 minutes.\n\nTake it out and dry the packet well before opening.\n\nPour the glaze into a pitcher, then let it drizzle over the cupcakes 17.\n\nYour Halloween muffins are ready to be served 18!\n\nStorage\n\nWe recommend consuming the Halloween muffins immediately.\n\nAlternatively, you can store them without glaze for a couple of days under a glass dome.\n\nTip\n\nInstead of orange zest, you can use vanilla extract to flavor the batter.\n\nInstead of the piping bag, you can use a spoon to fill the paper cases.",
+  "ingredients": {
+    "title": "How to prepare Halloween Muffins",
+    "ingredients": [
+      "sugar",
+      "softened butter",
+      "grated orange zest",
+      "eggs",
+      "flour",
+      "baking powder",
+      "baking soda",
+      "pinch of salt",
+      "milk",
+      "chocolate chips",
+      "water",
+      "cocoa glaze packet"
+    ]
+  },
+  "selection": {
+    "passage_ids": [
+      "p_3",
+      "p_4",
+      "p_5",
+      "p_6",
+      "p_7",
+      "p_8",
+      "p_9",
+      "p_10",
+      "p_11",
+      "p_12",
+      "p_13",
+      "p_15",
+      "p_16",
+      "p_17",
+      "p_19",
+      "p_20"
+    ]
+  },
+  "responses": [
+    {
+      "ing_1": "sugar",
+      "ing_2": "butter",
+      "ing_3": "",
+      "ing_4": "",
+      "ing_5": "",
+      "ing_6": "",
+      "ing_7": "",
+      "ing_8": "",
+      "ing_9": "",
+      "ing_10": "",
+      "ing_11": "",
+      "ing_12": ""
+    },
+    {
+      "ing_3": "orange",
+      "ing_4": "eggs",
+      "ing_5": "",
+      "ing_6": "",
+      "ing_7": "",
+      "ing_8": "",
+      "ing_9": "",
+      "ing_10": "",
+      "ing_11": "",
+      "ing_12": "",
+      "step_1": "use"
+    },
+    {
+      "ing_5": "",
+      "ing_6": "",
+      "ing_7": "",
+      "ing_8": "",
+      "ing_9": "",
+      "ing_10": "",
+      "ing_11": "",
+      "ing_12": "",
+      "step_2": "use"
+    },
+    {
+      "ing_5": "flour",
+      "ing_6": "powder",
+      "ing_7": "soda",
+      "ing_8": "",
+      "ing_9": "",
+      "ing_10": "",
+      "ing_11": "",
+      "ing_12": "",
+      "step_3": "use"
+    },
+    {
+      "ing_8": "salt",
+      "ing_9": "",
+      "ing_10": "",
+      "ing_11": "",
+      "ing_12": "",
+      "step_4": "use"
+    },
+    {
+      "ing_9": "",
+      "ing_10": "",
+      "ing_11": "",
+      "ing_12": "",
+      "step_5": "use"
+    },
+    {
+      "ing_9": "",
+      "ing_10": "chocolate chips",
+      "ing_11": "",
+      "ing_12": "",
+      "step_6": "use"
+    },
+    {
+      "ing_9": "",
+      "ing_11": "",
+      "ing_12": "",
+      "step_7": "use"
+    },
+    {
+      "ing_9": "",
+      "ing_11": "",
+      "ing_12": "",
+      "step_8": "use"
+    },
+    {
+      "ing_9": "",
+      "ing_11": "",
+      "ing_12": "",
+      "step_9": "use"
+    },
+    {
+      "ing_9": "",
+      "ing_11": "",
+      "ing_12": "",
+      "step_10": "use"
+    },
+    {
+      "ing_9": "",
+      "ing_11": "",
+      "ing_12": "",
+      "step_11": "use"
+    },
+    {
+      "ing_9": "",
+      "ing_11": "water",
+      "ing_12": "glaze",
+      "step_12": "use"
+    },
+    {
+      "ing_9": "",
+      "step_13": "use"
+    },
+    {
+      "ing_9": "",
+      "step_14": "use"
+    },
+    {
+      "ing_9": "",
+      "step_15": "use"
+    }
+  ]
+}

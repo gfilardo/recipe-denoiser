@@ -44,13 +44,27 @@ test('reported action 3 can select dough oil and salt but not topping or pan por
   const request = buildConnectionRequest(inventory, actions, rows.slice(0, 2));
   const choices = connectionChoices(request);
   assert.equal(request.ingredient_section, 'section_1');
-  assert.deepEqual(choices.ing_3, ['', 'oil']);
-  assert.deepEqual(choices.ing_5, ['', 'salt']);
+  assert.deepEqual(choices.ing_3, ['oil']);
+  assert.deepEqual(choices.ing_5, ['salt']);
   for (const id of ['ing_7_use_1', 'ing_7_use_2', 'ing_9', 'ing_13']) {
     assert.deepEqual(choices[id], ['']);
     assert.throws(() => acceptConnection({ ...choose(request, rows[2]), [id]: id === 'ing_9' ? 'salt' : 'oil' }, request), /unsupported selection/);
   }
   assert.deepEqual(acceptConnection(choose(request, rows[2]), request), rows[2]);
+});
+
+test('reported run: explicit uses of dough oil, dough salt and tomato cannot be skipped', () => {
+  // The model left these empty at actions 3 and 11, then action 17 could not connect them.
+  const at = index => buildConnectionRequest(inventory, actions, rows.slice(0, index));
+  const third = at(2), eleventh = at(10);
+  assert.ok(third.available_inputs.find(n => n.id === 'ing_3').required);
+  assert.ok(third.available_inputs.find(n => n.id === 'ing_5').required);
+  assert.throws(() => acceptConnection({ ...choose(third, rows[2]), ing_3: '', ing_5: '' }, third), /ing_3: unsupported selection/);
+  assert.deepEqual(connectionChoices(eleventh).ing_6, ['tomato']);
+  assert.throws(() => acceptConnection({ ...choose(eleventh, rows[10]), ing_6: '' }, eleventh), /ing_6: unsupported selection/);
+  // A later repeated mention does not make an explicit addition optional.
+  const first = buildConnectionRequest(inventory, { steps: [actions.steps[0], ...actions.steps] }, []);
+  assert.deepEqual(connectionChoices(first).ing_1, ['flour']);
 });
 
 test('pizza linking keeps independent preparations and produces a complete tree', () => {
@@ -104,12 +118,12 @@ test('separate listed oils stay separate even without a split, and explicit new 
   const prepared = prepareIngredientUses(inv, steps, source);
   assert.equal(prepared.ingredients.length, 3);
   const request = buildConnectionRequest(prepared, steps, [['ing_1']]);
-  assert.deepEqual(connectionChoices(request).ing_2, ['', 'oil']);
+  assert.deepEqual(connectionChoices(request).ing_2, ['oil']);
   assert.deepEqual(connectionChoices(request).ing_3, ['']);
   steps.steps[1].action = 'Mix oil for the topping.';
   const topping = buildConnectionRequest(prepared, steps, [['ing_1']]);
   assert.deepEqual(connectionChoices(topping).ing_2, ['']);
-  assert.deepEqual(connectionChoices(topping).ing_3, ['', 'oil']);
+  assert.deepEqual(connectionChoices(topping).ing_3, ['oil']);
 });
 
 test('streaming conversion integrates roles and portions without extra inference calls', async () => {
@@ -131,7 +145,7 @@ test('streaming conversion integrates roles and portions without extra inference
   assert.equal(calls, 19);
   assert.equal(destroyed, 19);
   assert.equal(events.filter(e => e.type === 'correction').length, 0);
-  assert.equal(events.find(e => e.type === 'initializing').pipeline, 'staged-v5-ingredient-uses');
+  assert.equal(events.find(e => e.type === 'initializing').pipeline, 'staged-v10-preparation-roles');
   assert.equal(requests[4].available_inputs.find(n => n.id === 'ing_13').evidence.length, 0);
   assert.equal(recipe.ingredients.length, 14);
   assert.equal(recipe.steps.length, 17);

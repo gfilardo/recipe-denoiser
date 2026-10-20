@@ -3,6 +3,7 @@ import { createActionConnectionGuard, ConnectionOutputError } from './connection
 import { SYSTEM_PROMPTS } from './systemPrompt.js';
 import { INGREDIENT_SCHEMA, actionSchema, acceptIngredients, acceptActions, assembleRecipe } from './recipeExtraction.js';
 import { sourcePassages } from './sourcePassages.js';
+import { cookingPassages } from './cookingPassages.js';
 import { prepareIngredientUses } from './ingredientUses.js';
 import { createOutputGuard, WhitespaceLoopError } from './outputGuard.js';
 const SAMPLING_OPTIONS = { samplingMode: 'most-predictable' };
@@ -130,7 +131,7 @@ export async function convertRecipe(text, {
     }
   }
   try {
-    report('initializing', { sourceChars: text.length, pipeline: 'staged-v5-ingredient-uses', schemaGuidance: true });
+    report('initializing', { sourceChars: text.length, pipeline: 'staged-v10-preparation-roles', schemaGuidance: true });
     onPhase('Preparing local model…'); arm(initializationTimeoutMs, startupMessage);
     ticker = setInterval(() => {
       if (!task.signal.aborted) onPhase(`${stageLabel}${correcting ? ' · correction' : ''}… ${Math.floor((Date.now() - started) / 1000)}s elapsed. Cancel remains available.`);
@@ -139,7 +140,9 @@ export async function convertRecipe(text, {
     const extractedInventory = await runStage('ingredients', INGREDIENT_SCHEMA, { source: text }, data => acceptIngredients(data, text));
     const passages = sourcePassages(text);
     report('passages', { passages });
-    const actions = await runStage('actions', actionSchema(passages), { passages: passages.map(({ id, text }) => ({ id, text })) }, data => acceptActions(data, passages));
+    const { eligible } = cookingPassages(passages, extractedInventory);
+    if (!eligible.length) throw new Error('No cooking passages remain after excluding the ingredient list and headings. Include the preparation instructions or use Manual JSON.');
+    const actions = await runStage('actions', actionSchema(eligible), { passages: eligible.map(({ id, text }) => ({ id, text })) }, data => acceptActions(data, eligible));
     const inventory = prepareIngredientUses(extractedInventory, actions, text);
     const rows = [];
     for (let i = 0; i < actions.steps.length; i++) {

@@ -91,7 +91,7 @@ test('merged result retains exact original facts and only exposes its live branc
 
 test('one-action response schema fixes every candidate field with finite evidence choices', () => {
   const request = requestAt(3);
-  assert.deepEqual(actionConnectionSchema(request), {type:'object', properties:{ing_6:{type:'string',enum:['']},step_2:{type:'string',enum:['','use']},step_3:{type:'string',enum:['','use']}},required:['ing_6','step_2','step_3'],additionalProperties:false});
+  assert.deepEqual(actionConnectionSchema(request), {type:'object', properties:{ing_6:{type:'string',enum:['']},step_2:{type:'string',enum:['use']},step_3:{type:'string',enum:['','use']}},required:['ing_6','step_2','step_3'],additionalProperties:false});
 });
 
 test('one-action linking rejects unknown, self, future and already consumed inputs', () => {
@@ -121,7 +121,7 @@ test('one-action linking rejects empty, duplicate, malformed and expanded output
 
 test('final action must select every live input without automatically adding missing ones', () => {
   const request = requestAt(4);
-  assert.throws(() => acceptConnection(choose(request,['step_4']), request), /final action|unconnected|remaining/i);
+  assert.throws(() => acceptConnection(choose(request,['step_4']), request), /final action|unconnected|remaining|unsupported selection/i);
   assert.throws(() => acceptConnection(choose(request,['ing_6']), request), /final action|unconnected|remaining/i);
   assert.deepEqual(acceptConnection(choose(request,['step_4','ing_6']), request), rows[4]);
 });
@@ -161,7 +161,7 @@ test('first pizza action cannot consume topping or garnish through valid but unr
   const inv={title:'Pizza',ingredients:texts.map((text,i)=>({id:`ing_${i+1}`,text,prep:''}))};
   const steps={setup:[],steps:[{id:'step_1',action:'Start by working the flour and yeast 1 in a bowl together with the water 2 and mix with a spoon or spatula 3.'},{id:'step_2',action:'Then add the oil and salt.'}]};
   const request=buildConnectionRequest(inv,steps,[]), choices=connectionChoices(request);
-  assert.deepEqual(Object.entries(choices).filter(([,values])=>values.length>1).map(([id])=>id),['ing_1','ing_2','ing_4']);
+  assert.deepEqual(Object.entries(choices).filter(([,values])=>values.some(Boolean)).map(([id])=>id),['ing_1','ing_2','ing_4']);
   assert.deepEqual(acceptConnection(choose(request,['ing_1','ing_2','ing_4']),request),['ing_1','ing_2','ing_4']);
   for(const evidence of ['water','mix',steps.steps[0].action]) assert.throws(()=>acceptConnection({...choose(request,['ing_1','ing_2','ing_4']),ing_11:evidence},request),/unsupported selection evidence/);
   assert.throws(()=>acceptConnection({...choose(request,['ing_1','ing_2','ing_4']),ing_3:'oil'},request),/unsupported selection evidence/);

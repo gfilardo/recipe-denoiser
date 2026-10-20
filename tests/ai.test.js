@@ -52,7 +52,7 @@ test('one ingredient-only correction rejects corrupted quantities before later s
   assert.ok(!JSON.stringify(f.prompts[1]).includes('55550')); // Bad generated text is not replayed.
 });
 test('link correction cannot rewrite frozen ingredients or actions', async () => {
-  const f=fake([ingredients,actions,{input_ids:['ing_999']},...linkResponses]);
+  const f=fake([ingredients,actions,{input_ids:['ing_2','ing_3','ing_999']},...linkResponses]);
   const recipe=await convertRecipe(source,{api:f.api});
   assert.equal(f.created,5);assert.deepEqual(f.prompts[2].available_inputs,f.prompts[3].available_inputs);
   assert.deepEqual(f.prompts[2].current_action,f.prompts[3].current_action);
@@ -164,7 +164,7 @@ test('duplicate passage selection gets one scoped correction and original text r
   assert.equal(f.prompts[3].current_action.action,'Mix lemon juice and salt.');
   assert.equal(result.steps[0].action,'Mix lemon juice and salt.');
   assert.equal(events.find(e=>e.type==='passages').passages.length,6);
-  assert.equal(events.find(e=>e.type==='initializing').pipeline,'staged-v5-ingredient-uses');
+  assert.equal(events.find(e=>e.type==='initializing').pipeline,'staged-v10-preparation-roles');
 });
 
 test('unfinished invalid linking stream is canceled early, retained, and corrected only once', async () => {
@@ -226,7 +226,7 @@ test('17 actions use 17 small linking requests and a correction stays on its act
   assert.match(events.filter(e=>e.type==='attempt').at(-1).label,/Connecting action 17 of 17/);
 });
 test('a correction used during one action is not renewed for the next action', async () => {
-  const f=fake([ingredients,actions,{input_ids:[]},linkResponses[0],{input_ids:['ing_2']}]);
+  const f=fake([ingredients,actions,{input_ids:[]},linkResponses[0],{input_ids:['ing_1','step_1','ing_2']}]);
   await assert.rejects(convertRecipe(source,{api:f.api}),/single stage correction.*(?:not available|not eligible|Ineligible connection|Unknown connection choice)/);
   assert.equal(f.created,5);assert.equal(f.destroyed,5);
   assert.equal(f.prompts[4].current_action.id,'step_2');
@@ -235,7 +235,7 @@ test('final action correction leaves earlier connections frozen', async () => {
   const f=fake([ingredients,actions,linkResponses[0],{input_ids:['step_1']},linkResponses[1]]);
   const recipe=await convertRecipe(source,{api:f.api});
   assert.equal(f.created,5);assert.equal(f.destroyed,5);
-  assert.match(f.prompts[4].correction,/final action leaves unconnected/);
+  assert.match(f.prompts[4].correction,/Invalid selection for ing_1/);
   assert.deepEqual(f.prompts[3].available_inputs,f.prompts[4].available_inputs);
   assert.deepEqual(recipe.steps.map(s=>s.input_ids),links.inputs);
 });
