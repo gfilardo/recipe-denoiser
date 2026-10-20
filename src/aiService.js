@@ -7,10 +7,17 @@ import { sourcePassages } from './sourcePassages.js';
 import { cookingPassages } from './cookingPassages.js';
 import { prepareIngredientUses } from './ingredientUses.js';
 import { createOutputGuard, WhitespaceLoopError } from './outputGuard.js';
+
+// Checking the local model availability is a quick way to detect whether
+// the local AI is exposed in this browser. 
+// It does not guarantee that the model will successfully complete a conversion
+//  request, but it is a good first check.
 const SAMPLING_OPTIONS = { samplingMode: 'most-predictable' };
 export async function availability(api = globalThis.LanguageModel) {
   return api ? api.availability(SAMPLING_OPTIONS) : 'missing';
 }
+
+
 const labels = { ingredients: 'Extracting ingredients', actions: 'Selecting cooking passages', connections: 'Connecting ingredients and actions' };
 export async function convertRecipe(text, {
   signal, onProgress = () => {}, onPhase = () => {}, onDiagnostic = () => {}, api = globalThis.LanguageModel,
