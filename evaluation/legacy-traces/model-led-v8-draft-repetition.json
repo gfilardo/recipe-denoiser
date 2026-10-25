@@ -1,0 +1,25 @@
+{
+  "pipeline": "model-led-v8-global-graph-review",
+  "outputs": [
+    {
+      "label": "Drafting inputs for action 1 of 10 \u00b7 96 characters",
+      "raw": "{\"input_ids\":[\"ing_1\",\"ing_2\",\"ing_3\",\"ing_4\",\"ing_5\",\"ing_6\",\"ing_7\",\"ing_8\",\"ing_9\",\"ing_10\"]}"
+    },
+    {
+      "label": "Drafting inputs for action 2 of 10 \u00b7 105 characters",
+      "raw": "{\"input_ids\":[\"ing_1\",\"ing_2\",\"ing_3\",\"ing_4\",\"ing_5\",\"ing_6\",\"ing_7\",\"ing_8\",\"ing_9\",\"ing_10\",\"step_1\"]}"
+    },
+    {
+      "label": "Drafting inputs for action 3 of 10 \u00b7 32 characters",
+      "raw": "{\"input_ids\":[\"ing_4\",\"step_2\"]}"
+    },
+    {
+      "label": "Drafting inputs for action 4 of 10 \u00b7 123 characters",
+      "raw": "{\"input_ids\":[\"ing_1\",\"ing_2\",\"ing_3\",\"ing_4\",\"ing_5\",\"ing_6\",\"ing_7\",\"ing_8\",\"ing_9\",\"ing_10\",\"step_1\",\"step_2\",\"step_3\"]}"
+    },
+    {
+      "label": "Drafting inputs for action 5 of 10 \u00b7 141 characters",
+      "raw": "{\"input_ids\":[\"ing_1\",\"ing_2\",\"ing_3\",\"ing_4\",\"ing_5\",\"ing_6\",\"ing_7\",\"ing_8\",\"ing_9\",\"ing_10\",\"step_1\",\"step_2\",\"step_3\",\"step_4\",\"step_1\",\""
+    }
+  ]
+}

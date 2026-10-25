@@ -1,3 +1,4 @@
+import {createWebLLMBackend, WEBLLM_MODEL, WEBLLM_VERSION, WEBLLM_SETTINGS} from './webllmBackend.js';
 import { bananaBread, verboseRecipe } from './fixtures/bananaBread.js';
 import { setupEditor } from './editor.js';
 import { layoutRecipe } from './layoutRecipe.js';
@@ -7,10 +8,10 @@ import { setupConversionDialog } from './conversionDialog.js';
 import { copyRecipe, downloadRecipe } from './exportRecipe.js';
 
 const $ = id => document.getElementById(id);
-const CONVERSION_LIMIT_MINUTES = 10;
+const CONVERSION_LIMIT_MINUTES = {chrome:10, webllm:30};
 let controller, generation = 0, revision = 0, hasResult = false, timer;
 
-function message(text, error = false) { 
+function message(text, error = false) {
   $('message').textContent = text; $('message').classList.toggle('error', error);
 }
 const editor = setupEditor($('editor'), $('image-input'), text => {
@@ -18,16 +19,17 @@ const editor = setupEditor($('editor'), $('image-input'), text => {
   if (hasResult) $('result-label').textContent = 'Source changed · convert to update';
 }, text => message(text, true));
 
-function busy(value) { 
-  $('convert').disabled = value; $('cancel').hidden = !value; $('progress').hidden = true; 
+function busy(value) {
+  document.querySelectorAll('[name=backend]').forEach(input => { input.disabled=value; });
+  $('convert').disabled = value; $('cancel').hidden = !value; $('progress').hidden = true;
 }
 
-function cancel() { 
-  generation++; controller?.abort(); controller = null; busy(false); 
+function cancel() {
+  generation++; controller?.abort(); controller = null; busy(false);
 }
 
-const conversionDialog = setupConversionDialog(() => { 
-  cancel(); message('Conversion canceled.'); 
+const conversionDialog = setupConversionDialog(() => {
+  cancel(); message('Conversion canceled.');
 });
 
 function apply(recipe, label, procedureLabels = {}) {
@@ -36,17 +38,17 @@ function apply(recipe, label, procedureLabels = {}) {
   $('result-label').textContent = label; $('json-error').textContent = '';
 }
 
-$('sample').addEventListener('click', () => { 
-  cancel(); 
-  editor.load(verboseRecipe); message('Sample loaded. Convert with local AI, or use Try demo for the prepared grid.'); 
+$('sample').addEventListener('click', () => {
+  cancel();
+  editor.load(verboseRecipe); message('Sample loaded. Convert with local AI, or use Try demo for the prepared grid.');
 });
-$('demo').addEventListener('click', () => { 
-  cancel(); 
-  clearTimeout(timer); editor.load(verboseRecipe); $('json-input').value = JSON.stringify(bananaBread, null, 2); apply(bananaBread, 'Demo · 10 ingredients'); message('Demo grid loaded. Edit the JSON to explore the layout.'); 
+$('demo').addEventListener('click', () => {
+  cancel();
+  clearTimeout(timer); editor.load(verboseRecipe); $('json-input').value = JSON.stringify(bananaBread, null, 2); apply(bananaBread, 'Demo · 10 ingredients'); message('Demo grid loaded. Edit the JSON to explore the layout.');
 });
 $('json-input').addEventListener('input', () => {
-  cancel(); 
-  clearTimeout(timer); 
+  cancel();
+  clearTimeout(timer);
   timer = setTimeout(() => {
     try { apply(JSON.parse($('json-input').value), 'Manual JSON'); message('Grid updated from JSON.'); }
     catch (error) { $('json-error').textContent = error.message; }
@@ -56,12 +58,17 @@ $('convert').addEventListener('click', async () => {
   const text = editor.text(); if (!text) { message('Paste a recipe or load the sample first.', true); $('editor').focus(); return; }
   if (text.length > 30000) { message('Please shorten the source to 30,000 characters or fewer.', true); return; }
   clearTimeout(timer); cancel(); const current = generation, sourceRevision = revision; controller = new AbortController(); busy(true);
-  conversionDialog.open(CONVERSION_LIMIT_MINUTES);
+  const backend = document.querySelector('[name=backend]:checked').value;
+  const conversionMinutes = CONVERSION_LIMIT_MINUTES[backend];
+  conversionDialog.open(conversionMinutes);
+  const local = backend === 'webllm' ? createWebLLMBackend() : null;
+  conversionDialog.event({type:'backend', elapsedMs:0, backend, model:local ? WEBLLM_MODEL : 'Chrome-managed (exact build unknown)', settings:local ? {...WEBLLM_SETTINGS,runtime:WEBLLM_VERSION} : {samplingMode:'most-predictable'}, browser:navigator.userAgent});
   try {
     let procedureLabels = {};
     const recipe = await convertRecipe(text, {
+      api: local || globalThis.LanguageModel, engineName: local ? 'WebLLM' : 'Chrome',
       onProcedureLabels: labels => { procedureLabels = labels; }, signal: controller.signal,
-      inferenceTimeoutMs: CONVERSION_LIMIT_MINUTES * 60000,
+      inferenceTimeoutMs: conversionMinutes * 60000,
       onDiagnostic: event => { if (current === generation) conversionDialog.event(event); },
       onPhase: text => { if (current === generation) { message(text); if (text.startsWith('Converting')) $('progress').hidden = true; } },
       onProgress: progress => { if (current === generation) { $('progress').hidden = false; $('progress').value = progress; message(`Downloading local model… ${Math.round(progress * 100)}%`); } }
@@ -69,26 +76,38 @@ $('convert').addEventListener('click', async () => {
     if (current !== generation) return;
     conversionDialog.rendering();
     $('json-input').value = JSON.stringify(recipe, null, 2);
-    apply(recipe, sourceRevision === revision ? 'Converted on this device' : 'Source changed · convert to update', procedureLabels); message('Recipe converted. Check quantities and steps against your source.');
+    apply(recipe, sourceRevision === revision ? `Converted with ${backend === 'webllm' ? 'WebLLM · Qwen2.5 7B' : 'Chrome built-in AI'}` : 'Source changed · convert to update', procedureLabels); message('Model interpretation ready. Review quantities, connections and shortened labels against your source.');
     conversionDialog.success();
   } catch (error) {
     if (current === generation) { conversionDialog.fail(error.message || 'Conversion failed. Try again or use Manual JSON.'); message(error.message || 'Conversion failed. Try Demo or Manual JSON.', true); if ($('json-input').value) $('json-drawer').open = true; }
-  } finally { if (current === generation) { controller = null; busy(false); void checkAvailability(); } }
+  } finally { local?.dispose(); if (current === generation) { controller = null; busy(false); void checkAvailability(); } }
 });
-$('cancel').addEventListener('click', () => { 
-  cancel(); 
-  message('Conversion canceled.'); 
+$('cancel').addEventListener('click', () => {
+  cancel();
+  message('Conversion canceled.');
 });
-$('copy').addEventListener('click', async () => { 
-  try { await copyRecipe($('output')); message('Recipe HTML copied.'); } catch { message('Clipboard access failed. Use Download HTML to save the recipe.', true); } 
+$('copy').addEventListener('click', async () => {
+  try { await copyRecipe($('output')); message('Recipe HTML copied.'); } catch { message('Clipboard access failed. Use Download HTML to save the recipe.', true); }
 });
 
 $('print').addEventListener('click', () => window.print());
 
 const download = document.createElement('button'); download.id = 'download'; download.textContent = 'Download HTML'; download.disabled = true; $('copy').after(download); download.addEventListener('click', () => downloadRecipe($('output')));
+let availabilityRevision=0;
+document.querySelectorAll('[name=backend]').forEach(input=>input.addEventListener('change',()=>{ void checkAvailability(); }));
 async function checkAvailability() {
+  const check=++availabilityRevision;
+  if(document.querySelector('[name=backend]:checked').value === 'webllm') {
+    const adapter=await navigator.gpu?.requestAdapter().catch(()=>null);
+    if(check !== availabilityRevision) return;
+    $('ai-disclaimer').hidden=true;
+    $('ai-status').textContent=adapter ? 'WebLLM · ready to try' : 'WebGPU unavailable';
+    $('ai-help').textContent=adapter ? 'Convert downloads Qwen2.5 7B on first use. Available GPU memory is checked during loading; readiness does not guarantee it will fit.' : 'WebLLM needs a WebGPU-capable browser and device. Try Chrome built-in AI, Demo or Manual JSON.';
+    return;
+  }
   try {
     const state = await availability();
+    if(check !== availabilityRevision) return;
     $('ai-disclaimer').hidden = ['available', 'downloadable', 'downloading'].includes(state);
     const labels = { available: '● Local AI ready', downloadable: '↓ Model downloadable', downloading: '↓ Model downloading', unavailable: 'Local AI unavailable', missing: 'Demo / manual mode' };
     $('ai-status').textContent = labels[state] || 'Local AI unavailable';

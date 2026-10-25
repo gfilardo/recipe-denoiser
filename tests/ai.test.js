@@ -14,7 +14,7 @@ function fake(responses, { streaming = false, check = () => {} } = {}) {
       if (value instanceof Error) throw value;
       if (typeof value === 'function') return value(prompt, settings);
       const request = JSON.parse(prompt);
-      const data = value?.input_ids ? { ...Object.fromEntries(request.available_inputs.map(n => [n.id, value.input_ids.includes(n.id) ? n.kind === 'result' ? 'use' : n.evidence[0] || 'unsupported' : ''])), ...Object.fromEntries(value.input_ids.filter(id => !request.available_inputs.some(n => n.id === id)).map(id => [id, 'use'])) } : value;
+      const data = value;
       return JSON.stringify(data);
     };
     return Promise.resolve({
@@ -31,8 +31,8 @@ test('isolated extraction and action requests preserve facts, IDs and guided sch
   const events=[];
   const f=fake([ingredients,actions,...linkResponses],{check(index,prompt,options){
     assert.equal(options.omitResponseConstraintInput,false);assert.equal(options.responseConstraint.type,'object');assert.ok(options.signal);
-    if(index===1){assert.ok(prompt.passages.length);assert.equal(prompt.source,undefined);assert.deepEqual(options.responseConstraint.properties.passage_ids.items.enum,prompt.passages.map(p=>p.id));}else if(index===0) assert.equal(prompt.source,source);
-    if(index>=2){assert.equal(prompt.source,undefined);assert.equal(prompt.actions,undefined);assert.equal(prompt.current_action.id,`step_${index-1}`);assert.deepEqual(Object.keys(options.responseConstraint.properties),prompt.available_inputs.map(n=>n.id));}
+    if(index<2) assert.equal(prompt.source,source);
+    if(index>=2){assert.equal(prompt.source,source);assert.equal(prompt.actions,undefined);assert.equal(prompt.current_action.id,`step_${index-1}`);assert.deepEqual(options.responseConstraint.properties.input_ids.items.enum,prompt.available_inputs.map(n=>n.id));}
   }});
   const recipe=await convertRecipe(source,{api:f.api,onDiagnostic:e=>events.push(e)});
   assert.equal(f.created,4);assert.equal(f.destroyed,4);
@@ -43,7 +43,7 @@ test('isolated extraction and action requests preserve facts, IDs and guided sch
   assert.equal(events.at(-1).type,'validated');
 });
 test('one ingredient-only correction rejects corrupted quantities before later stages', async () => {
-  const bad={...ingredients,ingredients:['55550 g flour']};
+  const bad={...ingredients,ingredients:[{text:'55550 g flour',role:''}]};
   const f=fake([bad,ingredients,actions,...linkResponses]);
   await convertRecipe(source,{api:f.api});
   assert.equal(f.created,5);assert.equal(f.destroyed,5);
@@ -60,7 +60,7 @@ test('link correction cannot rewrite frozen ingredients or actions', async () =>
   assert.equal(recipe.ingredients.find(n=>n.id==='ing_1').text,'1 cup yogurt');
 });
 test('only one correction is allowed globally, not one per stage', async () => {
-  const f=fake([{title:'',ingredients:['invented']},ingredients,{passage_ids:['invented']}]);
+  const f=fake([{title:'',ingredients:[{text:'invented',role:''}]},ingredients,{passage_ids:['invented']}]);
   await assert.rejects(convertRecipe(source,{api:f.api}),/single stage correction has been used/);
   assert.equal(f.created,3);assert.equal(f.destroyed,3);
 });
@@ -94,18 +94,18 @@ test('cancel exits a create promise that ignores abort', async () => {
 });
 test('shared deadline identifies the stalled action stage and destroys its session', async () => {
   const f=fake([ingredients,()=>new Promise(()=>{})]);
-  await assert.rejects(convertRecipe(source,{api:f.api,inferenceTimeoutMs:10}),/Selecting cooking passages timed out.*No correction was started/);
+  await assert.rejects(convertRecipe(source,{api:f.api,inferenceTimeoutMs:10}),/Interpreting cooking actions timed out.*No correction was started/);
   assert.equal(f.created,2);assert.equal(f.destroyed,2);
 });
 test('shared deadline includes later session creation and cleans a late session', async () => {
   const f=fake([ingredients]);let resolveCreate,destroyed=0,calls=0;
   const api={create(o){if(calls++===0)return f.api.create(o);return new Promise(r=>{resolveCreate=r});}};
-  await assert.rejects(convertRecipe(source,{api,inferenceTimeoutMs:10}),/Selecting cooking passages timed out/);
+  await assert.rejects(convertRecipe(source,{api,inferenceTimeoutMs:10}),/Interpreting cooking actions timed out/);
   resolveCreate({destroy(){destroyed++}});await Promise.resolve();assert.equal(destroyed,1);assert.equal(f.destroyed,1);
 });
 test('correction deadline is shared and identifies correction stage', async () => {
-  const f=fake([{title:'',ingredients:['wrong']},()=>new Promise(()=>{})]);
-  await assert.rejects(convertRecipe(source,{api:f.api,inferenceTimeoutMs:10}),/Extracting ingredients \(correction\) timed out.*One stage correction/);
+  const f=fake([{title:'',ingredients:[{text:'wrong',role:''}]},()=>new Promise(()=>{})]);
+  await assert.rejects(convertRecipe(source,{api:f.api,inferenceTimeoutMs:10}),/Extracting ingredients \(correction\) timed out.*A correction/);
   assert.equal(f.created,2);assert.equal(f.destroyed,2);
 });
 test('cancellation during a later stage prevents linking', async () => {
@@ -154,23 +154,18 @@ test('whitespace loop stops early, retains snapshot and does not trigger more ge
 });
 
 
-test('duplicate passage selection gets one scoped correction and original text reaches linking', async () => {
-  const events=[];
-  const f=fake([ingredients,{passage_ids:['p_5','p_5']},actions,...linkResponses]);
-  const result=await convertRecipe(source,{api:f.api,onDiagnostic:e=>events.push(e)});
-  assert.equal(f.created,5);assert.equal(f.destroyed,5);
-  assert.match(f.prompts[2].correction,/Duplicate source passage/);
-  assert.deepEqual(f.prompts[1].passages,f.prompts[2].passages);
-  assert.equal(f.prompts[3].current_action.action,'Mix lemon juice and salt.');
-  assert.equal(result.steps[0].action,'Mix lemon juice and salt.');
-  assert.equal(events.find(e=>e.type==='passages').passages.length,6);
-  assert.equal(events.find(e=>e.type==='initializing').pipeline,'staged-v11-procedure-labels');
+test('invalid source citations get one correction without rewriting accepted ingredients', async()=>{
+  const f=fake([ingredients,{setup:[],preparations:[],actions:[{action:'Invented operation',source:'not in source'}]},actions,...linkResponses]);
+  const result=await convertRecipe(source,{api:f.api});
+  assert.equal(f.created,5);
+  assert.match(f.prompts[2].correction,/do not match the source/);
+  assert.deepEqual(result.steps.map(s=>s.action),actions.actions.map(a=>a.action));
 });
 
 test('unfinished invalid linking stream is canceled early, retained, and corrected only once', async () => {
   let created = 0, canceled = 0, destroyed = 0;
   const events = [];
-  const bad = '{"step_1"'; // Unknown candidate key; outer JSON never closes.
+  const bad = '{"input_ids":["step_1"'; // Unknown candidate key; outer JSON never closes.
   const api = { async create() {
     const index = created++;
     return {
@@ -188,11 +183,11 @@ test('unfinished invalid linking stream is canceled early, retained, and correct
   assert.deepEqual(events.filter(e=>e.type==='output' && e.stage==='connections').map(e=>e.text),[bad,bad]);
 });
 test('early connection failure can recover without changing earlier stages', async () => {
-  const f = fake([ingredients,actions,()=>'{"step_1"',...linkResponses],{streaming:true});
+  const f = fake([ingredients,actions,()=>'{"input_ids":["step_1"',...linkResponses],{streaming:true});
   const recipe = await convertRecipe(source,{api:f.api});
   assert.equal(f.created,5);
   assert.deepEqual(f.prompts[2].available_inputs,f.prompts[3].available_inputs);
-  assert.deepEqual(recipe.steps.map(s=>s.input_ids),links.inputs);
+  assert.deepEqual(recipe.steps.map(s=>[...s.input_ids].sort()),links.inputs.map(row=>[...row].sort()));
 });
 
 test('rejected linking request is distinguished from bad output without a correction', async () => {
@@ -209,13 +204,13 @@ test('rejected linking request is distinguished from bad output without a correc
 
 test('17 actions use 17 small linking requests and a correction stays on its action', async () => {
   const recipeSource = 'Flour recipe\n1 cup flour\n' + Array.from({length:17},(_,i)=>i===0 ? 'Mix flour.' : `Cook batch ${i+1}.`).join('\n');
-  const selected={passage_ids:Array.from({length:17},(_,i)=>`p_${i+3}`)};
+  const selected={setup:[],preparations:[],actions:Array.from({length:17},(_,i)=>{const action=i===0?'Mix flour.':`Cook batch ${i+1}.`;return {action,source:action};})};
   const rows=Array.from({length:17},(_,i)=>({input_ids:[i===0?'ing_1':`step_${i}`]}));
-  const f=fake([{title:'Flour recipe',ingredients:['1 cup flour']},selected,...rows.slice(0,8),{input_ids:['ing_1']},...rows.slice(8)],{streaming:true,check(index,prompt){
+  const f=fake([{title:'Flour recipe',ingredients:[{text:'1 cup flour',role:''}]},selected,...rows.slice(0,8),{input_ids:['ing_1']},...rows.slice(8)],{streaming:true,check(index,prompt){
     if(index<2) return;
-    assert.equal(prompt.action_count,17);assert.equal(prompt.actions,undefined);assert.equal(prompt.source,undefined);
+    assert.equal(prompt.action_count,17);assert.equal(prompt.actions,undefined);assert.equal(prompt.source,recipeSource);
     assert.equal(prompt.available_inputs.length,1);
-    assert.ok(JSON.stringify(prompt).length<1200);
+    assert.equal(prompt.action_plan.length,17);
   }});
   const events=[];
   const recipe=await convertRecipe(recipeSource,{api:f.api,onDiagnostic:e=>events.push(e)});
@@ -235,9 +230,9 @@ test('final action correction leaves earlier connections frozen', async () => {
   const f=fake([ingredients,actions,linkResponses[0],{input_ids:['step_1']},linkResponses[1]]);
   const recipe=await convertRecipe(source,{api:f.api});
   assert.equal(f.created,5);assert.equal(f.destroyed,5);
-  assert.match(f.prompts[4].correction,/Invalid selection for ing_1/);
+  assert.match(f.prompts[4].correction,/unconnected inputs/);
   assert.deepEqual(f.prompts[3].available_inputs,f.prompts[4].available_inputs);
-  assert.deepEqual(recipe.steps.map(s=>s.input_ids),links.inputs);
+  assert.deepEqual(recipe.steps.map(s=>[...s.input_ids].sort()),links.inputs.map(row=>[...row].sort()));
 });
 test('shared deadline covers a stalled later linking request', async () => {
   const f=fake([ingredients,actions,linkResponses[0],()=>new Promise(()=>{})]);
@@ -251,4 +246,12 @@ test('cancel between linked actions prevents starting the next request', async (
 });
 
 // These regressions isolate extraction/linking; presentation is tested separately.
-function convertRecipe(source, options) { return convertWithLabels(source, { ...options, simplifyProcedures: false }); }
+function convertRecipe(source, options) { return convertWithLabels(source, { ...options, simplifyProcedures: false, reviewActions:false, reviewGraph:false }); }
+
+test('large text responses stop at the application budget without a retry',async()=>{
+  for(const streaming of [true,false]) {
+    const f=fake([()=>JSON.stringify({data:'x'.repeat(40001)})],{streaming});
+    await assert.rejects(convertRecipe(source,{api:f.api}),/40,000-character application limit/);
+    assert.equal(f.created,1);assert.equal(f.destroyed,1);
+  }
+});

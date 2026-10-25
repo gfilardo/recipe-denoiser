@@ -1,0 +1,391 @@
+{
+  "pipeline": "model-led-v6-connection-reconsideration",
+  "decisions": [
+    {
+      "action": "step_1",
+      "input": "ing_1",
+      "participates": true
+    },
+    {
+      "action": "step_1",
+      "input": "ing_2",
+      "participates": false
+    },
+    {
+      "action": "step_1",
+      "input": "ing_3",
+      "participates": false
+    },
+    {
+      "action": "step_1",
+      "input": "ing_4",
+      "participates": false
+    },
+    {
+      "action": "step_1",
+      "input": "ing_5",
+      "participates": false
+    },
+    {
+      "action": "step_1",
+      "input": "ing_6",
+      "participates": false
+    },
+    {
+      "action": "step_1",
+      "input": "ing_7",
+      "participates": false
+    },
+    {
+      "action": "step_1",
+      "input": "ing_8",
+      "participates": false
+    },
+    {
+      "action": "step_1",
+      "input": "ing_9",
+      "participates": false
+    },
+    {
+      "action": "step_1",
+      "input": "ing_10",
+      "participates": false
+    },
+    {
+      "action": "step_2",
+      "input": "ing_2",
+      "participates": true
+    },
+    {
+      "action": "step_2",
+      "input": "ing_3",
+      "participates": false
+    },
+    {
+      "action": "step_2",
+      "input": "ing_4",
+      "participates": false
+    },
+    {
+      "action": "step_2",
+      "input": "ing_5",
+      "participates": false
+    },
+    {
+      "action": "step_2",
+      "input": "ing_6",
+      "participates": false
+    },
+    {
+      "action": "step_2",
+      "input": "ing_7",
+      "participates": false
+    },
+    {
+      "action": "step_2",
+      "input": "ing_8",
+      "participates": false
+    },
+    {
+      "action": "step_2",
+      "input": "ing_9",
+      "participates": false
+    },
+    {
+      "action": "step_2",
+      "input": "ing_10",
+      "participates": false
+    },
+    {
+      "action": "step_2",
+      "input": "step_1",
+      "participates": false
+    },
+    {
+      "action": "step_3",
+      "input": "ing_3",
+      "participates": false
+    },
+    {
+      "action": "step_3",
+      "input": "ing_4",
+      "participates": true
+    },
+    {
+      "action": "step_3",
+      "input": "ing_5",
+      "participates": false
+    },
+    {
+      "action": "step_3",
+      "input": "ing_6",
+      "participates": false
+    },
+    {
+      "action": "step_3",
+      "input": "ing_7",
+      "participates": false
+    },
+    {
+      "action": "step_3",
+      "input": "ing_8",
+      "participates": false
+    },
+    {
+      "action": "step_3",
+      "input": "ing_9",
+      "participates": false
+    },
+    {
+      "action": "step_3",
+      "input": "ing_10",
+      "participates": false
+    },
+    {
+      "action": "step_3",
+      "input": "step_1",
+      "participates": false
+    },
+    {
+      "action": "step_3",
+      "input": "step_2",
+      "participates": false
+    },
+    {
+      "action": "step_4",
+      "input": "ing_3",
+      "participates": false
+    },
+    {
+      "action": "step_4",
+      "input": "ing_5",
+      "participates": false
+    },
+    {
+      "action": "step_4",
+      "input": "ing_6",
+      "participates": false
+    },
+    {
+      "action": "step_4",
+      "input": "ing_7",
+      "participates": false
+    },
+    {
+      "action": "step_4",
+      "input": "ing_8",
+      "participates": false
+    },
+    {
+      "action": "step_4",
+      "input": "ing_9",
+      "participates": false
+    },
+    {
+      "action": "step_4",
+      "input": "ing_10",
+      "participates": false
+    },
+    {
+      "action": "step_4",
+      "input": "step_1",
+      "participates": true
+    },
+    {
+      "action": "step_4",
+      "input": "step_2",
+      "participates": true
+    },
+    {
+      "action": "step_4",
+      "input": "step_3",
+      "participates": false
+    },
+    {
+      "action": "step_5",
+      "input": "ing_3",
+      "participates": false
+    },
+    {
+      "action": "step_5",
+      "input": "ing_5",
+      "participates": false
+    },
+    {
+      "action": "step_5",
+      "input": "ing_6",
+      "participates": false
+    },
+    {
+      "action": "step_5",
+      "input": "ing_7",
+      "participates": true
+    },
+    {
+      "action": "step_5",
+      "input": "ing_8",
+      "participates": false
+    },
+    {
+      "action": "step_5",
+      "input": "ing_9",
+      "participates": false
+    },
+    {
+      "action": "step_5",
+      "input": "ing_10",
+      "participates": false
+    },
+    {
+      "action": "step_5",
+      "input": "step_3",
+      "participates": false
+    },
+    {
+      "action": "step_5",
+      "input": "step_4",
+      "participates": false
+    },
+    {
+      "action": "step_6",
+      "input": "ing_3",
+      "participates": false
+    },
+    {
+      "action": "step_6",
+      "input": "ing_5",
+      "participates": false
+    },
+    {
+      "action": "step_6",
+      "input": "ing_6",
+      "participates": false
+    },
+    {
+      "action": "step_6",
+      "input": "ing_8",
+      "participates": false
+    },
+    {
+      "action": "step_6",
+      "input": "ing_9",
+      "participates": false
+    },
+    {
+      "action": "step_6",
+      "input": "ing_10",
+      "participates": true
+    },
+    {
+      "action": "step_6",
+      "input": "step_3",
+      "participates": false
+    },
+    {
+      "action": "step_6",
+      "input": "step_4",
+      "participates": false
+    },
+    {
+      "action": "step_6",
+      "input": "step_5",
+      "participates": false
+    },
+    {
+      "action": "step_7",
+      "input": "ing_3",
+      "participates": false
+    },
+    {
+      "action": "step_7",
+      "input": "ing_5",
+      "participates": false
+    },
+    {
+      "action": "step_7",
+      "input": "ing_6",
+      "participates": false
+    },
+    {
+      "action": "step_7",
+      "input": "ing_8",
+      "participates": false
+    },
+    {
+      "action": "step_7",
+      "input": "ing_9",
+      "participates": false
+    },
+    {
+      "action": "step_7",
+      "input": "step_3",
+      "participates": false
+    },
+    {
+      "action": "step_7",
+      "input": "step_4",
+      "participates": false
+    },
+    {
+      "action": "step_7",
+      "input": "step_5",
+      "participates": false
+    },
+    {
+      "action": "step_7",
+      "input": "step_6",
+      "participates": false
+    },
+    {
+      "action": "step_8",
+      "input": "ing_3",
+      "participates": false
+    },
+    {
+      "action": "step_8",
+      "input": "ing_5",
+      "participates": false
+    },
+    {
+      "action": "step_8",
+      "input": "ing_6",
+      "participates": false
+    },
+    {
+      "action": "step_8",
+      "input": "ing_8",
+      "participates": false
+    },
+    {
+      "action": "step_8",
+      "input": "ing_9",
+      "participates": false
+    },
+    {
+      "action": "step_8",
+      "input": "step_3",
+      "participates": false
+    },
+    {
+      "action": "step_8",
+      "input": "step_5",
+      "participates": false
+    },
+    {
+      "action": "step_8",
+      "input": "step_6",
+      "participates": false
+    },
+    {
+      "action": "step_8",
+      "input": "step_7",
+      "participates": false
+    }
+  ],
+  "reconsideration": {
+    "action": "step_7",
+    "input_ids": [
+      "step_4"
+    ]
+  }
+}

@@ -1,0 +1,224 @@
+--- Ingredients and roles (model interpretation) ---
+{
+  "title": "Halloween Muffins",
+  "ingredients": [
+    {
+      "id": "ing_1",
+      "text": "Type 00 flour",
+      "prep": ""
+    },
+    {
+      "id": "ing_2",
+      "text": "2 cups (265 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_3",
+      "text": "Sugar",
+      "prep": ""
+    },
+    {
+      "id": "ing_4",
+      "text": "0.67 cup (135 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_5",
+      "text": "Whole milk",
+      "prep": ""
+    },
+    {
+      "id": "ing_6",
+      "text": "0.6 cup (135 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_7",
+      "text": "Butter",
+      "prep": ""
+    },
+    {
+      "id": "ing_8",
+      "text": "0.55 cup (125 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_9",
+      "text": "Eggs",
+      "prep": ""
+    },
+    {
+      "id": "ing_10",
+      "text": "3.9 oz (110 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_11",
+      "text": "Dark chocolate chips",
+      "prep": ""
+    },
+    {
+      "id": "ing_12",
+      "text": "3.5 oz (100 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_13",
+      "text": "Baking powder",
+      "prep": ""
+    },
+    {
+      "id": "ing_14",
+      "text": "1.3 tsp (6 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_15",
+      "text": "Orange peel",
+      "prep": ""
+    },
+    {
+      "id": "ing_16",
+      "text": "1 - (to be grated)",
+      "prep": ""
+    },
+    {
+      "id": "ing_17",
+      "text": "Baking soda",
+      "prep": ""
+    },
+    {
+      "id": "ing_18",
+      "text": "0.8 tsp (4 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_19",
+      "text": "Fine salt",
+      "prep": ""
+    },
+    {
+      "id": "ing_20",
+      "text": "1 pinch",
+      "prep": ""
+    },
+    {
+      "id": "ing_21",
+      "text": "Cocoa glaze",
+      "prep": ""
+    },
+    {
+      "id": "ing_22",
+      "text": "4.4 oz (125 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_23",
+      "text": "Food decorations",
+      "prep": ""
+    }
+  ],
+  "context": {
+    "ing_1": {
+      "source": "Type 00 flour",
+      "role": "ingredient"
+    },
+    "ing_2": {
+      "source": "2 cups (265 g)",
+      "role": "ingredient"
+    },
+    "ing_3": {
+      "source": "Sugar",
+      "role": "ingredient"
+    },
+    "ing_4": {
+      "source": "0.67 cup (135 g)",
+      "role": "ingredient"
+    },
+    "ing_5": {
+      "source": "Whole milk",
+      "role": "ingredient"
+    },
+    "ing_6": {
+      "source": "0.6 cup (135 g)",
+      "role": "ingredient"
+    },
+    "ing_7": {
+      "source": "Butter",
+      "role": "ingredient"
+    },
+    "ing_8": {
+      "source": "0.55 cup (125 g)",
+      "role": "ingredient"
+    },
+    "ing_9": {
+      "source": "Eggs",
+      "role": "ingredient"
+    },
+    "ing_10": {
+      "source": "3.9 oz (110 g)",
+      "role": "ingredient"
+    },
+    "ing_11": {
+      "source": "Dark chocolate chips",
+      "role": "ingredient"
+    },
+    "ing_12": {
+      "source": "3.5 oz (100 g)",
+      "role": "ingredient"
+    },
+    "ing_13": {
+      "source": "Baking powder",
+      "role": "ingredient"
+    },
+    "ing_14": {
+      "source": "1.3 tsp (6 g)",
+      "role": "ingredient"
+    },
+    "ing_15": {
+      "source": "Orange peel",
+      "role": "ingredient"
+    },
+    "ing_16": {
+      "source": "1 - (to be grated)",
+      "role": "ingredient"
+    },
+    "ing_17": {
+      "source": "Baking soda",
+      "role": "ingredient"
+    },
+    "ing_18": {
+      "source": "0.8 tsp (4 g)",
+      "role": "ingredient"
+    },
+    "ing_19": {
+      "source": "Fine salt",
+      "role": "ingredient"
+    },
+    "ing_20": {
+      "source": "1 pinch",
+      "role": "ingredient"
+    },
+    "ing_21": {
+      "source": "Cocoa glaze",
+      "role": "ingredient"
+    },
+    "ing_22": {
+      "source": "4.4 oz (125 g)",
+      "role": "ingredient"
+    },
+    "ing_23": {
+      "source": "Food decorations",
+      "role": "ingredient"
+    }
+  }
+}
+
+--- Extracting ingredients · 1064 characters ---
+{"title":"Halloween Muffins","ingredients":[{"text":"Type 00 flour","role":"ingredient"},{"text":"2 cups (265 g)","role":"ingredient"},{"text":"Sugar","role":"ingredient"},{"text":"0.67 cup (135 g)","role":"ingredient"},{"text":"Whole milk","role":"ingredient"},{"text":"0.6 cup (135 g)","role":"ingredient"},{"text":"Butter","role":"ingredient"},{"text":"0.55 cup (125 g)","role":"ingredient"},{"text":"Eggs","role":"ingredient"},{"text":"3.9 oz (110 g)","role":"ingredient"},{"text":"Dark chocolate chips","role":"ingredient"},{"text":"3.5 oz (100 g)","role":"ingredient"},{"text":"Baking powder","role":"ingredient"},{"text":"1.3 tsp (6 g)","role":"ingredient"},{"text":"Orange peel","role":"ingredient"},{"text":"1 - (to be grated)","role":"ingredient"},{"text":"Baking soda","role":"ingredient"},{"text":"0.8 tsp (4 g)","role":"ingredient"},{"text":"Fine salt","role":"ingredient"},{"text":"1 pinch","role":"ingredient"},{"text":"Cocoa glaze","role":"ingredient"},{"text":"4.4 oz (125 g)","role":"ingredient"},{"text":"Food decorations","role":"ingredient"}]}
+
+--- Interpreting cooking actions · 2153 characters ---
+{"setup":[{"text":"pour the sugar into a bowl","source":"pour the sugar into a bowl"}],"actions":[{"action":"complete instruction","source":"pour the sugar into a bowl"},{"action":"complete instruction","source":"add the softened butter 1"},{"action":"complete instruction","source":"scent with grated orange zest 2"},{"action":"complete instruction","source":"start beating the mixture with an electric whisk, adding the eggs one at a time 3"},{"action":"complete instruction","source":"work with the electric whisk until you get a light and fluffy mixture 4"},{"action":"complete instruction","source":"sift the flour, baking powder, and baking soda directly into the bowl with the mixture 5"},{"action":"complete instruction","source":"add the pinch of salt and turn on the whisk again to incorporate the powders"},{"action":"complete instruction","source":"notice that the batter becomes thicker, so thin it with the milk poured in a trickle 6"},{"action":"complete","source":"add the chocolate chips 8 and mix with a spatula to combine them 9"},{"action":"complete","source":"transfer the mixture to a disposable piping bag without a nozzle 10"},{"action":"complete","source":"place the paper cases in a 12-muffin tray and fill them two-thirds full 11, leaving about half an inch from the edge 12"},{"action":"complete","source":"bake in a preheated oven at 3500°f for 18-20 minutes in static mode"},{"action":"complete","source":"remove from the oven and let cool completely 13"},{"action":"complete","source":"remove the paper cases 14"},{"action":"complete","source":"apply the sugar eyes 15"},{"action":"complete","source":"stack the muffins on a small plate 16"},{"action":"complete","source":"bring some water to a boil in a saucepan"},{"action":"complete","source":"turn off the heat and place it cocoa glaze packet inside for 7-8 minutes"},{"action":"complete","source":"take it out and dry the packet well before opening"},{"action":"complete","source":"pour the glaze into a pitcher"},{"action":"complete","source":"let it drizzle over the cupcakes 17"},{"action":"complete","source":"your Halloween muffins are ready to be served 18!"}]}
+
+--- Interpreting cooking actions · correction · 5788 characters ---
+{"setup":[{"text":"pour the sugar into a bowl","source":"pour the sugar into a bowl"},{"text":"add the softened butter 1.","source":"add the softened butter 1."},{"text":"Scent with grated orange zest 2","source":"Scent with grated orange zest 2"},{"text":"start beating the mixture with an electric whisk","source":"start beating the mixture with an electric whisk"},{"text":"adding the eggs one at a time 3.","source":"adding the eggs one at a time 3."},{"text":"Work with the electric whisk until you get a light and fluffy mixture 4.","source":"Work with the electric whisk until you get a light and fluffy mixture 4."},{"text":"sift the flour, baking powder, and baking soda directly into the bowl with the mixture 5.","source":"sift the flour, baking powder, and baking soda directly into the bowl with the mixture 5."},{"text":"add the pinch of salt and turn on the whisk again to incorporate the powders.","source":"add the pinch of salt and turn on the again to incorporate the powders."},{"text":"notice that the batter becomes thicker, so thin it with the milk poured in a trickle 6.","source":"notice that the batter becomes thicker, so thin it with the milk poured in a 6."},{"text":"add the chocolate chips 8 and mix with a spatula to combine them 9.","source":"add the chocolate chips 8 and mix with a spatula to combine them 9."},{"text":"transfer the mixture to a disposable piping bag without a nozzle 10, this way you can work more precisely.","source":"transfer the mixture to a disposable piping bag without a nozzle 10, this way can work more precisely."},{"text":"place the paper cases in a 12-muffin tray and fill them two-thirds full 11, leaving about half an inch from the edge 12.","source":"place the paper cases in a 12-muffin tray and fill them two-thirds full 11, leaving about half an inch from the edge 12."},{"text":"bake in a preheated oven at 350°F for 18-20 minutes in static mode.","source":"bake in a preheated oven at 350°F for 18-20 minutes in static mode."},{"text":"remove from the oven and let cool completely 13.","source":"remove from the oven and let cool completely 13."},{"text":"remove the paper cases 14, then apply the sugar eyes 15.","source":"remove the paper cases 14, then apply the sugar eyes 15."},{"text":"stack the muffins on a small plate 16 and prepare the glaze: bring some water to a boil in a saucepan.","source":"stack the muffins on a small plate 16 and prepare the glaze: bring some water to boil in a saucepan."},{"text":"turn off the heat and place it inside for 7-8 minutes.","source":"turn off the the heat and place it inside for 7-8 minutes."},{"text":"take it out and dry the packet well before opening.","source":"take it out and dry the packet well before opening."},{"text":"pour the glaze into a pitcher, then let it drizzle over the cupcakes 17.","source":"pour the glaze into a pitcher, then let it drizzle over the cupcakes 7."}],"actions":[{"action":"complete instruction","source":"pour the sugar into a bowl"},{"action":"add the softened butter 1." ,"source":"add the softened butter 1."},{"action":"Scent with grated orange zest 2","source":"Scent with grated orange zest 2"},{"action":"start beating the mixture with an electric whisk","source":"start beating the mixture with an electric whisk"},{"action":"adding the eggs one at a time 3.","source":"adding the eggs one at time a3."},{"action":"Work with the electric whisk until you get a light and fluffy mixture 4.","source":"Work with the electric whisk until you get a light and fluffy mixture 4."},{"action":"ift the flour, baking powder, and baking soda directly into the bowl with the mixture 5.","source":"ift the flour, baking powder, and baking soda directly into the bowl with mixture 5."},{"action":"add the pinch of salt and turn on the again to incorporate the powders.","source":"add the pinch of salt and turn on the again to incorporate the powders."},{"action":"notice that batter becomes thicker, so thin it with the milk poured in a trickle 6.","source":"notice that batter becomes thicker, so thin it with the milk poured in a6."},{"action":"add the chocolate chips 8 and mix with a spatula to combine them 9.","source":"add the chocolate chips 8 and mix with a spatula to combine them 9."},{"action":"transfer the mixture to a disposable piping bag without a nozzle 10, this way can work more precisely.","source":"transfer the mixture to a disposable piping bag without a nozzle 0, this way can work more precisely."},{"action":"place the paper cases in a 2-muffin tray and fill them two-thirds full 1, leaving about half an inch from the edge 2.","source":"place the paper cases in a 2-muffin tray and fill them two-thirds full 1, leaving about half an inch from the edge 2."},{"action":"bake in a preheated oven at 35°F for 18-20 minutes in static mode.","source":"bake in preheated oven at 350°F for 18-2 minutes in static mode."},{"action":"remove from oven and let cool completely 13.","source":"remove from oven and let cool completely 13."},{"action":"remove the paper the cases 14, then apply the sugar 5.","source":"remove the the paper the 4, then apply the 5."},{"action":"stack the muffins on a small plate 6 and prepare the glaze: bring some water to boil in a saucepan.","source":"stack the muffins on a small plate 6 and prepare the glaze: bring some water to boil in a saucepan."},{"action":"turn off the heat and place it inside for 7-8 minutes.","source":"turn off heat and place it inside for 7-8 minutes."},{"action":"take it out and dry the packet well before opening.","source":"take it out and dry the packet well before opening."},{"action":"pour the glaze into a pitcher, then let it drizzle over the cupcakes 7.","source":"pour the glaze into a pitcher, then let it drizzle over the cupcakes 7."}] }

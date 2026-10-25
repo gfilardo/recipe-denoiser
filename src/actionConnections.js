@@ -1,166 +1,124 @@
-import { ingredientEvidence } from './ingredientEvidence.js';
-import { actionSection } from './ingredientUses.js';
+import { ConnectionOutputError } from './connectionGuard.js';
 import { validateShape } from './validateRecipe.js';
-import { connectionRowValidator } from './recipeExtraction.js';
-import { constrainConnections, resultReferents, mentionUse } from './connectionSemantics.js';
+import { connectionRowValidator, assembleRecipe } from './recipeExtraction.js';
 
-// Rebuild live inputs from accepted rows only. Rejected attempts cannot consume
-// ingredients or alter previously accepted connections.
+// Code tracks identity and consumption only. Every live input is offered;
+// the model, not a vocabulary matcher, decides what the action uses.
 export function buildConnectionRequest(inventory, actions, acceptedRows) {
   const index = acceptedRows.length;
-  if (index >= actions.steps.length) throw new Error('No action remains to connect.');
+  if (index >= actions.steps.length) throw Error('No action remains to connect.');
   const available = new Map(inventory.ingredients.map(n => [n.id, {
-    id: n.id, kind: 'ingredient', text: n.text,
-    ...(inventory.sections?.[n.id] ? { section: inventory.sections[n.id] } : {}),
-    ...(inventory.uses?.[n.id] ? { portion: inventory.uses[n.id] } : {})
+    ...n, kind:'ingredient', context:inventory.context?.[n.id] || null
   }]));
-  const checkRow = connectionRowValidator(inventory, actions);
-  acceptedRows.forEach((row, i) => {
-    checkRow(row);
+  const check = connectionRowValidator(inventory, actions);
+  acceptedRows.forEach((row,i) => {
+    check(row);
     const contains = row.flatMap(id => {
       const input = available.get(id);
-      return input.kind === 'ingredient' ? [input.text] : input.contains;
+      return input.kind === 'ingredient' ? [{id:input.id,text:input.text,prep:input.prep,context:input.context}] : input.contains;
     });
-    const sections = [...new Set(row.flatMap(id => {
-      const input = available.get(id);
-      return input.section ? [input.section.id] : input.sections || [];
-    }))];
-    const referents = [...new Set([...row.flatMap(id => available.get(id).referents || []), ...resultReferents(actions.steps[i].action)])];
-    row.forEach(id => available.delete(id));
-    const step = actions.steps[i];
-    available.set(step.id, { id: step.id, kind: 'result', text: step.action, contains,
-      ...(sections.length ? { sections } : {}), referents });
+    row.forEach(id=>available.delete(id));
+    const step=actions.steps[i];
+    available.set(step.id,{id:step.id,kind:'result',text:step.action,contains});
   });
-  const action = actions.steps[index];
-  let role = actionSection(inventory, action.action) || preparedIngredientRole(inventory, actions.steps, index);
-  // A continuation of a single-role mixture supplies context for an otherwise
-  // ambiguous "Then add the oil and salt". Independent work never inherits it.
-  if (!role && /^(?:then\s+)?(?:add|stir|mix|pour)\b/iu.test(action.action.trim())) {
-    const previous = available.get(actions.steps[index - 1]?.id);
-    if (previous?.sections?.length === 1) role = previous.sections[0];
-  }
-  const ingredients = [...available.values()].filter(n => n.kind === 'ingredient');
-  // Incorporated ingredients still disambiguate roles: chopped cake nuts
-  // must not turn into a fresh allocation of the unused garnish nuts.
-  const roleIngredients = [...ingredients, ...[...available.values()].filter(n => n.kind === 'result' && role && n.sections?.includes(role))
-    .flatMap(n => n.contains.map(text => ({text, section:{id:role}})))];
-  const candidates = [...available.values()].map(n => n.kind === 'ingredient' ? candidateEvidence(n, action, role, roleIngredients) : n);
-  preferSpecificMentions(candidates, action.action);
-  constrainConnections(candidates, action.action, actions.steps[index - 1]?.id);
-  return {
-    current_action: { ...actions.steps[index] }, action_number: index + 1, action_count: actions.steps.length,
-    previous_action: actions.steps[index - 1]?.action ?? null,
-    next_action: actions.steps[index + 1]?.action ?? null,
-    ...(role ? { ingredient_section: role } : {}),
-    available_inputs: candidates
-  };
-}
-// Resolve an independent preparation through its first later explicit use.
-// A prepared adjective plus an intervening operation must connect the two;
-// neither list order nor the previous mixture's role is enough.
-function preparedIngredientRole(inventory, steps, index) {
-  const action = steps[index].action;
-  if (!/^\s*(?:meanwhile\s*,?\s*)?(?:blanch|chop|toast|roast)\b/iu.test(action)) return null;
-  const roles = new Set();
-  for (const ingredient of inventory.ingredients) {
-    const phrases = ingredientEvidence(ingredient.text, action);
-    for (const phrase of phrases) {
-      if (mentionUse(action, phrase).kind !== 'use') continue;
-      const peers = inventory.ingredients.filter(n => ingredientEvidence(n.text, phrase).length);
-      const sections = new Set(peers.map(n => inventory.sections?.[n.id]?.id).filter(Boolean));
-      if (sections.size < 2) continue;
-      for (let later = index + 1; later < steps.length; later++) {
-        const text = steps[later].action;
-        const mentions = ingredientEvidence(ingredient.text, text);
-        if (!mentions.length) continue;
-        const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const prepared = text.match(new RegExp(`\\b(chopped|blanched|toasted|roasted)\\s+${escaped}\\b`, 'iu'));
-        const verbs = {chopped:'chop',blanched:'blanch',toasted:'toast',roasted:'roast'};
-        const preparation = prepared && steps.slice(index, later).some(step =>
-          (ingredientEvidence(ingredient.text, step.action).length || /\bthem\b/iu.test(step.action)) && new RegExp(`\\b${verbs[prepared?.[1]?.toLowerCase()]}\\b`, 'iu').test(step.action));
-        const role = actionSection(inventory, text);
-        if (prepared && preparation && mentionUse(text, phrase).kind === 'use' &&
-            role && peers.filter(n => inventory.sections?.[n.id]?.id === role).length === 1) roles.add(role);
-        else return null;
-        break;
-      }
-    }
-  }
-  return roles.size === 1 ? [...roles][0] : null;
-}
-// "Almond milk" is evidence for milk, not also almond flour and garnish
-// almonds. Suppress a shorter match only when EVERY occurrence is covered by
-// a longer offered match as a modifier. A shared head noun ("oil" in
-// "olive oil") can still name distinct portions and remains ambiguous.
-function preferSpecificMentions(candidates, action) {
-  const escape = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const occurrences = phrase => [...action.matchAll(new RegExp(`(?<![\\p{L}\\p{N}])${escape(phrase)}(?![\\p{L}\\p{N}])`, 'giu'))]
-    .map(m => [m.index, m.index + m[0].length]);
-  const mentions = candidates.flatMap(n => (n.kind === 'ingredient' ? n.evidence : n.contains.flatMap(text => ingredientEvidence(text, action)))
-    .map(phrase => ({ id: n.id, phrase, spans: occurrences(phrase) })));
-  for (const candidate of candidates) {
-    if (candidate.kind !== 'ingredient') continue;
-    candidate.evidence = candidate.evidence.filter(phrase => {
-      const spans = occurrences(phrase);
-      return !spans.length || !spans.every(([start, end]) => mentions.some(other =>
-        other.id !== candidate.id && other.phrase.length > phrase.length && other.spans.some(([left, right]) => left <= start && right > end)));
-    });
-  }
-  // A distinct standalone occurrence plus a specific compound occurrence
-  // resolves "flour ... almond flour". Without that standalone occurrence,
-  // preserve ambiguity between separately listed oils/flours sharing a name.
-  const removals = new Map();
-  for (const candidate of candidates.filter(n => n.kind === 'ingredient')) {
-    const compounds = candidate.evidence.filter(phrase => /\s/u.test(phrase));
-    const remove = candidate.evidence.filter(short => compounds.some(long => long.length > short.length && long.toLowerCase().includes(short.toLowerCase())) &&
-      candidates.some(other => other.kind === 'ingredient' && other !== candidate && other.evidence.includes(short) &&
-        occurrences(short).some(([start,end]) => !compounds.some(long => occurrences(long).some(([left,right]) => left <= start && right >= end)))));
-    removals.set(candidate.id, new Set(remove));
-  }
-  for (const candidate of candidates.filter(n => n.kind === 'ingredient')) candidate.evidence = candidate.evidence.filter(phrase => !removals.get(candidate.id).has(phrase));
-}
-// Restrict ambiguous same-name entries only. An explicit unique ingredient
-// mention remains usable even when an action combines multiple recipe roles.
-function candidateEvidence(ingredient, action, role, ingredients) {
-  const evidenceFor = n => n.portion && n.portion.step_id !== action.id ? []
-    : ingredientEvidence(n.portion?.original_text || n.text, action.action);
-  let evidence = evidenceFor(ingredient);
-  if (role && ingredient.section && ingredient.section.id !== role) {
-    const roleMentions = new Set(ingredients.filter(other => other.section?.id === role).flatMap(evidenceFor).map(phrase => phrase.toLowerCase()));
-    evidence = evidence.filter(phrase => !roleMentions.has(phrase.toLowerCase()));
-  }
-  return { ...ingredient, evidence };
-}
-const mentionKey = value => value.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().replace(/\s+/gu, ' ');
-export function connectionChoices(request) {
-  return Object.fromEntries(request.available_inputs.map(n => [n.id, n.kind === 'ingredient' ? [...(n.required ? [] : ['']), ...n.evidence] : n.allowed === false ? [''] : n.required ? ['use'] : ['', 'use']]));
+  return {current_action:actions.steps[index],action_number:index+1,action_count:actions.steps.length,
+    source_excerpt:actions.context?.[actions.steps[index].id]?.source || null,
+    accepted_connections:acceptedRows.map((row,i)=>({...actions.steps[i],input_ids:[...row]})),
+    action_plan:actions.steps.map(step=>({...step,source:actions.context?.[step.id]?.source || null})), available_inputs:[...available.values()]};
 }
 export function actionConnectionSchema(request) {
-  // Fixed fields eliminate an appendable ID list. Keep the browser schema to
-  // simple object/string/enum constraints; semantic checks remain local too.
-  const choices = connectionChoices(request);
-  return { type: 'object', properties: Object.fromEntries(Object.entries(choices).map(([id, values]) => [id, { type: 'string', enum: values }])), required: Object.keys(choices), additionalProperties: false };
+  return {type:'object',properties:{input_ids:{type:'array',items:{type:'string',enum:request.available_inputs.map(n=>n.id)}}},required:['input_ids'],additionalProperties:false};
 }
-export function acceptConnection(data, request) {
-  validateShape(data, actionConnectionSchema(request));
-  const choices = connectionChoices(request), inputs = [], evidenceUsed = new Map();
-  for (const candidate of request.available_inputs) {
-    const value = data[candidate.id];
-    if (!choices[candidate.id].includes(value)) throw new Error(`${candidate.id}: unsupported selection evidence. ${candidate.required ? `Required here: ${candidate.reason}. Select an offered value.` : candidate.allowed === false ? `${candidate.reason}. Leave this result unused for its later action.` : 'Use an offered phrase from the current action, or an empty string to leave this input unused.'}`);
-    if (!value) continue;
-    if (candidate.kind === 'ingredient') {
-      const key = mentionKey(value);
-      if (evidenceUsed.has(key)) throw new Error(`${candidate.id} and ${evidenceUsed.get(key)} use the same ingredient mention. Do not allocate one mention to multiple listed portions; choose the portion actually used in this action.`);
-      evidenceUsed.set(key, candidate.id);
+// Bound a selected-ID list without interpreting ingredient/action wording.
+export function createSelectionGuard(request, key = 'input_ids') {
+  const known=new Set(request.available_inputs.map(n=>n.id));
+  const budget=128+request.available_inputs.reduce((sum,n)=>sum+n.id.length*6+8,0);
+  let text='';
+  return chunk=>{
+    text+=chunk;
+    if(text.replace(/\s/gu,'').length>budget) throw new ConnectionOutputError('Connection selection exceeded its content budget.');
+    let tokens;
+    try { tokens=[...text.matchAll(/"(?:[^"\\]|\\.)*"/gu)].map(m=>JSON.parse(m[0])); }
+    catch { throw new ConnectionOutputError('Invalid JSON string in connection selection.'); }
+    if(tokens.length && tokens[0]!==key) throw new ConnectionOutputError(`Unknown connection choice: ${tokens[0]}. Return ${key}.`);
+    const seen=new Set();
+    for(const id of tokens.slice(1)) {
+      if(!known.has(id)) throw new ConnectionOutputError(`Unknown connection choice: ${id}. Select an available input.`);
+      if(seen.has(id)) throw new ConnectionOutputError(`Duplicate connection input: ${id}. Select each input once.`);
+      seen.add(id);
     }
-    inputs.push(candidate.id);
+  };
+}
+export function acceptConnection(data,request) {
+  validateShape(data,actionConnectionSchema(request));
+  const inputs=[...data.input_ids],known=new Set(request.available_inputs.map(n=>n.id));
+  if(new Set(inputs).size!==inputs.length) throw Error('Duplicate connection inputs.');
+  if(inputs.some(id=>!known.has(id))) throw Error('Unknown connection choice.');
+  if(!inputs.length) throw Error(`${request.current_action.id}: select at least one input.`);
+  if(request.action_number===request.action_count && inputs.length!==request.available_inputs.length) {
+    const remaining=request.available_inputs.filter(n=>!inputs.includes(n.id)).map(n=>n.id);
+    throw Error(`The final action leaves unconnected inputs: ${remaining.join(', ')}. Review the interpretation; do not attach unrelated ingredients just to satisfy validation.`);
   }
-  if (!inputs.length) throw new Error(`${request.current_action.id}: needs at least one supported input. No usable connection was selected.`);
-  if (request.action_number === request.action_count && inputs.length !== request.available_inputs.length) {
-    const remaining = request.available_inputs.filter(n => !inputs.includes(n.id)).map(n => n.id);
-    throw new Error(`The final action leaves unconnected inputs: ${remaining.join(', ')}. Select only inputs actually used here; if earlier connections are wrong, do not attach unrelated leftovers just to complete the tree.`);
-  }
-  // Keep prior mixtures before newly added ingredients for stable tree layout.
-  const kind = new Map(request.available_inputs.map(n => [n.id, n.kind]));
-  return inputs.sort((a, b) => Number(kind.get(a) === 'ingredient') - Number(kind.get(b) === 'ingredient'));
+  // Preserve the model-selected order; no semantic or mixture-first reordering.
+  return inputs;
+}
+
+// Drafts do not consume inputs. Later model review may revise any earlier edge.
+export function buildDraftConnectionRequest(inventory, actions, rows) {
+  const index=rows.length;
+  return {
+    current_action:actions.steps[index], action_number:index+1, action_count:actions.steps.length,
+    source_excerpt:actions.context?.[actions.steps[index].id]?.source || null,
+    action_plan:actions.steps.map(step=>({...step,source:actions.context?.[step.id]?.source || null})),
+    provisional_connections:rows.map((input_ids,i)=>({...actions.steps[i],input_ids:[...input_ids]})),
+    available_inputs:[
+      ...inventory.ingredients.map(n=>({...n,kind:'ingredient',context:inventory.context?.[n.id] || null})),
+      ...actions.steps.slice(0,index).map((n,i)=>({id:n.id,kind:'result',text:n.action,provisional_input_ids:[...rows[i]]}))
+    ]
+  };
+}
+export function acceptDraftConnection(data,request) {
+  validateShape(data,actionConnectionSchema(request));
+  if(new Set(data.input_ids).size!==data.input_ids.length) throw Error('Duplicate connection inputs.');
+  // Empty or conflicting rows remain visible for whole-graph model review.
+  return [...data.input_ids];
+}
+// A single-consumer tree can be expressed as one destination per nonfinal node.
+// The model chooses destinations; regrouping them does not infer any edges.
+export function graphSelectionSchema(inventory,actions) {
+  const destinations=actions.steps.map(n=>n.id);
+  const properties=Object.fromEntries([
+    ...inventory.ingredients.map(n=>[n.id,{type:'string',enum:destinations}]),
+    ...actions.steps.slice(0,-1).map((n,i)=>[n.id,{type:'string',enum:destinations.slice(i+1)}])
+  ]);
+  return {type:'object',properties,required:Object.keys(properties),additionalProperties:false};
+}
+export function acceptGraphSelection(data,inventory,actions) {
+  validateShape(data,graphSelectionSchema(inventory,actions));
+  const inputs=actions.steps.map(step=>Object.entries(data).filter(([,destination])=>destination===step.id).map(([id])=>id));
+  const empty=actions.steps.filter((step,i)=>!inputs[i].length).map(step=>step.id);
+  if(empty.length) throw Error(`${empty.join(', ')}: needs at least one input. Reconsider all destinations from the source; do not attach unrelated materials.`);
+  return assembleRecipe(inventory,actions,{inputs});
+}
+export function createGraphSelectionGuard(inventory,actions) {
+  const keys=new Set([...inventory.ingredients,...actions.steps.slice(0,-1)].map(n=>n.id));
+  const destinations=new Set(actions.steps.map(n=>n.id));
+  const longest=Math.max(...[...destinations].map(id=>id.length));
+  const budget=128+[...keys].reduce((sum,id)=>sum+(id.length+longest)*6+8,0);
+  let text='';
+  return chunk=>{
+    text+=chunk;
+    if(text.replace(/\s/gu,'').length>budget) throw new ConnectionOutputError('Graph selection exceeded its content budget.');
+    const seen=new Set();
+    for(const match of text.matchAll(/"(?:[^"\\]|\\.)*"\s*([:,}])/gu)) {
+      let id;
+      try { id=JSON.parse(match[0].slice(0,match[0].lastIndexOf(match[1])).trim()); }
+      catch { throw new ConnectionOutputError('Invalid JSON string in graph selection.'); }
+      if(match[1]===':') {
+        if(!keys.has(id)) throw new ConnectionOutputError(`Unknown graph input: ${id}.`);
+        if(seen.has(id)) throw new ConnectionOutputError(`Duplicate graph input: ${id}.`);
+        seen.add(id);
+      } else if(!destinations.has(id)) throw new ConnectionOutputError(`Unknown graph destination: ${id}.`);
+    }
+  };
 }

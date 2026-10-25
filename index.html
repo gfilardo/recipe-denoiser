@@ -25,10 +25,15 @@
                         class="sr-only">(opens in a new tab)</span></a></p>
         </aside>
         <section class="intro">
-            <p class="eyebrow">LESS SCROLLING. MORE COOKING.</p>
+            <p class="eyebrow">AN EXPERIMENT IN BROWSER-LOCAL AI.</p>
             <h1>A recipe, without the life story.</h1>
-            <p>Turn the long version into a clear, left-to-right cooking grid.</p>
+            <p>Compare two local AI engines using the same recipe-to-grid pipeline. Outputs are experimental: check every result.</p>
         </section>
+        <fieldset class="backend-picker"><legend>Local AI engine</legend>
+            <label><input type="radio" name="backend" value="chrome" checked> Chrome built-in AI</label>
+            <label><input type="radio" name="backend" value="webllm"> WebLLM · Qwen2.5 7B</label>
+            <p class="hint">Same pipeline, different engines. WebLLM needs WebGPU, a multi-GB model download and substantial GPU memory. Model files download from external hosts; recipe inference stays on this device.</p>
+        </fieldset>
         <div class="status-bar"><span id="ai-status" class="badge">Checking local AI…</span><span id="ai-help">Demo and
                 manual mode always work.</span><progress id="progress" max="1" hidden
                 aria-label="Model download progress"></progress></div>
@@ -82,8 +87,7 @@
                 </div>
             </section>
         </div>
-        <footer class="page-footer">Inspired by Cooking for Engineers tabular recipe notation.<span>Local first. Kitchen
-                ready.</span></footer>
+        <footer class="page-footer">Inspired by Cooking for Engineers tabular recipe notation.<span>Local first. Experimental.</span></footer>
     </main>
     <dialog id="conversion-dialog" aria-labelledby="conversion-title" aria-describedby="conversion-stage">
         <div class="conversion-heading">

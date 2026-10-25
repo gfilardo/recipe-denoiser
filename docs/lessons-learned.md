@@ -2,7 +2,7 @@
 
 [Back to README](../README.md) · [Current architecture](architecture.md) · [Troubleshooting](troubleshooting.md)
 
-This is the preserved chronological investigation log. Old pipeline versions, request counts, prompts, timeout selectors and test totals describe the revision being investigated; they are not current setup instructions. The current implementation uses `staged-v11-procedure-labels` and a fixed 10-minute UI conversion limit. Detailed failures and limitations are retained so future changes can be checked against actual observations.
+This is the preserved chronological investigation log. Old pipeline versions, request counts, prompts, timeout selectors and test totals describe the revision being investigated; they are not current setup instructions. The current implementation uses `model-led-v3-plan-review` and a fixed 10-minute UI conversion limit. The prior rule-based implementation is archived in tag `working-rules-v11`. Detailed failures and limitations are retained so future changes can be checked against actual observations.
 
 ## Recent findings
 
@@ -429,3 +429,241 @@ Lesson: concision belongs after dependency validation and in the presentation la
 ### Fixed conversion limit
 
 The time-limit dropdown has been removed. The app now always passes a 10-minute shared conversion budget and shows that same limit in the progress dialog. Cancellation remains available. Earlier entries describing the 3/10/20-minute selector describe historical behavior.
+
+
+### Reset: let the local model interpret recipes (`model-led-v1`)
+
+The project is intended to demonstrate local language models, but successive recipe-specific fixes moved interpretation into application code. The old label phase was especially misleading: code authored shortening candidates and the model only selected between them. Replays that replaced invalid recorded answers with an allowed enum value established constraint behavior, not actual model performance.
+
+Before changing direction, the working implementation was committed as `ad1d60d`, tagged `working-rules-v11`, and pushed. Its 142 tests passed. The tag preserves that baseline without keeping a hidden runtime fallback.
+
+The new pipeline removes ingredient-name aliases, English cooking-verb rules, section-role matching, pronoun/parallel-preparation heuristics, fixed passage classification and candidate shortening. The model now extracts ingredient uses/roles and actions from the full source, proposes dependencies from all live inputs, and generates its own concise labels. Code retains IDs, excerpt traceability, schema/reference checks, graph integrity, deterministic layout, session cleanup and resource limits.
+
+Generated text can now be wrong even when its source excerpt exists. Summary fidelity also requires review; length and shape checks cannot prove meaning preservation. That is an explicit model limitation to measure, not a gap to cover with another recipe-specific parser. Failed interpretation remains visible rather than being silently repaired.
+
+Old rule-enforcement tests were removed. Mechanical lifecycle/layout tests remain, and a small real-browser evaluation runner records actual outputs, timing, correction use and structural success separately from human semantic assessment. Historical traces are retained under `evaluation/legacy-traces/`. No new real-device success is claimed before those evaluations are run and reviewed.
+
+Lesson: keep the application responsible for structure and the model responsible for language. Evaluate the actual model on held-out recipes and report limitations honestly; a high count of tests for handwritten rules is not evidence of local-model capability.
+
+
+### Reference mismatch: chronology collapsed into one material branch (`model-led-v2-material-flow`)
+
+The supplied Banana Bread screenshot shows every action spanning all ten ingredient rows, including pan preparation and oven preheating. This layout strongly indicates that all ingredient leaves entered an early common ancestor and every later operation followed it. Without the raw response, the exact first mistaken selection cannot be established from the screenshot alone. The renderer displays the supplied dependencies; narrower columns would not restore the missing wet/dry branches.
+
+The refactor had made every extracted instruction a graph action requiring at least one food input. It no longer let the model populate setup or ingredient preparation, despite those fields existing in the reference contract. The prompt also asked the model to attach equipment preparation to a food action. This encouraged chronology to masquerade as food flow and made all-input chains structurally valid.
+
+The model now explicitly classifies global setup, initial per-ingredient preparations and material-processing actions. Application code assigns IDs, checks preparation references and source excerpts, and maps the returned categories to the existing schema. Linking instructions distinguish material participation from temporal order. No cooking-verb rules, recipe-specific inferred connections or hardcoded reference graph were added to runtime code. Ingredient preparation is passed to linking context, including inside intermediate results.
+
+A contract regression supplies a model-shaped Banana Bread plan and verifies that it can reproduce the reference's exact seven-column grid, separate four-row wet and five-row dry branches, ingredient preparation cells, and final joining steps. It preserves the overmixing warning and pan-transfer instruction. This verifies representation, not local-model performance. The Banana Bread source is added to real-browser evaluation with branch-specific human review criteria. The next real run must demonstrate that the model chooses those distinctions correctly.
+
+Lesson: removing heuristics is not sufficient; the model must receive an output contract that can express the desired result. Setup, ingredient preparation and food dependencies are different categories. A connected single-consumer tree still does not prove that the model interpreted them correctly.
+
+
+### Observed dry-branch loss and all-input selection (`model-led-v3-plan-review`)
+
+The supplied output snapshot confirms two model errors, rather than a renderer defect. The action extraction attached the entire five-ingredient dry whisking operation to flour's preparation field, leaving no dry-mixture action in the plan. The first linking response then returned `use` for all ten available ingredients. The remaining actions could only consume that already merged result, producing full-height cells. Compared with the built-in source, the draft also omitted the overmixing warning.
+
+The next experiment adds a fixed fresh-session model review of the draft against the complete source before linking. The reviewer returns a full plan, checking classification and information coverage. Code does not identify dry ingredients or rewrite the plan using English rules. Linking now requests a selected-ID list, omitting unused candidates, instead of a repeated use/skip field for every candidate. The all-use response pattern motivated this representation change; it does not prove that enum ordering or checklist format caused the failure.
+
+Selected-ID arrays have previously repeated in older pipelines, so generic streaming checks reject duplicate/unknown IDs and bound unfinished output. Shape, graph and resource validation remain mechanical. The reviewer can still repeat an error, and a selected-ID list can still contain every ingredient. Neither change is a semantic guarantee or a hardcoded repair.
+
+Validation: 84 automated checks pass. The reported ingredient extraction and erroneous draft are preserved in `tests/fixtures/banana-failed-plan.json`. A test supplies that actual draft followed by an explicitly provided revised model-shaped plan, verifying that the review receives the full source and that the linker sees the revision. It does not substitute allowed schema values for recorded linking answers or claim a real-model correction. The next Chrome run must be checked for separate wet/dry branches and retained instructions. Diagnostics preserve draft, review and linking responses for comparison.
+
+
+### A reviewer can introduce new errors (`model-led-v4-operation-review`)
+
+The latest Banana Nut Bread snapshot identifies the origin of the repeated digits: the draft correctly said **55 minutes** and **10 minutes**, but the full-plan review generated **555** and **1010** while still citing the correct source phrases. These errors existed before label shortening. The visible label response in the supplied snapshot is incomplete, so it does not establish the final simplification outcome.
+
+The reviewer also retained the five-ingredient whisking instruction as flour-only preparation. The wet-combination link correctly selected its four ingredients, but folding selected only the remaining dry ingredients and walnuts, omitting the existing wet result. That result was then joined at baking. The renderer faithfully displayed these wrong dependencies. A connected tree and a better-looking table were not evidence of correct cooking meaning.
+
+Changes for the next experiment:
+
+- Runtime planning now exposes only global setup and food actions. All food preparations, including single-ingredient work, go through explicit linking. Multi-ingredient work cannot hide in an ingredient preparation field. Existing demo and Manual JSON preparation cells remain supported. This can add action columns; the layout algorithm is unchanged.
+- Generated numeric tokens are checked against the cited excerpt. Unsupported digits such as 555/1010 are rejected rather than quietly accepted or replaced. Optional labels must preserve all numeric tokens or retain the full wording. This is a language-independent lexical check, not a cooking rule or semantic guarantee. It does not detect all omissions, wrong units or reassigned values.
+- Each proposed connection receives a fresh model audit with the full source, all available candidates and the proposed selection. The audit explicitly checks omissions as well as extra inputs before the row is frozen. This adds one request per action, shares the existing deadline and correction allowance, and may still repeat the model's error. Both selections are visible in diagnostics.
+
+The cooking-specific English rules remain removed from active conversion: no ingredient aliases, cooking-verb matching, section allocation, pronoun heuristics or recipe-specific repairs. Model instructions are written in English; they ask the model to interpret language rather than having code match English cooking words. JSON, IDs, excerpts, numeric tokens, resource bounds and graph integrity are application responsibilities. Historical rule documentation and the explicit demo are not automatic fallbacks.
+
+Validation: **87 automated tests pass**, and the diff whitespace check passes. Regression tests preserve the actual failed review and link outputs. They reject the recorded numeric corruption and obsolete preparation classification, and use explicitly simulated model responses to check that an input audit can restore an omitted intermediate result before the next action. Cancellation and optional-label fallback remain covered. These tests verify handling, not that Chrome's model now produces the right recipe. A real-device retry must check operation coverage (including the overmixing warning), wet/dry joining, timings and labels.
+
+
+### Duplicate input was a symptom of an earlier semantic failure (`model-led-v5-input-decisions`)
+
+The next real snapshot shows that numeric validation worked: the plan reviewer again generated 555, the guard rejected it, and the single correction restored 55. However, both the action-1 selector and its audit attached all ten ingredients to “Mash the bananas.” Every subsequent operation inherited that combined result. Action 6 then repeated its only remaining candidate, step_5. Removing the duplicate would have hidden the earlier wrong graph. The plan also still omitted the overmixing warning relative to the built-in source.
+
+The next experiment decomposes linking into independent candidate decisions. Each fresh local-model request sees the current operation, one available candidate, the action plan and original source, and answers a boolean participation question. It sees no prior selection to agree with. Code visits each candidate once and records positive decisions as edges. This prevents duplicate-ID generation by construction, but does not prevent all-true answers or prove that the chosen edges are correct. No candidate is filtered by an English word rule, and no expected graph is substituted. Empty/disconnected decisions still fail visibly.
+
+The cost is more requests: three planning requests plus one request per available candidate per action, plus optional label batches. All share the conversion deadline. In the explicitly simulated nine-action regression there are 53 candidate judgments; that test is not a browser speed or accuracy result. Diagnostics preserve each candidate and answer so the model's actual behavior remains inspectable. The 87 automated tests pass, including independent branch assembly, numeric correction, cancellation, and optional-label handling. A new real-browser run is needed.
+
+**Project boundary reaffirmed:** this is a demonstration of browser-local AI interpretation. The local model must extract, correlate and structure recipe information. Runtime code must not replace that work with English cooking sentences, keyword dictionaries, ingredient aliases, semantic parsers, recipe-specific fallbacks or hidden expected answers. Natural-language prompts instruct the model; code may validate JSON, IDs, references, source citations and numeric consistency, manage resources, and render the returned graph. Those checks reject unsupported output rather than authoring a recipe. Test fixtures and the explicit demo must never be presented as successful model outputs. Further changes should be evaluated by real local-model behavior, not merely by whether the app produces a table.
+
+
+### Individual answers need collective recovery (`model-led-v6-connection-reconsideration`)
+
+The user reported `step_7: select at least one input`. The attached v5 snapshot ends during the fifth candidate request for action 4, so it does not expose step 7's candidate answers or prove its earlier graph was correct. It does show selective answers for the first three operations, unlike v4's all-input selection. The reviewer again changed 55 to 555 and used the ordinary correction to restore it.
+
+Code inspection identified a recovery gap: each boolean response was structurally valid, but validation of the combined selection happened outside the response-correction path. A collectively empty set therefore stopped immediately. Repeating the last candidate alone would not let the model reconsider the whole relationship.
+
+The new path allows one fresh-session whole-set reconsideration per conversion, separately from the ordinary response correction. It supplies source, plan, candidates, prior decisions, accepted edges and the validation error. The local model must select the input IDs; code never infers the previous step, selects the sole candidate, deduplicates an answer or attaches leftovers. A second invalid set or invalid reconsideration still fails. This remains an experiment in task decomposition, not a claim of corrected recipe understanding.
+
+Validation: 92 automated tests pass, including simulated recovery at step 7 after numeric correction, model refusal, duplicate selection, a second failure, cancellation and session cleanup. Those simulated answers are not a replay of unseen step-7 output. The [pipeline diagram](pipeline.md) documents responsibilities, recovery, costs and limits. A real browser retry is still needed to establish model behavior.
+
+
+## V7: isolated votes missed complete material sets
+
+The supplied v6 Banana Nut Bread snapshot (2026-10-21) includes the failure through action 8, unlike the earlier partial snapshot. Actions 1–3 selected their intended single inputs. Action 4 selected only mashed bananas and melted butter, omitting vanilla and beaten eggs. Action 5 selected only baking soda for whisking the dry ingredients. Action 6 selected only walnuts for folding, leaving both mixtures outside the result. These nonempty sets passed structural checks. All action 7 votes were false; its reconsideration selected `step_4`, transferring only the incomplete wet mixture. All action 8 votes were false and the reconsideration budget was exhausted. The compact actual decisions are preserved in `evaluation/legacy-traces/model-led-v6-missing-inputs.json`.
+
+The late error is a symptom of earlier semantic omissions. Increasing the reconsideration allowance or wiring the latest result automatically would not repair them. Boolean schema validity does not establish completeness, and a nonempty selection is not evidence that the operation is correctly represented. The reviewer also changed 55 to 555 again; the numeric check rejected it and the ordinary correction restored 55.
+
+`model-led-v7-complete-action-inputs` replaces independent votes with one complete-set selection per action. Every linking request now includes the full original source, all available materials, ancestry and accepted earlier connections. No proposed answer anchors it. The model selects all inputs; application code only validates IDs and structure. The separate one-use reconsideration path is removed, while the shared ordinary correction, streaming bounds and deadline remain. This revisits selected-ID linking with richer context; prior duplicate-ID and selection failures are still relevant risks, and their guards remain.
+
+Tests verify request context, preserved model choices, bounded correction, cancellation and recorded failure evidence. They do not demonstrate improved real-model accuracy. Wrong but structurally valid selections and omitted warnings remain possible. A fresh browser run is needed before claiming success.
+
+
+## V8: small requests must not mean irreversible local decisions
+
+Reviewing the v6 omissions and the v7 sequential design exposed a broader limitation: a plausible local edge can constrain every later step. Giving an individual request the whole recipe is not enough when earlier edges are frozen. A late failure may require moving an ingredient into an earlier mixture, not adding another retry to the last action. This resembles a local-minimum problem, but the mechanism is greedy commitment rather than numerical optimization.
+
+The new experiment separates generation size from decision scope. `model-led-v8-global-graph-review` drafts one action's inputs at a time, then asks the local model to review and replace the entire connection matrix. Draft edges do not consume candidates; every ingredient and earlier result remains selectable. Empty draft rows and conflicting uses across rows remain visible for review. Code checks IDs and format, and offers structural feedback, but never chooses semantic repairs.
+
+Global review runs even for a structurally valid draft. It may revise the earliest connection and must produce a complete graph satisfying the existing single-consumer contract. The app retains both draft and reviewed output, rejects an invalid final graph, and never falls back silently to the draft. The single shared correction and deadline still bound work. There is no cooking-specific vocabulary, automatic latest-result edge or recipe-specific expected graph.
+
+This approach trades an additional, larger model request for the ability to resolve upstream mistakes. It does not guarantee accuracy: the same model may endorse omissions, introduce errors, or repeat IDs. ID-only bounded output and streaming guards limit runaway generation. Ingredient and action definitions stay fixed, so graph review cannot repair missing operations or a recipe that needs a different graph representation.
+
+Automated tests use explicitly simulated model responses to demonstrate upstream revision after an empty draft, review of valid drafts, visible failure instead of fallback, bounded correction, cancellation and repeated-output rejection. These are orchestration guarantees, not evidence of improved local-model recipe understanding. Evaluate real draft/review pairs before claiming improvement.
+
+
+## V9: draft failure must not prevent global review
+
+The supplied v8 snapshot stopped while drafting action 5, before any global review. The first two drafts selected every available candidate, the third selected eggs and `step_2`, and the fourth again selected everything. Action 5 enumerated all candidates and then repeated `step_1` in an unfinished JSON response. The selected-ID guard stopped the repetition. Action-plan correction had already used the shared correction, so the adapter terminated the conversion. Compact raw draft outputs are preserved in `evaluation/legacy-traces/model-led-v8-draft-repetition.json`.
+
+This exposed an orchestration gap: provisional graph review was reachable only if every draft response was individually well formed. Optional proposals should not prevent the model from attempting the complete graph. In `model-led-v9-draft-handoff`, a draft validation or selected-ID streaming error stops drafting without a retry. The complete earlier rows, failed action/error and remaining action IDs go to global review. The model generates all final rows, including the missing ones, and may replace every earlier edge. No repeated IDs are silently deduplicated, no incomplete JSON is accepted and no guessed edges are supplied.
+
+Final graph validation stays strict. The shared correction is still bounded, and transport failures, whitespace loops, cancellation and deadlines still stop processing. Tests cover streamed duplicate/unknown IDs and malformed JSON after planning has spent the correction, plus cancellation and transport failures. They demonstrate that review is reached, not that it understands the recipe.
+
+The snapshot also contains poor semantic proposals before the visible failure. A successful handoff does not fix those by itself; global review may be anchored by bad drafts or repeat their mistakes. The next real-model output must be examined for actual graph correctness, not merely successful completion.
+
+
+## V10: name the actions instead of relying on row position
+
+The v9 snapshot reached global review after the draft handoff, but returned `inputs` with eleven single-element rows: one for each of ten ingredients, then one containing `step_1`. The fixed plan had ten actions. This is not an extra empty row that can safely be removed: it is ingredient enumeration rather than an action-to-input interpretation. Trimming or shifting rows would invent the association. The raw response is preserved in `evaluation/legacy-traces/model-led-v9-eleven-rows.json`.
+
+`model-led-v10-keyed-graph-review` asks for a JSON object with exactly the fixed action IDs as required keys. Each value is the model's complete input-ID selection for that action. The schema restricts each field to ingredients and earlier actions. Code translates these explicit keys into the existing ordered graph rows; it does not guess which action an anonymous row belongs to. Streaming checks reject duplicate keys, repeated input IDs, unknown IDs and oversized output. Draft handoff, global revision and strict final graph validation remain.
+
+This removes positional row counting from the model's output task. It does not establish semantic understanding: the model could still put the wrong ingredient under a valid action key. Tests verify structural constraints, preservation of selected IDs, arbitrary JSON key order, upstream revision, bounded retries and streaming checks. A real browser run is still required to assess schema compatibility and recipe accuracy. The shared correction budget has not been increased.
+
+
+## V11: express single consumption through material destinations
+
+The v10 snapshot returned every ingredient under `step_1`, then began `step_2` with `ing_1` again. The duplicate-input guard stopped it. Explicit action keys solved positional ambiguity but did not prevent material reuse or semantic errors. Its first selection matches the bad draft; this suggests possible anchoring but does not prove its cause.
+
+The new experiment returns one action destination per ingredient or nonfinal result. Every material is a required key with a single action-ID value; multiple materials may share a destination. The model selects all associations globally. Code only groups these edges into existing action input arrays and checks the graph. No duplicate removal, ingredient-name rules or automatic previous-step links are used. Duplicate JSON keys remain an error, and result destinations must be later actions.
+
+Draft edges and their validation feedback are now retained only in diagnostics, not supplied to the global model. It reconstructs associations from the full source and fixed ingredient/action plan. This avoids suggesting the failed draft as an answer, but does not establish better reasoning. Draft generation remains experimental overhead for comparison. The shared correction and resource limits remain unchanged.
+
+Tests verify destination schema constraints, multiple inputs sharing a destination, exact regrouping of model choices, duplicate-key detection across streamed chunks, upstream replacement, draft handoff and cleanup. Real-model evaluation is still needed: assigning each material once can still omit an action's inputs or attach materials to the wrong operation.
+
+
+## Ingredient citations: avoid cumulative copying
+
+The Halloween Muffins snapshot failed before graph construction. Each ingredient citation repeated most of the ingredient list preceding it. Later quotations changed unrelated numbers (eggs `110 g` became `11 g`), and the correction produced further digit repetitions in the glaze citation. Exact-source validation correctly rejected this. The corrected inventory also omitted the food decorations present in the initial response. Without the original source, the snapshot alone cannot establish the complete expected inventory.
+
+The ingredient prompt now asks the local model to identify ingredient boundaries even in concatenated text, quote only the shortest supporting contiguous excerpt per ingredient, and keep section interpretation in the role field. It explicitly rejects cumulative copying and asks corrections to retain the complete inventory and qualifiers. Code does not split ingredients with English word rules, salvage corrupted quotations, or relax numeric/source checks. This is a prompt experiment, not a demonstrated accuracy fix.
+
+A regression test verifies that local quotations in a concatenated list are accepted and corrupted cumulative or local quotations are rejected. These tests validate the contract; a fresh browser run is required to see whether the model follows the revised instructions. Exact quotation matching still cannot prove inventory completeness or that all qualifiers were retained.
+
+
+## V12: copy each ingredient once
+
+The next Halloween Muffins run disproved the preceding prompt experiment as a sufficient fix. Initially every source field contained only a section heading, despite detailed ingredient text. Correction reverted to cumulative quotations and corrupted digits again (`110 g` to `11 g`, among others). Orange peel, baking soda and food decorations appeared initially but were absent from the correction. More instructions about short quotations did not reliably solve the dual-field task.
+
+`model-led-v12-ingredient-quotes` removes the separate generated ingredient source field. The model returns `{text, role}`: text is a verbatim ingredient excerpt used both for display and evidence, while role contains interpretation. Code verifies the excerpt against the original, assigns IDs and stores the same text in the downstream source context. There are no ingredient-boundary heuristics, inferred replacements, relaxed quotation matching or extra retries. Action extraction and graph interpretation are unchanged.
+
+This reduces duplicated output and eliminates disagreement between ingredient text and its separate citation. It does not prove that an excerpt is an ingredient, that every ingredient was selected, or that qualifiers were retained. A heading is also a real source excerpt, so semantic selection remains the model's responsibility. Verbatim output also retains source order and formatting rather than producing quantity-first labels. Tests cover exact reuse, concatenated entries, changed digits, paraphrase rejection and rejection of the obsolete extra field; browser evaluation remains necessary.
+
+
+## Compare engines before adding more prompt patches
+
+Repeated extraction and graph failures do not isolate the cause to model size: prompts, schema decoding and runtime behavior also differ. The engine selector now runs Chrome and WebLLM through one shared pipeline. WebLLM initially uses Qwen2.5 7B; this is a candidate to evaluate, not an established improvement. Diagnostics identify backend, model selection, settings and browser. Adapter tests cover fresh stage histories, schema forwarding, cancellation and failure without fallback.
+
+A fixed pipeline is a useful controlled application comparison, but not a pure model benchmark. It was tuned against Chrome; sampling presets, token budgets and schema implementations are not identical. Compare semantic correctness on unchanged sources, track startup separately, and report unsuccessful runs too. See [the comparison protocol](backend-comparison.md). Real hardware validation is still required.
+
+
+## First reported WebLLM run: larger model did not resolve extraction
+
+The user identified the Halloween Muffins run as **WebLLM · Qwen2.5 7B**. Its raw snapshot is preserved in [the evaluation trace](../evaluation/legacy-traces/webllm-qwen25-7b-muffins-extraction.txt). The snapshot itself lacked backend settings and the original submitted source; backend attribution comes from the user's confirmation. Future output snapshots now include the same run configuration as diagnostic reports.
+
+Ingredient extraction returned ten names without quantities or qualifiers, and omitted the glaze and food decorations visible in the later model-generated source quotation. Those names passed exact-substring validation. This is direct evidence that quotation matching does not establish ingredient completeness. The generated quotation is not an independently verified copy of the submitted source.
+
+The first action response put a long ingredient summary in setup, quoted an entire recipe as its evidence, and returned only `combine ingredients`. Correction placed nearly the whole recipe in setup, used a website URL as its source, and still returned one action. The visible setup-source mismatch was therefore a valid rejection of a broader semantic failure. Allowing URLs, fuzzy citation matching or silently salvaging this plan would not produce a faithful recipe.
+
+This run disproves any assumption that choosing the 7B backend alone would fix the task. It does not establish whether the underlying cause is model capability, prompt format, constrained decoding or runtime behavior. Keep the common pipeline fixed for a paired Chrome run on the exact same input. Further engine-specific investigations should be labeled separately from that comparison. No semantic success or inference fix is claimed for this trace.
+
+
+## Chrome comparison: shared task failure, different symptoms
+
+The user then supplied the Chrome built-in run for Halloween Muffins. Its [raw snapshot](../evaluation/legacy-traces/chrome-muffins-extraction.txt) lacks run configuration and independently captured source; backend attribution comes from the user. Treat these two runs as an exploratory comparison, not a reproducible benchmark with verified identical inputs/settings.
+
+| Observation | WebLLM / Qwen2.5 7B | Chrome built-in |
+| --- | --- | --- |
+| Ingredient output | Ten ingredient names, no quantities; no decorations | 23 entries, mostly alternating names and detached quantities |
+| Initial actions | One generic `combine ingredients` action | 22 rows, many action values literally `complete instruction` or `complete` |
+| Setup | Ingredient summary with an entire-recipe quotation | Food operation; correction expanded to 19 cooking-operation entries |
+| Evidence corruption | Correction supplied a URL as quotation | Altered words and digits; initial bake quotation says `3500°f` |
+| Outcome | Rejected during action extraction | Rejected during action extraction |
+
+Chrome's correction duplicates operations between setup and actions and introduces further omissions and number changes. The reported `setup 8 source` mismatch is merely the first detected error in that response, not the sole defect. The ingredient output passed substring checks despite separating material names from their quantities. Neither backend produced a usable recipe.
+
+The literal `complete instruction` matches an illustrative value in the action system prompt. This is evidence of placeholder copying and a concrete weakness of that prompt format; it is not proof that the placeholder explains all other failures. Neither model size nor strict JSON shape establishes semantic extraction quality.
+
+The next controlled investigation should isolate extraction before running graph construction: compare ordinary text extraction against constrained JSON on the same captured input, and separately remove illustrative placeholder values from prompts. Change one factor at a time and preserve outputs. Do not weaken source/numeric validation, merge detached quantities using cooking heuristics, or claim a successful fix based on simulated tests. The production pipeline remains unchanged for this observation.
+
+The consolidated [takeaways and proposed extraction experiment](backend-comparison.md#what-we-learned) separate observed failures from hypotheses and describe how to test the next change without confounding it with a new backend or graph pipeline.
+
+
+## Allow more inference time for WebLLM
+
+A reported WebLLM timeout prompted increasing its UI conversion budget from 10 to 20 minutes; Chrome remains at 10 minutes. The report did not identify the failing stage, so this is a resource-budget adjustment rather than a diagnosed model fix. Initialization still has its separate progress-refreshed inactivity timer. Compare run quality and elapsed time separately, and record the unequal deadlines rather than treating completion rates as an equal-budget benchmark.
+
+
+## A shared deadline is not a stage duration; snapshots must be current
+
+A WebLLM/Qwen2.5 7B run reported that the shared 20-minute budget expired during global graph interpretation. The [attached snapshot](../evaluation/legacy-traces/webllm-banana-20min-snapshot.txt) identifies a 986-character Banana Nut Bread source, v12, WebLLM 0.2.86, temperature 0, a 16K context and a 4096-token response limit. It ends partway through action-plan review, with no graph request or timing history. It cannot establish how long graph interpretation ran, whether it repeated, or whether initialization or generation dominated that stage. The deadline covers the full conversion after initial readiness, not twenty minutes per stage.
+
+The visible ingredient list retains quantities. The initial action response lists several operations but uses nonverbatim citations; its correction collapses the plan to one literal `complete instruction` action and copies the whole source into setup/evidence. That corrected draft passed the mechanical checks, demonstrating again that source matching is not semantic validation. The later reviewed plan is absent, so the draft cannot be assumed to be the final graph input.
+
+The snapshot UI previously captured output only on Show/Refresh. Copying it after a failure could therefore send an earlier state. It now refreshes on copy and console print, and refreshes an open snapshot when conversion stops. Snapshots also include current status and timing history. No deadline increase, graph inference change or semantic fix is claimed. Inspect the fresh terminal snapshot before attributing the timeout to a graph loop or raising resource limits again.
+
+
+## WebLLM budget extended to 30 minutes
+
+At the user's request after another timeout, WebLLM's shared conversion budget increased from 20 to 30 minutes. Chrome remains at 10 minutes. Initialization and output guards are unchanged. This grants more execution time; it does not establish improved extraction accuracy or diagnose the previous timeout.
+
+
+## Completed WebLLM graph: skipped preparations and unused drafting cost
+
+The [30-minute-budget Banana Nut Bread run](../evaluation/legacy-traces/webllm-banana-empty-inputs.txt) failed validation after 1168.6 seconds (19 minutes 28.6 seconds), not a timeout. Its final graph request took 100.3 seconds. This particular run did not require more than twenty minutes; variability prevents concluding why the earlier run timed out.
+
+The reviewed plan recovered nine actions but retained the entire recipe as setup and classified pan preparation as a food-result action. The graph assigned no inputs to steps 1–4: pan preparation, banana mashing, butter melting and egg beating. It routed ingredients directly to later operations, split dry ingredients between whisking and folding, and sent walnuts to baking. The first reported empty-input error is not the sole defect. Removing step 1 or inventing links would not fix the recipe.
+
+Provisional linking consumed approximately 538.8 seconds, or nine minutes and 46% of elapsed time. Since v11 excludes those proposals from final inference, drafting now supplies diagnostic evidence only. Removing it from both backends is a concrete latency experiment, not a semantic fix. Record that as a new comparison condition.
+
+Action classification/completeness and global graph interpretation still need separate investigation. The shared correction was already spent on action extraction; no graph correction remained. Changing this budget must be explicit. Do not attach unrelated ingredients, silently remove actions or assume more time will improve interpretation.
+
+
+## V13: direct graph generation with a reserved correction
+
+The runtime now skips all provisional linking requests on both engines. These drafts were excluded from final inference yet consumed about nine minutes in the recorded run. Normal conversion now uses four core requests plus label batches, independent of action count. This removes known overhead; no specific speedup on a new run is promised.
+
+Extraction and plan review retain one shared correction; global graph interpretation has one separate correction. Completed invalid graph output and structural feedback are supplied to the model, including all empty action IDs. Streaming failures retain feedback without accepting partial edges. The application never invents links. Further invalid graph output still fails visibly.
+
+Action prompts remove illustrative placeholder strings and explain that equipment-only setup is separate from food-result actions, with no whole-recipe setup or duplicated operations. No source keyword heuristics were added. Fixed-plan omissions can still make a faithful graph impossible, and structural success still does not establish semantic quality.
+
+This is a combined change to call count, prompts and correction budget. It is not the previously proposed single-factor experiment. Tests verify no draft calls, independent bounded correction, prior-response feedback, empty-action reporting and cleanup; real browser runs must measure accuracy and latency. The pipeline identifier is `model-led-v13-direct-graph`.
+
+
+## Experimental checkpoint — 2026-10-25
+
+This checkpoint saves the accumulated transition from the tagged rule-based baseline to the v13 model-led experiment. It includes Chrome/WebLLM selection, verbatim ingredient extraction, direct global material destinations, separate bounded graph correction, numeric/source checks, refreshed diagnostic snapshots and documented failed browser runs. The old cooking-specific runtime modules are removed; the earlier working baseline remains available under `working-rules-v11`.
+
+Validation: 112 automated tests cover structural contracts, orchestration, adapters and cancellation. They do not establish semantic recipe accuracy. The latest observed v12 WebLLM run failed graph validation; v13 still needs real-browser evaluation. This checkpoint is not labeled a working or accuracy-validated release.

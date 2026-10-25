@@ -1,8 +1,18 @@
+import {assertNumericFidelity} from './numericFidelity.js';
 import { validateShape, validateRecipe } from './validateRecipe.js';
-const strings = { type: 'array', items: { type: 'string' } };
-export const INGREDIENT_SCHEMA = { type: 'object', properties: { title: { type: 'string' }, ingredients: strings }, required: ['title', 'ingredients'], additionalProperties: false };
-export function actionSchema(passages) {
-  return { type: 'object', properties: { passage_ids: { type: 'array', items: { type: 'string', enum: passages.map(p => p.id) } } }, required: ['passage_ids'], additionalProperties: false };
+const string = { type:'string' };
+const object = properties => ({type:'object', properties, required:Object.keys(properties), additionalProperties:false});
+export const INGREDIENT_SCHEMA = object({title:string,ingredients:{type:'array',items:object({text:string,role:string})}});
+export const ACTION_SCHEMA = object({setup:{type:'array',items:object({text:string,source:string})},preparations:{type:'array',items:object({ingredient_id:string,text:string,source:string})},actions:{type:'array',items:object({action:string,source:string})}});
+// Runtime planning does not ask the model to guess which operations fit a
+// one-ingredient preparation cell before their dependencies are known.
+export const OPERATION_SCHEMA = object({setup:ACTION_SCHEMA.properties.setup, actions:ACTION_SCHEMA.properties.actions});
+export function acceptOperationPlan(data, source, inventory) {
+  // Accept empty legacy preparations for callers replaying older empty plans.
+  const {preparations = [], ...plan} = data;
+  if (!Array.isArray(preparations) || preparations.length) throw Error('Put every food preparation into actions, with its own source excerpt. Do not attach operations to an ingredient.');
+  validateShape(plan, OPERATION_SCHEMA);
+  return acceptActions({...plan, preparations:[]}, source, inventory);
 }
 export function connectionSchema(inventory, actions) {
   const ids = [...inventory.ingredients, ...actions.steps].map(n => n.id);
@@ -25,22 +35,46 @@ function quote(text, source, label) {
 }
 export function acceptIngredients(data, source) {
   validateShape(data, INGREDIENT_SCHEMA);
-  if (!data.ingredients.length || data.ingredients.length > 150) throw new Error('Extract 1–150 source ingredients.');
-  return { title: data.title.trim() ? quote(data.title, source, 'Title') : 'Recipe', ingredients: data.ingredients.map((text, i) => ({ id: `ing_${i + 1}`, text: quote(text, source, `Ingredient ${i + 1}`), prep: '' })) };
+  if (!data.ingredients.length || data.ingredients.length > 150) throw Error('Extract 1–150 ingredient uses.');
+  const context = {};
+  const ingredients = data.ingredients.map((entry,i)=>{
+    const id=`ing_${i+1}`;
+    if(!entry.text.trim()) throw Error(`${id}: ingredient text is empty.`);
+    context[id]={source:quote(entry.text,source,`${id} ingredient`),role:entry.role.trim()};
+    return {id,text:entry.text.trim(),prep:''};
+  });
+  return {title:data.title.trim() || 'Recipe',ingredients,context};
 }
-export function acceptActions(data, passages) {
-  validateShape(data, actionSchema(passages));
-  if (!data.passage_ids.length || data.passage_ids.length > 100) throw new Error('Select 1–100 source passages for cooking actions.');
-  const selected = new Set();
-  const known = new Set(passages.map(p => p.id));
-  for (const id of data.passage_ids) {
-    if (!known.has(id)) throw new Error(`Unknown source passage: ${id}. Select only supplied passage IDs.`);
-    if (selected.has(id)) throw new Error(`Duplicate source passage: ${id}. Select each passage only once.`);
-    selected.add(id);
+export function acceptActions(data, source, inventory = {ingredients:[]}) {
+  validateShape(data, ACTION_SCHEMA);
+  if(!data.actions.length || data.actions.length>100) throw Error('Extract 1–100 cooking actions.');
+  if(data.setup.length>50 || data.preparations.length>inventory.ingredients.length) throw Error('Too many setup or preparation entries.');
+  const known=new Set(inventory.ingredients.map(n=>n.id)), preparations={}, setupSources=[];
+  const setup=data.setup.map((entry,i)=>{
+    if(!entry.text.trim()) throw Error('Empty setup instruction.');
+    setupSources.push(quote(entry.source,source,`setup ${i+1} source`));
+    assertNumericFidelity(entry.text, entry.source);
+    return entry.text.trim();
+  });
+  for(const entry of data.preparations) {
+    if(!known.has(entry.ingredient_id)) throw Error(`Unknown preparation ingredient: ${entry.ingredient_id}`);
+    if(Object.hasOwn(preparations,entry.ingredient_id)) throw Error(`Duplicate preparation ingredient: ${entry.ingredient_id}`);
+    if(!entry.text.trim()) throw Error('Empty preparation instruction.');
+    assertNumericFidelity(entry.text, entry.source);
+    preparations[entry.ingredient_id]={text:entry.text.trim(),source:quote(entry.source,source,'preparation source')};
   }
-  // Selection order cannot rewrite the source's sequence. No generated action text is accepted.
-  const chosen = passages.filter(p => selected.has(p.id));
-  return { setup: [], steps: chosen.map((p, i) => ({ id: `step_${i + 1}`, action: p.text })) };
+  const context={};
+  const steps=data.actions.map((entry,i)=>{
+    const id=`step_${i+1}`;
+    if(!entry.action.trim()) throw Error(`${id}: action text is empty.`);
+    context[id]={source:quote(entry.source,source,`${id} source`)};
+    assertNumericFidelity(entry.action, entry.source);
+    return {id,action:entry.action.trim()};
+  });
+  return {setup,steps,context,preparations,setupSources};
+}
+export function applyPreparations(inventory, actions) {
+  return {...inventory,ingredients:inventory.ingredients.map(n=>({...n,prep:actions.preparations?.[n.id]?.text || n.prep}))};
 }
 export function assembleRecipe(inventory, actions, data) {
   validateShape(data, connectionSchema(inventory, actions));

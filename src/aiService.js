@@ -1,27 +1,25 @@
-import { procedureBatches, labelChoices, labelSchema, acceptLabels } from './procedureLabels.js';
-import { buildConnectionRequest, actionConnectionSchema, acceptConnection, connectionChoices } from './actionConnections.js';
-import { createActionConnectionGuard, ConnectionOutputError } from './connectionGuard.js';
+import { procedureBatches, labelSchema, acceptLabels } from './procedureLabels.js';
+import { createGraphSelectionGuard, graphSelectionSchema, acceptGraphSelection, buildConnectionRequest, actionConnectionSchema, acceptConnection, createSelectionGuard } from './actionConnections.js';
+import { ConnectionOutputError } from './connectionGuard.js';
 import { SYSTEM_PROMPTS } from './systemPrompt.js';
-import { INGREDIENT_SCHEMA, actionSchema, acceptIngredients, acceptActions, assembleRecipe } from './recipeExtraction.js';
-import { sourcePassages } from './sourcePassages.js';
-import { cookingPassages } from './cookingPassages.js';
-import { prepareIngredientUses } from './ingredientUses.js';
+import { INGREDIENT_SCHEMA, OPERATION_SCHEMA, acceptIngredients, acceptOperationPlan, applyPreparations, assembleRecipe } from './recipeExtraction.js';
 import { createOutputGuard, WhitespaceLoopError } from './outputGuard.js';
 
 // Checking the local model availability is a quick way to detect whether
-// the local AI is exposed in this browser. 
+// the local AI is exposed in this browser.
 // It does not guarantee that the model will successfully complete a conversion
 //  request, but it is a good first check.
+
 const SAMPLING_OPTIONS = { samplingMode: 'most-predictable' };
 export async function availability(api = globalThis.LanguageModel) {
   return api ? api.availability(SAMPLING_OPTIONS) : 'missing';
 }
 
 
-const labels = { ingredients: 'Extracting ingredients', actions: 'Selecting cooking passages', connections: 'Connecting ingredients and actions' };
+const labels = { ingredients: 'Extracting ingredients', actions: 'Interpreting cooking actions', review: 'Reviewing the action plan', connections: 'Connecting ingredients and actions' };
 export async function convertRecipe(text, {
-  signal, onProgress = () => {}, onPhase = () => {}, onDiagnostic = () => {}, api = globalThis.LanguageModel,
-  simplifyProcedures = true, onProcedureLabels = () => {},
+  engineName = 'Chrome', signal, onProgress = () => {}, onPhase = () => {}, onDiagnostic = () => {}, api = globalThis.LanguageModel,
+  reviewActions = true, reviewGraph = true, simplifyProcedures = true, onProcedureLabels = () => {},
   initializationTimeoutMs = 120000, inferenceTimeoutMs = 180000
 } = {}) {
   if (!api) throw Error('Chrome local AI is not exposed in this browser. Try Demo or Manual JSON.');
@@ -31,7 +29,7 @@ export async function convertRecipe(text, {
   signal?.addEventListener('abort', abort, { once: true });
   let session, timeout, ticker, phase = 'initializing', stage = 'ingredients', activeAttempt = 0;
   let stageLabel = labels.ingredients;
-  let receivedChars = 0, receivedChunks = 0, correctionUsed = false, correcting = false, inferenceStarted = false;
+  let receivedChars = 0, receivedChunks = 0, correctionUsed = false, graphCorrectionUsed = false, correcting = false, inferenceStarted = false;
   const started = Date.now();
   const report = (type, detail = {}) => onDiagnostic({ type, elapsedMs: Date.now() - started, stage, ...detail });
   function arm(ms, message) {
@@ -49,7 +47,7 @@ export async function convertRecipe(text, {
     });
   }
   function destroy() { if (session) { const current = session; session = null; current.destroy(); } }
-  const startupMessage = 'Chrome did not finish initializing the local model. Inspect chrome://on-device-internals, then retry. Demo and Manual JSON are still available.';
+  const startupMessage = 'The local engine did not finish initializing. Check model download, network and available device memory, then retry. Demo and Manual JSON are still available.';
   const limit = inferenceTimeoutMs % 60000 === 0 ? `${inferenceTimeoutMs / 60000} minutes` : `${inferenceTimeoutMs / 1000} seconds`;
   async function openSession() {
     phase = inferenceStarted ? 'stage-initializing' : 'initializing';
@@ -67,7 +65,7 @@ export async function convertRecipe(text, {
     if (task.signal.aborted) { session = null; task.signal.throwIfAborted(); }
     if (!inferenceStarted) {
       inferenceStarted = true;
-      arm(inferenceTimeoutMs, () => `${stageLabel}${correcting ? ' (correction)' : ''} timed out within the shared ${limit} conversion limit. ${correctionUsed ? 'One stage correction was used.' : 'No correction was started.'} Inspect the diagnostic report or use Manual JSON.`);
+      arm(inferenceTimeoutMs, () => `${stageLabel}${correcting ? ' (correction)' : ''} timed out within the shared ${limit} conversion limit. ${correctionUsed || graphCorrectionUsed ? 'A correction was used.' : 'No correction was started.'} Inspect the diagnostic report or use Manual JSON.`);
     }
     report('ready', { streaming: typeof session.promptStreaming === 'function' });
   }
@@ -93,6 +91,7 @@ export async function convertRecipe(text, {
           if (!value.length) continue;
           result += value; receivedChars = result.length; receivedChunks++;
           report('output', { attempt: activeAttempt, text: result, chars: receivedChars, chunks: receivedChunks, attemptElapsedMs: Date.now() - attemptStarted });
+          if (result.length > 40000) throw Error('Model response exceeded the 40,000-character application limit.');
           guard(value);
           connectionGuard?.(value);
         }
@@ -103,6 +102,8 @@ export async function convertRecipe(text, {
     } else {
       result = await wait(session.prompt(prompt, options));
       if (typeof result !== 'string') throw new Error('The local model returned a non-text response.');
+      if (result.length > 40000) throw Error('Model response exceeded the 40,000-character application limit.');
+      guard(result);
       receivedChars = result.length;
     }
     task.signal.throwIfAborted();
@@ -112,26 +113,29 @@ export async function convertRecipe(text, {
   }
   async function runStage(name, schema, input, accept, makeGuard, label = labels[name]) {
     stage = name; stageLabel = label; correcting = false;
-    let feedback = '';
+    let feedback = '', previousResponse;
     while (true) {
       task.signal.throwIfAborted();
       await openSession();
-      const prompt = JSON.stringify({ ...input, ...(feedback ? { correction: feedback } : {}) });
+      const prompt = JSON.stringify({ ...input, ...(feedback ? { correction: feedback, ...(name === 'graphReview' && previousResponse ? {previous_response:previousResponse} : {}) } : {}) });
       // Transport, timeout, whitespace and output-limit failures are not retried.
       let accepted, validating = false;
       try {
         const response = await generate(prompt, schema, makeGuard?.());
         validating = true;
         phase = 'validating'; report('validating', { label: stageLabel });
+        previousResponse = response;
         accepted = accept(JSON.parse(response));
       } catch (error) {
         if (!validating && !(error instanceof ConnectionOutputError)) throw error;
         report('invalid', { message: error.message });
         destroy();
-        if (correctionUsed) throw new Error(`${stageLabel} failed validation; the single stage correction has been used: ${error.message} Inspect the output snapshot or use Manual JSON.`, { cause: error });
-        correctionUsed = true; correcting = true;
+        const graphStage = name === 'graphReview';
+        if (graphStage ? graphCorrectionUsed : correctionUsed) throw new Error(`${stageLabel} failed validation; the ${graphStage ? 'graph correction' : 'single stage correction'} has been used: ${error.message} Inspect the output snapshot or use Manual JSON.`, { cause: error });
+        if(graphStage) graphCorrectionUsed=true; else correctionUsed=true;
+        correcting = true;
         feedback = `The previous response failed validation: ${error.message} Correct ONLY this stage using the original source and fixed data in this request. Do not invent or rewrite quantities. Return the complete JSON for only this request.`;
-        report('correction', { label: stageLabel });
+        report('correction', { label: stageLabel, budget:name === 'graphReview' ? 'graph' : 'extraction' });
         continue;
       }
       report('stage-validated', { label: stageLabel });
@@ -140,35 +144,43 @@ export async function convertRecipe(text, {
     }
   }
   try {
-    report('initializing', { sourceChars: text.length, pipeline: 'staged-v11-procedure-labels', schemaGuidance: true });
+    report('initializing', { sourceChars: text.length, pipeline: 'model-led-v13-direct-graph', schemaGuidance: true });
     onPhase('Preparing local model…'); arm(initializationTimeoutMs, startupMessage);
     ticker = setInterval(() => {
       if (!task.signal.aborted) onPhase(`${stageLabel}${correcting ? ' · correction' : ''}… ${Math.floor((Date.now() - started) / 1000)}s elapsed. Cancel remains available.`);
     }, 5000);
     // runStage reaches create() before its first await, preserving click activation.
-    const extractedInventory = await runStage('ingredients', INGREDIENT_SCHEMA, { source: text }, data => acceptIngredients(data, text));
-    const passages = sourcePassages(text);
-    report('passages', { passages });
-    const { eligible } = cookingPassages(passages, extractedInventory);
-    if (!eligible.length) throw new Error('No cooking passages remain after excluding the ingredient list and headings. Include the preparation instructions or use Manual JSON.');
-    const actions = await runStage('actions', actionSchema(eligible), { passages: eligible.map(({ id, text }) => ({ id, text })) }, data => acceptActions(data, eligible));
-    const inventory = prepareIngredientUses(extractedInventory, actions, text);
-    const rows = [];
-    for (let i = 0; i < actions.steps.length; i++) {
-      const request = buildConnectionRequest(inventory, actions, rows);
-      stage = 'connections';
-      report('connection', { request });
-      const row = await runStage('connections', actionConnectionSchema(request), request, data => {
-        const inputs = acceptConnection(data, request);
-        // Check the entire graph inside the bounded correction path before
-        // accepting the last row. Earlier successful rows stay frozen.
-        if (i === actions.steps.length - 1) assembleRecipe(inventory, actions, { inputs: [...rows, inputs] });
-        return inputs;
-      }, () => createActionConnectionGuard(connectionChoices(request)), `Connecting action ${i + 1} of ${actions.steps.length}`);
-      rows.push(row);
-      report('connection-validated', { completed: rows.length, total: actions.steps.length });
+    let inventory = await runStage('ingredients', INGREDIENT_SCHEMA, { source: text }, data => acceptIngredients(data, text));
+    report('interpretation', { label:'Ingredients and roles', data:inventory });
+    let actions = await runStage('actions', OPERATION_SCHEMA, { source:text, ingredients:inventory.ingredients, roles:inventory.context }, data => acceptOperationPlan(data,text,inventory));
+    report('interpretation', {label:'Draft action plan',data:actions});
+    if(reviewActions) actions = await runStage('review',OPERATION_SCHEMA,
+      {source:text,ingredients:inventory.ingredients,roles:inventory.context,draft:actions},
+      data=>acceptOperationPlan(data,text,inventory));
+    inventory = applyPreparations(inventory,actions);
+    report('interpretation', { label:'Setup and cooking operations', data:actions });
+    let recipe;
+    if(reviewGraph) {
+      const globalRequest={source:text,ingredients:inventory.ingredients,roles:inventory.context,
+        setup:actions.setup,actions:actions.steps,source_excerpts:actions.context,
+        required_input_ids:graphSelectionSchema(inventory,actions).required};
+      report('graph-request', {request:globalRequest});
+      recipe=await runStage('graphReview',graphSelectionSchema(inventory,actions),globalRequest,
+        data=>acceptGraphSelection(data,inventory,actions),()=>createGraphSelectionGuard(inventory,actions),
+        'Interpreting the complete graph from source');
+      report('interpretation', {label:'Reviewed graph',data:recipe});
+    } else {
+      // Legacy sequential mode retained for focused protocol tests.
+      const rows=[];
+      for(let i=0;i<actions.steps.length;i++) {
+        const request=buildConnectionRequest(inventory,actions,rows);
+        report('connection',{request:{...request,source:text}});
+        rows.push(await runStage('connections',actionConnectionSchema(request),{...request,source:text},
+          data=>acceptConnection(data,request),()=>createSelectionGuard(request),`Connecting action ${i+1} of ${actions.steps.length}`));
+        report('connection-validated',{completed:rows.length,total:actions.steps.length});
+      }
+      recipe=assembleRecipe(inventory,actions,{inputs:rows});
     }
-    const recipe = assembleRecipe(inventory, actions, { inputs: rows });
     if (simplifyProcedures) {
       const batches = procedureBatches(recipe), labels = {};
       stage = 'simplification'; correcting = false;
@@ -176,8 +188,9 @@ export async function convertRecipe(text, {
       for (let i = 0; i < batches.length; i++) {
         stageLabel = `Shortening procedure labels ${i + 1} of ${batches.length}`;
         try {
+          report('label-request', { procedures: batches[i] });
           await openSession();
-          const response = await generate(JSON.stringify({ procedures: batches[i] }), labelSchema(batches[i]), createActionConnectionGuard(labelChoices(batches[i])));
+          const response = await generate(JSON.stringify({ procedures: batches[i] }), labelSchema(batches[i]));
           Object.assign(labels, acceptLabels(JSON.parse(response), batches[i]));
         } catch (error) {
           task.signal.throwIfAborted();
@@ -187,6 +200,7 @@ export async function convertRecipe(text, {
         } finally { destroy(); }
       }
       onProcedureLabels(labels);
+      report('generated-labels', { labels });
       report('simplification-complete', { shortened: Object.keys(labels).length });
     }
     report('validated');
@@ -195,7 +209,7 @@ export async function convertRecipe(text, {
     const originalMessage = error.message || String(error);
     const outputLimited = /response exceeded output limits|output (?:token )?limit.*truncat/i.test(originalMessage);
     const requestInvalid = phase === 'generating' && receivedChars === 0 && /request is invalid.*input or options could not be processed/i.test(originalMessage);
-    const failure = requestInvalid ? new Error(`Chrome rejected the request while ${stageLabel.toLowerCase()} before returning any output. The request or its options could not be processed; this is not a repetition or timeout failure. Inspect the diagnostic report. No correction was started for this request error.`, { cause: error }) : outputLimited ? new Error(`Chrome reached its response-length limit during ${stageLabel.toLowerCase()}. ${receivedChars.toLocaleString()} characters were received. Increasing the time limit will not fix this. Inspect the output snapshot; no incomplete recipe was applied.`, { cause: error }) : error;
+    const failure = requestInvalid ? new Error(`${engineName} rejected the request while ${stageLabel.toLowerCase()} before returning any output. The request or its options could not be processed; this is not a repetition or timeout failure. Inspect the diagnostic report. No correction was started for this request error.`, { cause: error }) : outputLimited ? new Error(`${engineName} reached its response-length limit during ${stageLabel.toLowerCase()}. ${receivedChars.toLocaleString()} characters were received. Increasing the time limit will not fix this. Inspect the output snapshot; no incomplete recipe was applied.`, { cause: error }) : error;
     report('failed', { message: failure.message || String(failure), originalMessage, errorName: error.name || 'Error',
       category: error instanceof ConnectionOutputError || error.cause instanceof ConnectionOutputError ? 'connection-invalid' : requestInvalid ? 'request-invalid' : error instanceof WhitespaceLoopError ? 'whitespace-loop' : outputLimited ? 'output-limit' : 'other', phase,
       attempt: activeAttempt, chars: receivedChars, chunks: receivedChunks });

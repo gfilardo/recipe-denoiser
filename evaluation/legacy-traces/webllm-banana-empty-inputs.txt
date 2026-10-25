@@ -1,0 +1,3526 @@
+--- Run configuration ---
+Conversion limit: 30 minutes (shared by extraction, provisional linking, global graph review, procedure labels with at most one response correction). Backend: webllm. Model: Qwen2.5-7B-Instruct-q4f16_1-MLC. Settings: {"temperature":0,"contextWindow":16384,"maxTokens":4096,"runtime":"0.2.86"}. Browser: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36. Source: 986 characters. Pipeline: model-led-v12-ingredient-quotes. Schema guidance: enabled. Per-request sizes appear in the history; these are characters, not tokens.
+
+--- Status and timing history ---
+Interpreting the complete graph from source failed validation; the single stage correction has been used: step_1: needs at least one input. Inspect the output snapshot or use Manual JSON.
+0.0s · Conversion requested.
+0.0s · Preparing local model.
+0.0s · Preparing a fresh session for extracting ingredients.
+0.8s · Model download: 0%.
+2.5s · Model download: 29%.
+3.5s · Model download: 51%.
+4.9s · Model download: 75%.
+6.2s · Model download: 100%.
+6.3s · Model session ready.
+6.3s · Extracting ingredients: response requested. Prompt: 1016 characters; instructions: 1369; schema: 300.
+13.9s · First output received 7.6s after this attempt started.
+31.8s · Response complete in 25.5s · 594 characters.
+31.8s · Validating extracting ingredients.
+31.8s · Extracting ingredients: validation passed.
+31.8s · Ingredients and roles: model output accepted structurally; meaning requires review.
+31.8s · Preparing a fresh session for interpreting cooking actions.
+31.8s · Model session ready.
+31.8s · Interpreting cooking actions: response requested. Prompt: 2298 characters; instructions: 1104; schema: 450.
+50.1s · First output received 18.3s after this attempt started.
+107.6s · Response complete in 75.9s · 1610 characters.
+107.6s · Validating interpreting cooking actions.
+107.6s · Validation failed: setup 1 source: wording or numbers do not match the source. Copy the source phrase verbatim.
+107.6s · Using the single conversion correction for interpreting cooking actions. Accepted earlier work stays unchanged.
+107.6s · Preparing a fresh session for interpreting cooking actions.
+107.6s · Model session ready.
+107.6s · Interpreting cooking actions · correction: response requested. Prompt: 2614 characters; instructions: 1104; schema: 450.
+130.9s · First output received 23.3s after this attempt started.
+301.1s · Response complete in 193.4s · 3102 characters.
+301.1s · Validating interpreting cooking actions.
+301.1s · Interpreting cooking actions: validation passed.
+301.1s · Draft action plan: model output accepted structurally; meaning requires review.
+301.1s · Preparing a fresh session for reviewing the action plan.
+301.1s · Model session ready.
+301.1s · Reviewing the action plan: response requested. Prompt: 5461 characters; instructions: 692; schema: 450.
+353.2s · First output received 52.1s after this attempt started.
+529.5s · Response complete in 228.4s · 3353 characters.
+529.5s · Validating reviewing the action plan.
+529.5s · Reviewing the action plan: validation passed.
+529.5s · Setup and cooking operations: model output accepted structurally; meaning requires review.
+529.5s · Preparing a fresh session for drafting inputs for action 1 of 9.
+529.5s · Model session ready.
+529.5s · Drafting inputs for action 1 of 9: response requested. Prompt: 4176 characters; instructions: 884; schema: 231.
+564.4s · First output received 34.9s after this attempt started.
+571.6s · Response complete in 42.1s · 105 characters.
+571.6s · Validating drafting inputs for action 1 of 9.
+571.6s · Drafting inputs for action 1 of 9: validation passed.
+571.6s · Provisional input sets drafted: 1 of 9.
+571.6s · Preparing a fresh session for drafting inputs for action 2 of 9.
+571.6s · Model session ready.
+571.6s · Drafting inputs for action 2 of 9: response requested. Prompt: 4485 characters; instructions: 884; schema: 240.
+609.6s · First output received 38.1s after this attempt started.
+617.1s · Response complete in 45.5s · 176 characters.
+617.1s · Validating drafting inputs for action 2 of 9.
+617.1s · Drafting inputs for action 2 of 9: validation passed.
+617.1s · Provisional input sets drafted: 2 of 9.
+617.1s · Preparing a fresh session for drafting inputs for action 3 of 9.
+617.1s · Model session ready.
+617.1s · Drafting inputs for action 3 of 9: response requested. Prompt: 4788 characters; instructions: 884; schema: 249.
+660.5s · First output received 43.4s after this attempt started.
+668.4s · Response complete in 51.3s · 96 characters.
+668.4s · Validating drafting inputs for action 3 of 9.
+668.4s · Drafting inputs for action 3 of 9: validation passed.
+668.4s · Provisional input sets drafted: 3 of 9.
+668.4s · Preparing a fresh session for drafting inputs for action 4 of 9.
+668.4s · Model session ready.
+668.4s · Drafting inputs for action 4 of 9: response requested. Prompt: 5096 characters; instructions: 884; schema: 258.
+716.6s · First output received 48.2s after this attempt started.
+724.8s · Response complete in 56.4s · 105 characters.
+724.8s · Validating drafting inputs for action 4 of 9.
+724.8s · Drafting inputs for action 4 of 9: validation passed.
+724.8s · Provisional input sets drafted: 4 of 9.
+724.8s · Preparing a fresh session for drafting inputs for action 5 of 9.
+724.8s · Model session ready.
+724.8s · Drafting inputs for action 5 of 9: response requested. Prompt: 5480 characters; instructions: 884; schema: 267.
+776.3s · First output received 51.5s after this attempt started.
+784.6s · Response complete in 59.8s · 105 characters.
+784.6s · Validating drafting inputs for action 5 of 9.
+784.6s · Drafting inputs for action 5 of 9: validation passed.
+784.6s · Provisional input sets drafted: 5 of 9.
+784.6s · Preparing a fresh session for drafting inputs for action 6 of 9.
+784.6s · Model session ready.
+784.6s · Drafting inputs for action 6 of 9: response requested. Prompt: 5877 characters; instructions: 884; schema: 276.
+840.0s · First output received 55.4s after this attempt started.
+848.4s · Response complete in 63.9s · 105 characters.
+848.4s · Validating drafting inputs for action 6 of 9.
+848.4s · Drafting inputs for action 6 of 9: validation passed.
+848.4s · Provisional input sets drafted: 6 of 9.
+848.4s · Preparing a fresh session for drafting inputs for action 7 of 9.
+848.4s · Model session ready.
+848.4s · Drafting inputs for action 7 of 9: response requested. Prompt: 6248 characters; instructions: 884; schema: 285.
+907.0s · First output received 58.6s after this attempt started.
+915.7s · Response complete in 67.2s · 105 characters.
+915.7s · Validating drafting inputs for action 7 of 9.
+915.7s · Drafting inputs for action 7 of 9: validation passed.
+915.7s · Provisional input sets drafted: 7 of 9.
+915.7s · Preparing a fresh session for drafting inputs for action 8 of 9.
+915.7s · Model session ready.
+915.7s · Drafting inputs for action 8 of 9: response requested. Prompt: 6685 characters; instructions: 884; schema: 294.
+982.7s · First output received 67.0s after this attempt started.
+991.2s · Response complete in 75.5s · 96 characters.
+991.2s · Validating drafting inputs for action 8 of 9.
+991.2s · Drafting inputs for action 8 of 9: validation passed.
+991.2s · Provisional input sets drafted: 8 of 9.
+991.2s · Preparing a fresh session for drafting inputs for action 9 of 9.
+991.2s · Model session ready.
+991.2s · Drafting inputs for action 9 of 9: response requested. Prompt: 7110 characters; instructions: 884; schema: 303.
+1059.7s · First output received 68.4s after this attempt started.
+1068.3s · Response complete in 77.0s · 96 characters.
+1068.3s · Validating drafting inputs for action 9 of 9.
+1068.3s · Drafting inputs for action 9 of 9: validation passed.
+1068.3s · Provisional input sets drafted: 9 of 9.
+1068.3s · Local model interpreting the complete graph from source; drafts retained only as diagnostic evidence.
+1068.3s · Preparing a fresh session for interpreting the complete graph from source.
+1068.3s · Model session ready.
+1068.3s · Interpreting the complete graph from source: response requested. Prompt: 5047 characters; instructions: 1523; schema: 2000.
+1119.9s · First output received 51.6s after this attempt started.
+1168.6s · Response complete in 100.3s · 433 characters.
+1168.6s · Validating interpreting the complete graph from source.
+1168.6s · Validation failed: step_1: needs at least one input.
+1168.6s · Model operation stopped during graphReview / validating: Interpreting the complete graph from source failed validation; the single stage correction has been used: step_1: needs at least one input. Inspect the output snapshot or use Manual JSON.
+1168.6s · Browser error (Error): Interpreting the complete graph from source failed validation; the single stage correction has been used: step_1: needs at least one input. Inspect the output snapshot or use Manual JSON.
+1168.6s · Attempt 14: 433 characters in 209 streamed chunks received; category: other.
+1168.6s · Interpreting the complete graph from source failed validation; the single stage correction has been used: step_1: needs at least one input. Inspect the output snapshot or use Manual JSON.
+
+--- Ingredients and roles (model interpretation) ---
+{
+  "title": "Banana Nut Bread",
+  "ingredients": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": ""
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": ""
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": ""
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": ""
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": ""
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": ""
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": ""
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": ""
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": ""
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": ""
+    }
+  ],
+  "context": {
+    "ing_1": {
+      "source": "2 large (250 g) ripe bananas",
+      "role": "banana"
+    },
+    "ing_2": {
+      "source": "6 Tbs. (90 mL) butter",
+      "role": "butter"
+    },
+    "ing_3": {
+      "source": "1 tsp. (5 mL) vanilla extract",
+      "role": "vanilla extract"
+    },
+    "ing_4": {
+      "source": "2 large eggs",
+      "role": "eggs"
+    },
+    "ing_5": {
+      "source": "1-1/3 cups (167 g) all-purpose flour",
+      "role": "flour"
+    },
+    "ing_6": {
+      "source": "2/3 cup (130 g) sugar",
+      "role": "sugar"
+    },
+    "ing_7": {
+      "source": "1/2 tsp. (2.3 g) baking soda",
+      "role": "baking soda"
+    },
+    "ing_8": {
+      "source": "1/4 tsp. (1.2 g) baking powder",
+      "role": "baking powder"
+    },
+    "ing_9": {
+      "source": "1/2 tsp. (3 g) salt",
+      "role": "salt"
+    },
+    "ing_10": {
+      "source": "1/2 cup (70 g) chopped walnuts",
+      "role": "walnuts"
+    }
+  }
+}
+
+--- Draft action plan (model interpretation) ---
+{
+  "setup": [
+    "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+  ],
+  "steps": [
+    {
+      "id": "step_1",
+      "action": "complete instruction"
+    }
+  ],
+  "context": {
+    "step_1": {
+      "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  },
+  "preparations": {},
+  "setupSources": [
+    "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+  ]
+}
+
+--- Setup and cooking operations (model interpretation) ---
+{
+  "setup": [
+    "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+  ],
+  "steps": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan"
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas"
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter"
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs"
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs"
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl"
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts"
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)"
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely"
+    }
+  ],
+  "context": {
+    "step_1": {
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    "step_2": {
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    "step_3": {
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    "step_4": {
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    "step_5": {
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    "step_6": {
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    "step_7": {
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    "step_8": {
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    "step_9": {
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  },
+  "preparations": {},
+  "setupSources": [
+    "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+  ]
+}
+
+--- Provisional graph evidence (not supplied to global model) (model interpretation) ---
+{
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack.",
+  "ingredients": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": ""
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": ""
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": ""
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": ""
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": ""
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": ""
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": ""
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": ""
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": ""
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": ""
+    }
+  ],
+  "roles": {
+    "ing_1": {
+      "source": "2 large (250 g) ripe bananas",
+      "role": "banana"
+    },
+    "ing_2": {
+      "source": "6 Tbs. (90 mL) butter",
+      "role": "butter"
+    },
+    "ing_3": {
+      "source": "1 tsp. (5 mL) vanilla extract",
+      "role": "vanilla extract"
+    },
+    "ing_4": {
+      "source": "2 large eggs",
+      "role": "eggs"
+    },
+    "ing_5": {
+      "source": "1-1/3 cups (167 g) all-purpose flour",
+      "role": "flour"
+    },
+    "ing_6": {
+      "source": "2/3 cup (130 g) sugar",
+      "role": "sugar"
+    },
+    "ing_7": {
+      "source": "1/2 tsp. (2.3 g) baking soda",
+      "role": "baking soda"
+    },
+    "ing_8": {
+      "source": "1/4 tsp. (1.2 g) baking powder",
+      "role": "baking powder"
+    },
+    "ing_9": {
+      "source": "1/2 tsp. (3 g) salt",
+      "role": "salt"
+    },
+    "ing_10": {
+      "source": "1/2 cup (70 g) chopped walnuts",
+      "role": "walnuts"
+    }
+  },
+  "setup": [
+    "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+  ],
+  "actions": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan"
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas"
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter"
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs"
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs"
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl"
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts"
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)"
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely"
+    }
+  ],
+  "source_excerpts": {
+    "step_1": {
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    "step_2": {
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    "step_3": {
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    "step_4": {
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    "step_5": {
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    "step_6": {
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    "step_7": {
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    "step_8": {
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    "step_9": {
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  },
+  "draft": {
+    "inputs": [
+      [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ],
+      [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ],
+      [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ],
+      [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ],
+      [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ],
+      [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ],
+      [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ],
+      [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ],
+      [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    ]
+  },
+  "required_action_ids": [
+    "step_1",
+    "step_2",
+    "step_3",
+    "step_4",
+    "step_5",
+    "step_6",
+    "step_7",
+    "step_8",
+    "step_9"
+  ],
+  "draft_failure": null,
+  "undrafted_action_ids": [],
+  "draft_structural_issue": "ing_1: used more than once. Shared dependencies are unsupported; do not duplicate quantities."
+}
+
+--- Extracting ingredients · 594 characters ---
+{"title":"Banana Nut Bread","ingredients":[{"text":"2 large (250 g) ripe bananas","role":"banana"},{"text":"6 Tbs. (90 mL) butter","role":"butter"},{"text":"1 tsp. (5 mL) vanilla extract","role":"vanilla extract"},{"text":"2 large eggs","role":"eggs"},{"text":"1-1/3 cups (167 g) all-purpose flour","role":"flour"},{"text":"2/3 cup (130 g) sugar","role":"sugar"},{"text":"1/2 tsp. (2.3 g) baking soda","role":"baking soda"},{"text":"1/4 tsp. (1.2 g) baking powder","role":"baking powder"},{"text":"1/2 tsp. (3 g) salt","role":"salt"},{"text":"1/2 cup (70 g) chopped walnuts","role":"walnuts"}]}
+
+--- Interpreting cooking actions · 1610 characters ---
+{"setup":[{"text":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C).","source":"Banana Nut Bread recipe"}],"actions":[{"action":"mash the bananas","source":"Mash the bananas."},{"action":"melt the butter","source":"Melt the butter."},{"action":"lightly beat the eggs","source":"Lightly beat the eggs."},{"action":"combine the mashed bananas, melted butter, vanilla extract, and lightly beaten eggs","source":"Combine the mashed bananas, melted butter, vanilla extract, and lightly beaten eggs."},{"action":"whisk the flour, sugar, baking soda, baking powder, and salt in a separate bowl","source":"Whisk the flour, sugar, baking soda, baking powder, and salt in a separate bowl."},{"action":"fold the combined wet mixture into the dry mixture along with the chopped walnuts","source":"Fold the combined wet mixture into the dry mixture along with the chopped walnuts."},{"action":"bake at 350°F for 55 minutes","source":"Bake at 350°F for 55 minutes."},{"action":"cool for 10 minutes in the pan, then turn out and cool on a wire rack","source":"Cool for 10 minutes in the pan, then turn out and cool on a wire rack."}]}
+
+--- Interpreting cooking actions · correction · 3102 characters ---
+{"setup":[{"text":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack.","source":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."}],"actions":[{"action":"complete instruction","source":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."}]}
+
+--- Reviewing the action plan · 3353 characters ---
+{"setup":[{"text":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack.","source":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."}],"actions":[{"action":"butter and flour a loaf pan","source":"Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."},{"action":"mash the bananas","source":"Mash the bananas, melt the butter, and lightly beat the eggs."},{"action":"melt the butter","source":"Mash the bananas, melt the butter, and lightly beat the eggs."},{"action":"lightly beat the eggs","source":"Mash the bananas, melt the butter, and lightly beat the eggs."},{"action":"combine the mashed bananas with the melted butter, vanilla extract, and eggs","source":"Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."},{"action":"whisk the dry ingredients in a separate bowl","source":"In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."},{"action":"fold the wet mixture into the dry mixture along with the chopped walnuts","source":"Fold the wet mixture, dry mixture, and chopped walnuts together."},{"action":"bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)","source":"Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."},{"action":"cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely","source":"Cool for 10 minutes in the pan, then turn out and cool on a wire rack."}]}
+
+--- Context for Drafting inputs for action 1 of 9 ---
+{
+  "current_action": {
+    "id": "step_1",
+    "action": "butter and flour a loaf pan"
+  },
+  "action_number": 1,
+  "action_count": 9,
+  "source_excerpt": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C).",
+  "action_plan": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely",
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  ],
+  "provisional_connections": [],
+  "available_inputs": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large (250 g) ripe bananas",
+        "role": "banana"
+      }
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "6 Tbs. (90 mL) butter",
+        "role": "butter"
+      }
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1 tsp. (5 mL) vanilla extract",
+        "role": "vanilla extract"
+      }
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large eggs",
+        "role": "eggs"
+      }
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1-1/3 cups (167 g) all-purpose flour",
+        "role": "flour"
+      }
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2/3 cup (130 g) sugar",
+        "role": "sugar"
+      }
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (2.3 g) baking soda",
+        "role": "baking soda"
+      }
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/4 tsp. (1.2 g) baking powder",
+        "role": "baking powder"
+      }
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (3 g) salt",
+        "role": "salt"
+      }
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 cup (70 g) chopped walnuts",
+        "role": "walnuts"
+      }
+    }
+  ],
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+}
+
+--- Drafting inputs for action 1 of 9 · 105 characters ---
+{"input_ids":["ing_1","ing_2","ing_3","ing_4","ing_5","ing_6","ing_7","ing_8","ing_9","ing_10"]		       }
+
+--- Context for Drafting inputs for action 2 of 9 ---
+{
+  "current_action": {
+    "id": "step_2",
+    "action": "mash the bananas"
+  },
+  "action_number": 2,
+  "action_count": 9,
+  "source_excerpt": "Mash the bananas, melt the butter, and lightly beat the eggs.",
+  "action_plan": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely",
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  ],
+  "provisional_connections": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "available_inputs": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large (250 g) ripe bananas",
+        "role": "banana"
+      }
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "6 Tbs. (90 mL) butter",
+        "role": "butter"
+      }
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1 tsp. (5 mL) vanilla extract",
+        "role": "vanilla extract"
+      }
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large eggs",
+        "role": "eggs"
+      }
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1-1/3 cups (167 g) all-purpose flour",
+        "role": "flour"
+      }
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2/3 cup (130 g) sugar",
+        "role": "sugar"
+      }
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (2.3 g) baking soda",
+        "role": "baking soda"
+      }
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/4 tsp. (1.2 g) baking powder",
+        "role": "baking powder"
+      }
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (3 g) salt",
+        "role": "salt"
+      }
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 cup (70 g) chopped walnuts",
+        "role": "walnuts"
+      }
+    },
+    {
+      "id": "step_1",
+      "kind": "result",
+      "text": "butter and flour a loaf pan",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+}
+
+--- Drafting inputs for action 2 of 9 · 176 characters ---
+{"input_ids":["ing_1","ing_2","ing_3","ing_4","ing_5","ing_6","ing_7","ing_8","ing_9","ing_10"]                                                                                }
+
+--- Context for Drafting inputs for action 3 of 9 ---
+{
+  "current_action": {
+    "id": "step_3",
+    "action": "melt the butter"
+  },
+  "action_number": 3,
+  "action_count": 9,
+  "source_excerpt": "Mash the bananas, melt the butter, and lightly beat the eggs.",
+  "action_plan": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely",
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  ],
+  "provisional_connections": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "available_inputs": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large (250 g) ripe bananas",
+        "role": "banana"
+      }
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "6 Tbs. (90 mL) butter",
+        "role": "butter"
+      }
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1 tsp. (5 mL) vanilla extract",
+        "role": "vanilla extract"
+      }
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large eggs",
+        "role": "eggs"
+      }
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1-1/3 cups (167 g) all-purpose flour",
+        "role": "flour"
+      }
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2/3 cup (130 g) sugar",
+        "role": "sugar"
+      }
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (2.3 g) baking soda",
+        "role": "baking soda"
+      }
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/4 tsp. (1.2 g) baking powder",
+        "role": "baking powder"
+      }
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (3 g) salt",
+        "role": "salt"
+      }
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 cup (70 g) chopped walnuts",
+        "role": "walnuts"
+      }
+    },
+    {
+      "id": "step_1",
+      "kind": "result",
+      "text": "butter and flour a loaf pan",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "kind": "result",
+      "text": "mash the bananas",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+}
+
+--- Drafting inputs for action 3 of 9 · 96 characters ---
+{"input_ids":["ing_1","ing_2","ing_3","ing_4","ing_5","ing_6","ing_7","ing_8","ing_9","ing_10"]}
+
+--- Context for Drafting inputs for action 4 of 9 ---
+{
+  "current_action": {
+    "id": "step_4",
+    "action": "lightly beat the eggs"
+  },
+  "action_number": 4,
+  "action_count": 9,
+  "source_excerpt": "Mash the bananas, melt the butter, and lightly beat the eggs.",
+  "action_plan": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely",
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  ],
+  "provisional_connections": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "available_inputs": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large (250 g) ripe bananas",
+        "role": "banana"
+      }
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "6 Tbs. (90 mL) butter",
+        "role": "butter"
+      }
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1 tsp. (5 mL) vanilla extract",
+        "role": "vanilla extract"
+      }
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large eggs",
+        "role": "eggs"
+      }
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1-1/3 cups (167 g) all-purpose flour",
+        "role": "flour"
+      }
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2/3 cup (130 g) sugar",
+        "role": "sugar"
+      }
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (2.3 g) baking soda",
+        "role": "baking soda"
+      }
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/4 tsp. (1.2 g) baking powder",
+        "role": "baking powder"
+      }
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (3 g) salt",
+        "role": "salt"
+      }
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 cup (70 g) chopped walnuts",
+        "role": "walnuts"
+      }
+    },
+    {
+      "id": "step_1",
+      "kind": "result",
+      "text": "butter and flour a loaf pan",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "kind": "result",
+      "text": "mash the bananas",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "kind": "result",
+      "text": "melt the butter",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+}
+
+--- Drafting inputs for action 4 of 9 · 105 characters ---
+{"input_ids":["ing_1","ing_2","ing_3","ing_4","ing_5","ing_6","ing_7","ing_8","ing_9","ing_10"]		       }
+
+--- Context for Drafting inputs for action 5 of 9 ---
+{
+  "current_action": {
+    "id": "step_5",
+    "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs"
+  },
+  "action_number": 5,
+  "action_count": 9,
+  "source_excerpt": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.",
+  "action_plan": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely",
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  ],
+  "provisional_connections": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "available_inputs": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large (250 g) ripe bananas",
+        "role": "banana"
+      }
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "6 Tbs. (90 mL) butter",
+        "role": "butter"
+      }
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1 tsp. (5 mL) vanilla extract",
+        "role": "vanilla extract"
+      }
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large eggs",
+        "role": "eggs"
+      }
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1-1/3 cups (167 g) all-purpose flour",
+        "role": "flour"
+      }
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2/3 cup (130 g) sugar",
+        "role": "sugar"
+      }
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (2.3 g) baking soda",
+        "role": "baking soda"
+      }
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/4 tsp. (1.2 g) baking powder",
+        "role": "baking powder"
+      }
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (3 g) salt",
+        "role": "salt"
+      }
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 cup (70 g) chopped walnuts",
+        "role": "walnuts"
+      }
+    },
+    {
+      "id": "step_1",
+      "kind": "result",
+      "text": "butter and flour a loaf pan",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "kind": "result",
+      "text": "mash the bananas",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "kind": "result",
+      "text": "melt the butter",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_4",
+      "kind": "result",
+      "text": "lightly beat the eggs",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+}
+
+--- Drafting inputs for action 5 of 9 · 105 characters ---
+{"input_ids":["ing_1","ing_2","ing_3","ing_4","ing_5","ing_6","ing_7","ing_8","ing_9","ing_10"]		       }
+
+--- Context for Drafting inputs for action 6 of 9 ---
+{
+  "current_action": {
+    "id": "step_6",
+    "action": "whisk the dry ingredients in a separate bowl"
+  },
+  "action_number": 6,
+  "action_count": 9,
+  "source_excerpt": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt.",
+  "action_plan": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely",
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  ],
+  "provisional_connections": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "available_inputs": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large (250 g) ripe bananas",
+        "role": "banana"
+      }
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "6 Tbs. (90 mL) butter",
+        "role": "butter"
+      }
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1 tsp. (5 mL) vanilla extract",
+        "role": "vanilla extract"
+      }
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large eggs",
+        "role": "eggs"
+      }
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1-1/3 cups (167 g) all-purpose flour",
+        "role": "flour"
+      }
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2/3 cup (130 g) sugar",
+        "role": "sugar"
+      }
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (2.3 g) baking soda",
+        "role": "baking soda"
+      }
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/4 tsp. (1.2 g) baking powder",
+        "role": "baking powder"
+      }
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (3 g) salt",
+        "role": "salt"
+      }
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 cup (70 g) chopped walnuts",
+        "role": "walnuts"
+      }
+    },
+    {
+      "id": "step_1",
+      "kind": "result",
+      "text": "butter and flour a loaf pan",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "kind": "result",
+      "text": "mash the bananas",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "kind": "result",
+      "text": "melt the butter",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_4",
+      "kind": "result",
+      "text": "lightly beat the eggs",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_5",
+      "kind": "result",
+      "text": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+}
+
+--- Drafting inputs for action 6 of 9 · 105 characters ---
+{"input_ids":["ing_1","ing_2","ing_3","ing_4","ing_5","ing_6","ing_7","ing_8","ing_9","ing_10"]		       }
+
+--- Context for Drafting inputs for action 7 of 9 ---
+{
+  "current_action": {
+    "id": "step_7",
+    "action": "fold the wet mixture into the dry mixture along with the chopped walnuts"
+  },
+  "action_number": 7,
+  "action_count": 9,
+  "source_excerpt": "Fold the wet mixture, dry mixture, and chopped walnuts together.",
+  "action_plan": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely",
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  ],
+  "provisional_connections": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "available_inputs": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large (250 g) ripe bananas",
+        "role": "banana"
+      }
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "6 Tbs. (90 mL) butter",
+        "role": "butter"
+      }
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1 tsp. (5 mL) vanilla extract",
+        "role": "vanilla extract"
+      }
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large eggs",
+        "role": "eggs"
+      }
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1-1/3 cups (167 g) all-purpose flour",
+        "role": "flour"
+      }
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2/3 cup (130 g) sugar",
+        "role": "sugar"
+      }
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (2.3 g) baking soda",
+        "role": "baking soda"
+      }
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/4 tsp. (1.2 g) baking powder",
+        "role": "baking powder"
+      }
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (3 g) salt",
+        "role": "salt"
+      }
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 cup (70 g) chopped walnuts",
+        "role": "walnuts"
+      }
+    },
+    {
+      "id": "step_1",
+      "kind": "result",
+      "text": "butter and flour a loaf pan",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "kind": "result",
+      "text": "mash the bananas",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "kind": "result",
+      "text": "melt the butter",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_4",
+      "kind": "result",
+      "text": "lightly beat the eggs",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_5",
+      "kind": "result",
+      "text": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_6",
+      "kind": "result",
+      "text": "whisk the dry ingredients in a separate bowl",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+}
+
+--- Drafting inputs for action 7 of 9 · 105 characters ---
+{"input_ids":["ing_1","ing_2","ing_3","ing_4","ing_5","ing_6","ing_7","ing_8","ing_9","ing_10"]		       }
+
+--- Context for Drafting inputs for action 8 of 9 ---
+{
+  "current_action": {
+    "id": "step_8",
+    "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)"
+  },
+  "action_number": 8,
+  "action_count": 9,
+  "source_excerpt": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes.",
+  "action_plan": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely",
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  ],
+  "provisional_connections": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "available_inputs": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large (250 g) ripe bananas",
+        "role": "banana"
+      }
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "6 Tbs. (90 mL) butter",
+        "role": "butter"
+      }
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1 tsp. (5 mL) vanilla extract",
+        "role": "vanilla extract"
+      }
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large eggs",
+        "role": "eggs"
+      }
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1-1/3 cups (167 g) all-purpose flour",
+        "role": "flour"
+      }
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2/3 cup (130 g) sugar",
+        "role": "sugar"
+      }
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (2.3 g) baking soda",
+        "role": "baking soda"
+      }
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/4 tsp. (1.2 g) baking powder",
+        "role": "baking powder"
+      }
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (3 g) salt",
+        "role": "salt"
+      }
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 cup (70 g) chopped walnuts",
+        "role": "walnuts"
+      }
+    },
+    {
+      "id": "step_1",
+      "kind": "result",
+      "text": "butter and flour a loaf pan",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "kind": "result",
+      "text": "mash the bananas",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "kind": "result",
+      "text": "melt the butter",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_4",
+      "kind": "result",
+      "text": "lightly beat the eggs",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_5",
+      "kind": "result",
+      "text": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_6",
+      "kind": "result",
+      "text": "whisk the dry ingredients in a separate bowl",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_7",
+      "kind": "result",
+      "text": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+}
+
+--- Drafting inputs for action 8 of 9 · 96 characters ---
+{"input_ids":["ing_1","ing_2","ing_3","ing_4","ing_5","ing_6","ing_7","ing_8","ing_9","ing_10"]}
+
+--- Context for Drafting inputs for action 9 of 9 ---
+{
+  "current_action": {
+    "id": "step_9",
+    "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely"
+  },
+  "action_number": 9,
+  "action_count": 9,
+  "source_excerpt": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack.",
+  "action_plan": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely",
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  ],
+  "provisional_connections": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "available_inputs": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large (250 g) ripe bananas",
+        "role": "banana"
+      }
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "6 Tbs. (90 mL) butter",
+        "role": "butter"
+      }
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1 tsp. (5 mL) vanilla extract",
+        "role": "vanilla extract"
+      }
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2 large eggs",
+        "role": "eggs"
+      }
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1-1/3 cups (167 g) all-purpose flour",
+        "role": "flour"
+      }
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "2/3 cup (130 g) sugar",
+        "role": "sugar"
+      }
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (2.3 g) baking soda",
+        "role": "baking soda"
+      }
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/4 tsp. (1.2 g) baking powder",
+        "role": "baking powder"
+      }
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 tsp. (3 g) salt",
+        "role": "salt"
+      }
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": "",
+      "kind": "ingredient",
+      "context": {
+        "source": "1/2 cup (70 g) chopped walnuts",
+        "role": "walnuts"
+      }
+    },
+    {
+      "id": "step_1",
+      "kind": "result",
+      "text": "butter and flour a loaf pan",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_2",
+      "kind": "result",
+      "text": "mash the bananas",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_3",
+      "kind": "result",
+      "text": "melt the butter",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_4",
+      "kind": "result",
+      "text": "lightly beat the eggs",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_5",
+      "kind": "result",
+      "text": "combine the mashed bananas with the melted butter, vanilla extract, and eggs",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_6",
+      "kind": "result",
+      "text": "whisk the dry ingredients in a separate bowl",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_7",
+      "kind": "result",
+      "text": "fold the wet mixture into the dry mixture along with the chopped walnuts",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    {
+      "id": "step_8",
+      "kind": "result",
+      "text": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)",
+      "provisional_input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    }
+  ],
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+}
+
+--- Drafting inputs for action 9 of 9 · 96 characters ---
+{"input_ids":["ing_1","ing_2","ing_3","ing_4","ing_5","ing_6","ing_7","ing_8","ing_9","ing_10"]}
+
+--- Context for Interpreting the complete graph from source ---
+{
+  "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack.",
+  "ingredients": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": ""
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": ""
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": ""
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": ""
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": ""
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": ""
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": ""
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": ""
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": ""
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": ""
+    }
+  ],
+  "roles": {
+    "ing_1": {
+      "source": "2 large (250 g) ripe bananas",
+      "role": "banana"
+    },
+    "ing_2": {
+      "source": "6 Tbs. (90 mL) butter",
+      "role": "butter"
+    },
+    "ing_3": {
+      "source": "1 tsp. (5 mL) vanilla extract",
+      "role": "vanilla extract"
+    },
+    "ing_4": {
+      "source": "2 large eggs",
+      "role": "eggs"
+    },
+    "ing_5": {
+      "source": "1-1/3 cups (167 g) all-purpose flour",
+      "role": "flour"
+    },
+    "ing_6": {
+      "source": "2/3 cup (130 g) sugar",
+      "role": "sugar"
+    },
+    "ing_7": {
+      "source": "1/2 tsp. (2.3 g) baking soda",
+      "role": "baking soda"
+    },
+    "ing_8": {
+      "source": "1/4 tsp. (1.2 g) baking powder",
+      "role": "baking powder"
+    },
+    "ing_9": {
+      "source": "1/2 tsp. (3 g) salt",
+      "role": "salt"
+    },
+    "ing_10": {
+      "source": "1/2 cup (70 g) chopped walnuts",
+      "role": "walnuts"
+    }
+  },
+  "setup": [
+    "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+  ],
+  "actions": [
+    {
+      "id": "step_1",
+      "action": "butter and flour a loaf pan"
+    },
+    {
+      "id": "step_2",
+      "action": "mash the bananas"
+    },
+    {
+      "id": "step_3",
+      "action": "melt the butter"
+    },
+    {
+      "id": "step_4",
+      "action": "lightly beat the eggs"
+    },
+    {
+      "id": "step_5",
+      "action": "combine the mashed bananas with the melted butter, vanilla extract, and eggs"
+    },
+    {
+      "id": "step_6",
+      "action": "whisk the dry ingredients in a separate bowl"
+    },
+    {
+      "id": "step_7",
+      "action": "fold the wet mixture into the dry mixture along with the chopped walnuts"
+    },
+    {
+      "id": "step_8",
+      "action": "bake the bread in the prepared loaf pan for 55 minutes at 350°F (170°C)"
+    },
+    {
+      "id": "step_9",
+      "action": "cool the bread for 10 minutes in the pan before turning it out onto a wire rack to cool completely"
+    }
+  ],
+  "source_excerpts": {
+    "step_1": {
+      "source": "Butter and flour a loaf pan and preheat the oven to 350°F (170°C)."
+    },
+    "step_2": {
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    "step_3": {
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    "step_4": {
+      "source": "Mash the bananas, melt the butter, and lightly beat the eggs."
+    },
+    "step_5": {
+      "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+    },
+    "step_6": {
+      "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+    },
+    "step_7": {
+      "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+    },
+    "step_8": {
+      "source": "Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes."
+    },
+    "step_9": {
+      "source": "Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  },
+  "required_input_ids": [
+    "ing_1",
+    "ing_2",
+    "ing_3",
+    "ing_4",
+    "ing_5",
+    "ing_6",
+    "ing_7",
+    "ing_8",
+    "ing_9",
+    "ing_10",
+    "step_1",
+    "step_2",
+    "step_3",
+    "step_4",
+    "step_5",
+    "step_6",
+    "step_7",
+    "step_8"
+  ]
+}
+
+--- Interpreting the complete graph from source · 433 characters ---
+{
+    "ing_1": "step_5",
+    "ing_2": "step_5",
+    "ing_3": "step_5",
+    "ing_4": "step_5",
+    "ing_5": "step_6",
+    "ing_6": "step_7",
+    "ing_7": "step_7",
+    "ing_8": "step_7",
+    "ing_9": "step_7",
+    "ing_10": "step_8"
+    , "step_1": "step_8"
+    , "step_2": "step_5"
+    , "step_3": "step_5"
+    , "step_4": "step_5"
+    , "step_5": "step_7"
+    , "step_6": "step_7"
+    , "step_7": "step_8"
+    , "step_8": "step_9"
+}

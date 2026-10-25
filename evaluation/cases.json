@@ -1,0 +1,49 @@
+[
+  {
+    "id": "parallel-sauce",
+    "source": "Lemon yogurt sauce\n200 g yogurt\n1 tbsp lemon juice\n1 pinch salt\nMix the lemon juice and salt. Stir into the yogurt and serve.",
+    "review": [
+      "Lemon juice and salt combine before yogurt joins.",
+      "All three ingredient amounts remain unchanged.",
+      "A short final label retains stirring and serving."
+    ]
+  },
+  {
+    "id": "two-nut-portions",
+    "source": "Nut yogurt bowls\nFor the bowls\n200 g yogurt\n20 g walnuts\nFor garnish\n10 g walnuts\nChop the 20 g walnuts, then fold them into the yogurt. Divide between two bowls and sprinkle with the 10 g garnish walnuts.",
+    "review": [
+      "Keep 20 g and 10 g walnut portions distinct.",
+      "Chop only the first portion; add garnish at the end.",
+      "Keep division between two bowls in the instructions and labels."
+    ]
+  },
+  {
+    "id": "spanish-parallel",
+    "source": "Ensalada de tomate\n2 tomates\n1 cucharada de aceite\n1 cucharadita de vinagre\nUna pizca de sal\nCorta los tomates en cubos. En otro cuenco mezcla el aceite, el vinagre y la sal. Vierte el aliño sobre los tomates y mezcla suavemente.",
+    "review": [
+      "Tomatoes and dressing remain separate until the final combination.",
+      "Preserve every amount and the instruction to mix gently.",
+      "Interpret Spanish directly without application vocabulary rules."
+    ]
+  },
+  {
+    "id": "condition-and-timing",
+    "source": "Warm milk\n200 ml milk\nPour the milk into a saucepan. Heat gently for 3 minutes without boiling, stirring continuously. Remove from the heat and serve warm.",
+    "review": [
+      "Keep 200 ml unchanged.",
+      "Retain 3 minutes, gentle heat, continuous stirring and the prohibition on boiling.",
+      "Shortened labels retain removal from heat and serving warm."
+    ]
+  },
+  {
+    "id": "banana-reference-material-flow",
+    "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack.",
+    "review": [
+      "Pan preparation and preheating are global setup, not an all-ingredient graph join.",
+      "Mash bananas, melt butter and beat eggs in their respective preparation cells.",
+      "Wet ingredients and dry ingredients remain independent until folding with walnuts.",
+      "Preserve avoid-overmixing, pan transfer, baking temperature/time and both cooling operations.",
+      "Compare branch spans with Try demo; structural success alone is insufficient."
+    ]
+  }
+]

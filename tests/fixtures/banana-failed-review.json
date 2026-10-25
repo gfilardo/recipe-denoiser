@@ -1,0 +1,74 @@
+{
+  "review": {
+    "setup": [
+      {
+        "text": "Butter and flour a loaf pan and preheat the oven to 350\u00b0F (170\u00b0C).",
+        "source": "Butter and flour a loaf pan and preheat the oven to 350\u00b0F (170\u00b0C)."
+      }
+    ],
+    "preparations": [
+      {
+        "ingredient_id": "ing_1",
+        "text": "Mash the bananas",
+        "source": "Mash the bananas"
+      },
+      {
+        "ingredient_id": "ing_2",
+        "text": "melt the butter",
+        "source": "melt the butter"
+      },
+      {
+        "ingredient_id": "ing_4",
+        "text": "lightly beat the eggs",
+        "source": "lightly beat the eggs"
+      },
+      {
+        "ingredient_id": "ing_5",
+        "text": "whisk the flour, sugar, baking soda, baking powder, and salt",
+        "source": "In a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt."
+      }
+    ],
+    "actions": [
+      {
+        "action": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.",
+        "source": "Combine the bananas, melted butter, vanilla, and eggs and mash until smooth."
+      },
+      {
+        "action": "Fold the wet mixture, dry mixture, and chopped walnuts together.",
+        "source": "Fold the wet mixture, dry mixture, and chopped walnuts together."
+      },
+      {
+        "action": "Transfer the batter to the prepared loaf pan",
+        "source": "Transfer the batter to the prepared loaf pan"
+      },
+      {
+        "action": "bake at 350\u00b0F (170\u00b0C) for 555 minutes",
+        "source": "bake at 350\u00b0F (170\u00b0C) for 55 minutes"
+      },
+      {
+        "action": "Cool for 1010 minutes in the pan",
+        "source": "Cool for 10 minutes in the pan"
+      },
+      {
+        "action": "turn out and cool on a wire rack",
+        "source": "then turn out and cool on a wire rack"
+      }
+    ]
+  },
+  "fold": {
+    "input_ids": [
+      "ing_5",
+      "ing_6",
+      "ing_7",
+      "ing_8",
+      "ing_9",
+      "ing_10"
+    ]
+  },
+  "bake": {
+    "input_ids": [
+      "step_1",
+      "step_3"
+    ]
+  }
+}

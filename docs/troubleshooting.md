@@ -29,9 +29,9 @@ The app never silently substitutes demo output when inference fails.
 
 ## Conversion stalls or fails
 
-Model initialization has a separate two-minute timeout. Once the first session is ready, extraction, linking, label selection and the one permitted graph correction share a fixed ten-minute deadline. Cancellation remains available. The progress modal stays open on failure and closes after a valid grid renders.
+Model initialization has a separate two-minute inactivity timeout, refreshed by download progress. Once the first session is ready, extraction, plan review, direct global graph interpretation and labels share 10 minutes for Chrome or 30 minutes for WebLLM. Extraction/plan review has one correction; graph interpretation has one separate correction. There are no provisional linking calls in v13. Cancellation remains available. The progress modal stays open on failure and closes after a valid grid renders.
 
-Copy the diagnostic report and, when useful, inspect or print the current output snapshot. Include the pipeline version, failed stage/action and its offered input choices. Source text appears in opt-in snapshots, so review it before sharing. A failed final action can be the consequence of an earlier missed input; increasing the timeout or adding leftovers at the last step does not repair that mistake.
+Copy the diagnostic report and, when useful, inspect or print the current output snapshot. Include the pipeline version, failed stage/action, generated interpretation and offered input choices. Source text appears in opt-in snapshots, so review it before sharing. A failed final action can be the consequence of an earlier missed input; increasing the timeout or adding leftovers at the last step does not repair that mistake.
 
 Character counts measure JavaScript string length (UTF-16 code units). Chunks are pieces delivered by the streaming API, not tokens, and can vary in size. Neither count is a token count. A browser output-length error or a repetitive whitespace stream is different from an elapsed-time timeout.
 
@@ -39,12 +39,17 @@ See the [historical investigations](lessons-learned.md) for the observed MTP err
 
 ## The grid looks incomplete or a label stays long
 
-Compare with the source and the original steps in the text view. Source-matching and graph validation do not prove that extraction included every ingredient or that all connections reflect the intended cooking process. The table requires a single-consumer dependency tree; shared subrecipes need explicit portions or manual editing.
+Compare with the source and the original steps in the text view. Source-excerpt checks and graph validation do not prove that extraction included every ingredient or that all connections reflect the intended cooking process. The table requires a single-consumer dependency tree; shared subrecipes need explicit portions or manual editing.
 
-Procedure shortening changes only display labels. Full wording remains in the text view, JSON and hover text. A cell stays long when no bounded shortening is offered, the model chooses to keep it, or the optional label request fails. Manual JSON edits return to original labels. The known omissions and representation limits are recorded in the lessons file.
+Procedure shortening changes only display labels. Full model-generated wording remains in the text view, JSON and hover text; the original recipe remains in the source editor. A cell stays long when the model returns the full instruction, a longer/empty label is rejected, or the optional label request fails. The model writes labels freely; code does not verify that the shorter wording preserves every semantic detail. Manual JSON edits return to original labels. The known omissions and representation limits are recorded in the lessons file.
 
 ## Hosting on GitHub Pages
 
 The project is static and uses relative asset paths; no build command or server-side AI service is needed. GitHub Pages supplies HTTPS, but hosting does not enable Chrome AI capabilities on a visitor's device. Test Demo, Manual JSON and automatic conversion separately on the deployed origin. The sampling-mode setup may differ from localhost development.
 
 See [GitHub's publishing-source guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) for deployment settings. This documentation does not imply that Pages has been enabled for the repository.
+
+
+## WebLLM loading or inference errors
+
+WebLLM needs WebGPU, enough GPU memory, and network access for uncached runtime/model assets. Chrome Prompt API flags do not enable WebLLM. Copy the latest output snapshot: it includes backend settings and timing history, refreshes when copied, and refreshes an open snapshot on failure. A shared deadline failure does not mean the final stage ran for the entire budget. See [engine comparison](backend-comparison.md).

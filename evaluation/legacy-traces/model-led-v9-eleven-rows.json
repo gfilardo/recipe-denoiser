@@ -1,0 +1,9 @@
+{
+  "pipeline": "model-led-v9-draft-handoff",
+  "outputs": [
+    {
+      "label": "Reviewing and revising the complete graph \u00b7 124 characters",
+      "raw": "{\"inputs\":[[\"ing_1\"],[\"ing_2\"],[\"ing_3\"],[\"ing_4\"],[\"ing_5\"],[\"ing_6\"],[\"ing_7\"],[\"ing_8\"],[\"ing_9\"],[\"ing_10\"],[\"step_1\"]]}"
+    }
+  ]
+}

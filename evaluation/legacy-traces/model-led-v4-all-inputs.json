@@ -1,0 +1,39 @@
+{
+  "note": "Actual failed v4 replies, not expected successful decisions. At action 6 only step_5 remained available.",
+  "responses": {
+    "Connecting action 1 of 10 \u00b7 96 characters": {
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    "Checking inputs for action 1 of 10 \u00b7 96 characters": {
+      "input_ids": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9",
+        "ing_10"
+      ]
+    },
+    "Connecting action 6 of 10 \u00b7 33 characters": {
+      "input_ids": [
+        "step_5",
+        "step_5"
+      ]
+    }
+  }
+}

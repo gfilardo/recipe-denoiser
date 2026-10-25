@@ -9,3 +9,6 @@
 .compatibility-notice{margin:24px 0 0;padding:16px 20px;border:1px solid #a9c9df;border-left:4px solid #397da6;border-radius:10px;background:#eef6fc;color:#24465e;font-size:14px;line-height:1.5}.compatibility-notice p{margin:6px 0 0}.compatibility-notice[hidden]{display:none}@media print{.compatibility-notice{display:none}}
 
 .compatibility-notice strong{display:flex;align-items:center;gap:8px}.compatibility-notice a{color:#155580;text-decoration:underline;text-underline-offset:3px}.compatibility-notice a:focus-visible{outline:2px solid #397da6;outline-offset:3px}
+
+.backend-picker { margin: 1rem 0; padding: 1rem; border: 1px solid #b8c9b4; border-radius: 8px; }
+.backend-picker label { display: inline-block; margin: .5rem 1.5rem .5rem 0; }

@@ -1,10 +1,10 @@
 # Recipe Denoiser
 
-> **Experimental browser support:** This project currently uses experimental AI APIs. Automatic recipe conversion works only on a limited set of Chrome versions and operating-system combinations, with compatible hardware and browser settings.
+> **Experimental browser support:** This project currently uses experimental AI APIs. Chrome built-in AI works only on supported Chrome/OS combinations. The alternative WebLLM engine requires WebGPU and enough GPU memory. Both paths are experimental; review every result.
 
 Turn recipe prose into a left-to-right cooking dependency table. Ingredients and intermediate preparations flow into the steps that use them, making parallel work easier to follow.
 
-The app runs entirely in the browser with vanilla HTML, CSS and JavaScript. Automatic conversion uses Chrome's local model; there is no backend, cloud AI fallback or API key. Demo and Manual JSON modes work without AI.
+The app runs entirely in the browser with vanilla HTML, CSS and JavaScript. Automatic conversion uses either Chrome built-in AI or WebLLM with Qwen2.5 7B; there is no inference server, cloud AI fallback or API key. Demo and Manual JSON modes work without AI.
 
 ## Requirements
 
@@ -55,19 +55,23 @@ Serve the files rather than double-clicking `index.html`; browser modules and AI
 3. Review the table against the source. Original instructions remain in the text view and on hover when a procedure label is shortened.
 4. Use **Inspect / Edit Extracted JSON** for manual corrections, or **Copy HTML**, **Download HTML**, and **Print / Save PDF** to export.
 
-Images can be kept in the editor for reference, but conversion currently uses text only. Pasted remote images become placeholders. The fixed conversion budget is ten minutes after model initialization.
+Images can be kept in the editor for reference, but conversion currently uses text only. Pasted remote images become placeholders. The shared conversion budget after model initialization is 10 minutes for Chrome and 30 minutes for WebLLM.
 
 A manually prepared pizza example is available as a [table](examples/sheet-pan-pizza.html) and [JSON](examples/sheet-pan-pizza.json). It illustrates the format; it is not an automatic model-conversion result.
 
 ## How it works
 
-1. Extract ingredient phrases from the source and assign IDs in code.
-2. Select cooking passages while excluding headings and ingredient-list entries.
-3. Preserve distinct ingredient portions, then ask the model to connect one action at a time using constrained, source-supported choices.
-4. Validate the completed dependency tree and compute the table's row and column spans deterministically.
-5. Select shorter procedure labels where supported. This presentation phase does not change the graph, quantities or original instructions.
+The local language model does the interpretation, rather than an English cooking-rule engine:
 
-The app allows one correction across extraction and linking. A failed conversion leaves its diagnostic dialog open. A label-selection failure retains original wording. See [architecture and validation](docs/architecture.md) for the full contract and lifecycle.
+1. Extract ingredient uses and their quantities/roles, citing source excerpts.
+2. Separate global setup from food operations; every preparation becomes an action with explicit inputs.
+3. Review the draft against the full source for misclassified multi-ingredient operations and missing instructions.
+4. Ask the model to independently assign every ingredient and intermediate result to its next consuming action, using the full source.
+5. Generate concise procedure labels using the surrounding input context.
+
+Code supplies IDs, checks source excerpts, numeric consistency and graph structure, computes table spans and enforces resource limits. It does not infer ingredient synonyms, choose portions or rewrite model wording with cooking-specific rules. Short labels are separate from the full instructions and cannot change the graph.
+
+The app allows one response-validation correction across extraction/plan review and one separate graph correction. Failures stay visible; it never silently supplies an expected recipe. Model interpretation and summaries require review—valid JSON and a connected tree do not establish cooking accuracy. See the [pipeline diagram](docs/pipeline.md), [architecture](docs/architecture.md) and [real-model evaluation](evaluation/README.md).
 
 ## Project structure
 
@@ -76,12 +80,13 @@ The app allows one correction across extraction and linking. A failed conversion
 | `index.html`, `styles.css` | Page, responsive layout and print styles |
 | `src/app.js`, `editor.js`, `sourceSanitizer.js` | UI state, recipe editor and safe paste handling |
 | `src/aiService.js`, `systemPrompt.js`, `conversionDialog.js` | Model requests, progress and diagnostics |
-| `src/recipeExtraction.js`, `sourcePassages.js`, `cookingPassages.js` | Source extraction and passage selection |
-| `src/ingredient*.js`, `actionConnections.js`, `connectionSemantics.js` | Ingredient evidence, portions and action connections |
+| `src/recipeExtraction.js` | Extraction schemas, source citations, IDs and graph assembly |
+| `src/actionConnections.js` | Live input bookkeeping and model dependency decisions |
 | `src/recipeSchema.js`, `validateRecipe.js`, `*Guard.js` | Data contract, graph checks and streamed-output limits |
 | `src/layoutRecipe.js`, `tableRenderer.js`, `procedureLabels.js`, `exportRecipe.js` | Grid layout, display labels and export |
 | `src/fixtures/`, `examples/` | Demo and reference recipes |
-| `tests/` | Automated checks and recorded failure fixtures |
+| `tests/` | Mechanical contract, lifecycle and layout checks |
+| `evaluation/` | Real-model review cases, runner and archived traces |
 | `docs/` | Architecture, troubleshooting, lessons and roadmap |
 
 ## Development and limits
@@ -90,13 +95,24 @@ The app allows one correction across extraction and linking. A failed conversion
 npm test
 ```
 
-The current suite has 142 passing checks. It includes simulated model responses, graph/layout regressions, cancellation and display-label checks. Simulated tests are not proof that every Chrome model run will succeed.
+Tests cover model request contracts, graph/layout invariants, cancellation and cleanup. They do not prove model accuracy. Run the [real-browser evaluation](evaluation/README.md) to assess ingredient coverage, portion allocation, dependency quality, summary fidelity and latency on your Chrome/device combination.
 
-English recipe interpretation remains experimental. Source matching prevents some invented wording, but cannot guarantee complete extraction or correct cooking dependencies. Review quantities and steps. The table supports a single-consumer tree, not arbitrary shared graph nodes. A Chrome extension is planned, not implemented.
+The current pipeline is **`model-led-v13-direct-graph`**. The earlier working rule-based implementation is preserved as tag **`working-rules-v11`** (`ad1d60d`). The new model-led path needs fresh real-device evaluation. Review quantities and steps: a model can omit information or produce a structurally valid but incorrect interpretation. The table supports a single-consumer tree, not arbitrary shared graph nodes. A Chrome extension is planned, not implemented.
 
 ## Further documentation
+
+- [Provisional drafts and global graph review](docs/global-graph-review.md): a sequence diagram explaining revisable connections, early handoff and material destinations.
 
 - [Architecture and data contract](docs/architecture.md): conversion stages, module boundaries, validation and layout algorithm.
 - [Setup and troubleshooting](docs/troubleshooting.md): Chrome screenshot, model readiness, diagnostics and hosting considerations.
 - [Lessons learned](docs/lessons-learned.md): preserved failures, fixes, field reports and verification limits.
 - [Roadmap](docs/roadmap.md): original acceptance plan and future extension design.
+
+- [Real-model evaluation](evaluation/README.md): run the model on review cases without simulated answers.
+
+
+## Experimental engine comparison
+
+Select **Chrome built-in AI** or **WebLLM · Qwen2.5 7B** in the page. Both run the same pipeline locally. WebLLM requires WebGPU, substantial GPU memory and a multi-GB first download; it does not require the Chrome Prompt API flags. Runtime/model downloads use external hosts, but recipe inference stays on your device. No backend silently falls back to the other.
+
+See [comparison protocol and limitations](docs/backend-comparison.md) for settings, the Mermaid diagram and how to evaluate correctness. This project is an experiment in browser-local AI, not a validated cooking tool.

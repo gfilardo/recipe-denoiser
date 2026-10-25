@@ -1,0 +1,135 @@
+--- Run configuration ---
+Conversion limit: 20 minutes (shared by extraction, provisional linking, global graph review, procedure labels with at most one response correction). Backend: webllm. Model: Qwen2.5-7B-Instruct-q4f16_1-MLC. Settings: {"temperature":0,"contextWindow":16384,"maxTokens":4096,"runtime":"0.2.86"}. Browser: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36. Source: 986 characters. Pipeline: model-led-v12-ingredient-quotes. Schema guidance: enabled. Per-request sizes appear in the history; these are characters, not tokens.
+
+--- Ingredients and roles (model interpretation) ---
+{
+  "title": "Banana Nut Bread",
+  "ingredients": [
+    {
+      "id": "ing_1",
+      "text": "2 large (250 g) ripe bananas",
+      "prep": ""
+    },
+    {
+      "id": "ing_2",
+      "text": "6 Tbs. (90 mL) butter",
+      "prep": ""
+    },
+    {
+      "id": "ing_3",
+      "text": "1 tsp. (5 mL) vanilla extract",
+      "prep": ""
+    },
+    {
+      "id": "ing_4",
+      "text": "2 large eggs",
+      "prep": ""
+    },
+    {
+      "id": "ing_5",
+      "text": "1-1/3 cups (167 g) all-purpose flour",
+      "prep": ""
+    },
+    {
+      "id": "ing_6",
+      "text": "2/3 cup (130 g) sugar",
+      "prep": ""
+    },
+    {
+      "id": "ing_7",
+      "text": "1/2 tsp. (2.3 g) baking soda",
+      "prep": ""
+    },
+    {
+      "id": "ing_8",
+      "text": "1/4 tsp. (1.2 g) baking powder",
+      "prep": ""
+    },
+    {
+      "id": "ing_9",
+      "text": "1/2 tsp. (3 g) salt",
+      "prep": ""
+    },
+    {
+      "id": "ing_10",
+      "text": "1/2 cup (70 g) chopped walnuts",
+      "prep": ""
+    }
+  ],
+  "context": {
+    "ing_1": {
+      "source": "2 large (250 g) ripe bananas",
+      "role": "banana"
+    },
+    "ing_2": {
+      "source": "6 Tbs. (90 mL) butter",
+      "role": "butter"
+    },
+    "ing_3": {
+      "source": "1 tsp. (5 mL) vanilla extract",
+      "role": "vanilla extract"
+    },
+    "ing_4": {
+      "source": "2 large eggs",
+      "role": "eggs"
+    },
+    "ing_5": {
+      "source": "1-1/3 cups (167 g) all-purpose flour",
+      "role": "flour"
+    },
+    "ing_6": {
+      "source": "2/3 cup (130 g) sugar",
+      "role": "sugar"
+    },
+    "ing_7": {
+      "source": "1/2 tsp. (2.3 g) baking soda",
+      "role": "baking soda"
+    },
+    "ing_8": {
+      "source": "1/4 tsp. (1.2 g) baking powder",
+      "role": "baking powder"
+    },
+    "ing_9": {
+      "source": "1/2 tsp. (3 g) salt",
+      "role": "salt"
+    },
+    "ing_10": {
+      "source": "1/2 cup (70 g) chopped walnuts",
+      "role": "walnuts"
+    }
+  }
+}
+
+--- Draft action plan (model interpretation) ---
+{
+  "setup": [
+    "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+  ],
+  "steps": [
+    {
+      "id": "step_1",
+      "action": "complete instruction"
+    }
+  ],
+  "context": {
+    "step_1": {
+      "source": "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+    }
+  },
+  "preparations": {},
+  "setupSources": [
+    "Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."
+  ]
+}
+
+--- Extracting ingredients · 594 characters ---
+{"title":"Banana Nut Bread","ingredients":[{"text":"2 large (250 g) ripe bananas","role":"banana"},{"text":"6 Tbs. (90 mL) butter","role":"butter"},{"text":"1 tsp. (5 mL) vanilla extract","role":"vanilla extract"},{"text":"2 large eggs","role":"eggs"},{"text":"1-1/3 cups (167 g) all-purpose flour","role":"flour"},{"text":"2/3 cup (130 g) sugar","role":"sugar"},{"text":"1/2 tsp. (2.3 g) baking soda","role":"baking soda"},{"text":"1/4 tsp. (1.2 g) baking powder","role":"baking powder"},{"text":"1/2 tsp. (3 g) salt","role":"salt"},{"text":"1/2 cup (70 g) chopped walnuts","role":"walnuts"}]}
+
+--- Interpreting cooking actions · 1610 characters ---
+{"setup":[{"text":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C).","source":"Banana Nut Bread recipe"}],"actions":[{"action":"mash the bananas","source":"Mash the bananas."},{"action":"melt the butter","source":"Melt the butter."},{"action":"lightly beat the eggs","source":"Lightly beat the eggs."},{"action":"combine the mashed bananas, melted butter, vanilla extract, and lightly beaten eggs","source":"Combine the mashed bananas, melted butter, vanilla extract, and lightly beaten eggs."},{"action":"whisk the flour, sugar, baking soda, baking powder, and salt in a separate bowl","source":"Whisk the flour, sugar, baking soda, baking powder, and salt in a separate bowl."},{"action":"fold the combined wet mixture into the dry mixture along with the chopped walnuts","source":"Fold the combined wet mixture into the dry mixture along with the chopped walnuts."},{"action":"bake at 350°F for 55 minutes","source":"Bake at 350°F for 55 minutes."},{"action":"cool for 10 minutes in the pan, then turn out and cool on a wire rack","source":"Cool for 10 minutes in the pan, then turn out and cool on a wire rack."}]}
+
+--- Interpreting cooking actions · correction · 3102 characters ---
+{"setup":[{"text":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack.","source":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."}],"actions":[{"action":"complete instruction","source":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."}]}
+
+--- Reviewing the action plan · 2150 characters ---
+{"setup":[{"text":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack.","source":"Banana Nut Bread (about 10 servings)\n\nThis is my favorite way to use the very ripe bananas sitting on the counter. The bread is lovely with tea the next day, if there is any left!\n\nIngredients\n2 large (250 g) ripe bananas\n6 Tbs. (90 mL) butter\n1 tsp. (5 mL) vanilla extract\n2 large eggs\n1-1/3 cups (167 g) all-purpose flour\n2/3 cup (130 g) sugar\n1/2 tsp. (2.3 g) baking soda\n1/4 tsp. (1.2 g) baking powder\n1/2 tsp. (3 g) salt\n1/2 cup (70 g) chopped walnuts\n\nButter and flour a loaf pan and preheat the oven to 350°F (170°C). Mash the bananas, melt the butter, and lightly beat the eggs. Combine the bananas, melted butter, vanilla, and eggs and mash until smooth.\nIn a separate bowl, whisk the flour, sugar, baking soda, baking powder, and salt. Fold the wet mixture, dry mixture, and chopped walnuts together. Avoid overmixing. Transfer the batter to the prepared loaf pan and bake at 350°F (170°C) for 55 minutes. Cool for 10 minutes in the pan, then turn out and cool on a wire rack."}],"actions":[{"action":"butter and flour a loaf pan","source":"Butter and flour a loaf pan and preheat the oven

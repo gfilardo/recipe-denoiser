@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {compactProcedure, procedureBatches, acceptLabels} from '../src/procedureLabels.js';
-import {convertRecipe} from '../src/aiService.js';
+import {procedureBatches, acceptLabels} from '../src/procedureLabels.js';
+import {convertRecipe as convertWithGraphReview} from '../src/aiService.js';
 import {layoutRecipe} from '../src/layoutRecipe.js';
 import {renderRecipe} from '../src/tableRenderer.js';
 import {source, ingredients, actions, links} from './fixtures/staged.js';
-function model(labelReply = 'compact', controller) {
+function model(labelReply = 'Blend.', controller) {
   let count=0, destroyed=0;
   return {get count(){return count;},get destroyed(){return destroyed;},api:{async create(){
     return {promptStreaming(prompt){
@@ -13,55 +13,43 @@ function model(labelReply = 'compact', controller) {
       if(request.procedures && controller) controller.abort(new Error('Canceled labels'));
       if(request.procedures && labelReply instanceof Error) throw labelReply;
       const value=request.procedures ? Object.fromEntries(request.procedures.map(p=>[p.id,labelReply])) :
-        request.source ? ingredients : request.passages ? actions :
-        Object.fromEntries(request.available_inputs.map(n=>[n.id,links.inputs[request.action_number-1].includes(n.id)?n.kind==='result'?'use':n.evidence[0]:'']));
+        request.ingredients ? actions : request.current_action ? {input_ids:links.inputs[request.action_number-1]} : request.source ? ingredients :
+        {input_ids:links.inputs[request.action_number-1]};
       return new ReadableStream({start(c){c.enqueue(JSON.stringify(value));c.close();}});
     },destroy(){destroyed++;}};
   }}};
 }
-test('compact labels retain numeric, equipment, texture, warning and timing details',()=>{
-  const action='Then bake at 180°C for 20–25 minutes in a covered pan until golden; do not boil.';
-  assert.equal(compactProcedure({action,input_ids:[]},{ingredients:[]}),action.slice(5).replace(/^b/,'B'));
-  for(const action of ['Do not add milk.', 'If thick, add milk.', 'Rest for half an hour.', 'Mix half the flour with water.', 'To prepare sauce without milk, stir.', 'After this time, unmold the cake.']) {
-    assert.equal(compactProcedure({action,input_ids:[]},{ingredients:[]}),action);
-  }
-});
-test('only a complete bare ingredient list can become an implicit operation',()=>{
-  const recipe={ingredients:[{id:'a',text:'1 tsp lemon juice'},{id:'b',text:'1 pinch salt'}]};
-  assert.equal(compactProcedure({action:'Mix lemon juice and salt.',input_ids:['a','b']},recipe),'Mix.');
-  for(const action of ['Mix half the lemon juice and salt.', 'Mix lemon juice and salt with a spoon.', 'Mix lemon juice and salt until dissolved.'])
-    assert.equal(compactProcedure({action,input_ids:['a','b']},recipe),action);
-  assert.equal(compactProcedure({action:'Mix lemon juice and salt.',input_ids:['a','result']},recipe),'Mix lemon juice and salt.');
-});
-test('presentation selections reject unknown steps and invented labels; batches stay bounded',()=>{
-  const recipe={ingredients:[],steps:Array.from({length:19},(_,i)=>({id:`s${i}`,action:'Then stir.',input_ids:[]}))};
-  const batches=procedureBatches(recipe);assert.deepEqual(batches.map(b=>b.length),[8,8,3]);
-  const row=batches[2];
-  assert.throws(()=>acceptLabels({s16:'compact',s17:'compact',invented:'compact'},row));
-  assert.throws(()=>acceptLabels({s16:'new words',s17:'keep',s18:'keep'},row));
+test('the model can generate novel concise wording without a candidate vocabulary',()=>{
+  const recipe={ingredients:[],steps:[{id:'s',action:'Stir gently until completely smooth.',input_ids:[]}]};
+  const batch=procedureBatches(recipe)[0];
+  assert.equal(batch[0].compact,undefined);
+  assert.deepEqual(acceptLabels({s:'Gently stir until smooth.'},batch),{s:'Gently stir until smooth.'});
+  assert.throws(()=>acceptLabels({unknown:'Stir'},batch));
+  assert.deepEqual(acceptLabels({s:''},batch),{});
+  assert.deepEqual(acceptLabels({s:'This generated wording is longer than the original instruction.'},batch),{});
 });
 test('extra phase leaves the entire recipe and layout identical, with labels delivered separately',async()=>{
   const baseline=await convertRecipe(source,{api:model().api,simplifyProcedures:false});
   const f=model(), events=[];let labels;
   const result=await convertRecipe(source,{api:f.api,onProcedureLabels:x=>{labels=x;},onDiagnostic:e=>events.push(e)});
   assert.deepEqual(result,baseline);assert.deepEqual(layoutRecipe(result),layoutRecipe(baseline));
-  assert.deepEqual(labels,{step_1:'Mix.'});assert.equal(f.count,5);assert.equal(f.destroyed,5);
+  assert.deepEqual(labels,{step_1:'Blend.',step_2:'Blend.'});assert.equal(f.count,6);assert.equal(f.destroyed,6);
   assert.equal(events.filter(e=>e.type==='correction').length,0);
   assert.equal(events.at(-1).type,'validated');
 });
 test('invalid or failed optional labeling preserves the validated graph without a correction',async()=>{
-  for(const response of ['invented',new Error('model unavailable')]) {
+  for(const response of [null,new Error('model unavailable')]) {
     const f=model(response),events=[];let labels;
     const result=await convertRecipe(source,{api:f.api,onProcedureLabels:x=>{labels=x;},onDiagnostic:e=>events.push(e)});
     assert.deepEqual(labels,{});assert.equal(result.steps[0].action,'Mix lemon juice and salt.');
     assert.equal(events.filter(e=>e.type==='simplification-fallback').length,1);
-    assert.equal(events.filter(e=>e.type==='correction').length,0);assert.equal(f.destroyed,5);
+    assert.equal(events.filter(e=>e.type==='correction').length,0);assert.equal(f.destroyed,6);
   }
 });
 test('cancellation during optional labels still cancels and cleans up',async()=>{
-  const controller=new AbortController(),f=model('compact',controller);
+  const controller=new AbortController(),f=model('Blend.',controller);
   await assert.rejects(convertRecipe(source,{api:f.api,signal:controller.signal}),/Canceled labels/);
-  assert.equal(f.destroyed,5);
+  assert.equal(f.destroyed,6);
 });
 test('renderer changes only action text and keeps original details accessible',()=>{
   const previous=globalThis.document;
@@ -78,3 +66,5 @@ test('renderer changes only action text and keeps original details accessible',(
     assert.equal(cells[1].rowSpan,1);assert.equal(cells[1].colSpan,1);
   } finally {globalThis.document=previous;}
 });
+
+function convertRecipe(source,options) { return convertWithGraphReview(source,{...options,reviewGraph:false}); }

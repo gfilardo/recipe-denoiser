@@ -1,0 +1,107 @@
+--- Ingredients and roles (model interpretation) ---
+{
+  "title": "Halloween Muffins",
+  "ingredients": [
+    {
+      "id": "ing_1",
+      "text": "Type 00 flour",
+      "prep": ""
+    },
+    {
+      "id": "ing_2",
+      "text": "Sugar",
+      "prep": ""
+    },
+    {
+      "id": "ing_3",
+      "text": "Whole milk",
+      "prep": ""
+    },
+    {
+      "id": "ing_4",
+      "text": "Butter",
+      "prep": ""
+    },
+    {
+      "id": "ing_5",
+      "text": "Eggs",
+      "prep": ""
+    },
+    {
+      "id": "ing_6",
+      "text": "Dark chocolate chips",
+      "prep": ""
+    },
+    {
+      "id": "ing_7",
+      "text": "Baking powder",
+      "prep": ""
+    },
+    {
+      "id": "ing_8",
+      "text": "Baking soda",
+      "prep": ""
+    },
+    {
+      "id": "ing_9",
+      "text": "Orange peel",
+      "prep": ""
+    },
+    {
+      "id": "ing_10",
+      "text": "Fine salt",
+      "prep": ""
+    }
+  ],
+  "context": {
+    "ing_1": {
+      "source": "Type 00 flour",
+      "role": "dry ingredient"
+    },
+    "ing_2": {
+      "source": "Sugar",
+      "role": "sweetener"
+    },
+    "ing_3": {
+      "source": "Whole milk",
+      "role": "liquid"
+    },
+    "ing_4": {
+      "source": "Butter",
+      "role": "butter for baking"
+    },
+    "ing_5": {
+      "source": "Eggs",
+      "role": "eggs for baking"
+    },
+    "ing_6": {
+      "source": "Dark chocolate chips",
+      "role": "chocolate chips for baking"
+    },
+    "ing_7": {
+      "source": "Baking powder",
+      "role": "baking powder for leavening"
+    },
+    "ing_8": {
+      "source": "Baking soda",
+      "role": "baking soda for leavening"
+    },
+    "ing_9": {
+      "source": "Orange peel",
+      "role": "orange peel for flavoring"
+    },
+    "ing_10": {
+      "source": "Fine salt",
+      "role": "salt for seasoning"
+    }
+  }
+}
+
+--- Extracting ingredients · 549 characters ---
+{"title":"Halloween Muffins","ingredients":[{"text":"Type 00 flour","role":"dry ingredient"},{"text":"Sugar","role":"sweetener"},{"text":"Whole milk","role":"liquid"},{"text":"Butter","role":"butter for baking"},{"text":"Eggs","role":"eggs for baking"},{"text":"Dark chocolate chips","role":"chocolate chips for baking"},{"text":"Baking powder","role":"baking powder for leavening"},{"text":"Baking soda","role":"baking soda for leavening"},{"text":"Orange peel","role":"orange peel for flavoring"},{"text":"Fine salt","role":"salt for seasoning"}]}
+
+--- Interpreting cooking actions · 3579 characters ---
+{"setup":[{"text":"For 12 muffins, the ingredients are as follows: Type 00 flour - 2 cups (265 g), Sugar - 0.67 cup (135 g), Whole milk - 0.6 cup (135 g) - at room temperature, Butter - 0.55 cup (125 g) - at room temperature, Eggs - 3.9 oz (110 g) - (2 medium), Dark chocolate chips - 3.5 oz (100 g), Baking powder - 1.3 tsp (6 g), Orange peel - 1 - to be grated, Baking soda - 0.8 tsp (4 g), Fine salt - 1 pinch.","source":"INGREDIENTS\n\n\n\n\n\n\n\nFor 12 muffinsType 00 flour 2 cups (265 g)Sugar 0.67 cup (135 g)Whole milk 0.6 cup (135 g) - at room temperatureButter 0.55 cup (125 g) - at room temperatureEggs 3.9 oz (110 g) - (2 medium)Dark chocolate chips 3.5 oz (100 g)Baking powder 1.3 tsp (6 g)Orange peel 1 - (to be grated)Baking soda 0.8 tsp (4 g)Fine salt 1 pinchfor decorationCocoa glaze 4.4 oz (125 g)Food decorations 24 - small eyes\n\n\n\n\nPreparation\n\nHow to prepare Halloween Muffins\n\n[Image: pasted image — use Add image to insert a local copy]\n\nTo prepare the Halloween muffins, pour the sugar into a bowl and add the softened butter 1. Scent with grated orange zest 2, then start beating the mixture with an electric whisk, adding the eggs one at a time 3.\n\n[Image: pasted image — use Add image to insert a local copy]\n\nWork with the electric whisk until you get a light and fluffy mixture 4. Now sift the flour, baking powder, and baking soda directly into the bowl with the mixture 5. Also, add the pinch of salt and turn on the whisk again to incorporate the powders. You will notice that the batter becomes thicker, so thin it with the milk poured in a trickle 6.\n\n[Image: pasted image — use Add image to insert a local copy]\n\nWhen the mixture is soft and homogeneous 7, add the chocolate chips 8 and mix with a spatula to combine them 9.\n\n[Image: pasted image — use Add image to insert a local copy]\n\nTransfer the mixture to a disposable piping bag without a nozzle 10, this way you can work more precisely. Place the paper cases in a 12-muffin tray and fill them two-thirds full 11, leaving about half an inch from the edge 12.\n\n[Image: pasted image — use Add image to insert a local copy]\n\nBake in a preheated oven at 350°F for 18-20 minutes in static mode. Remove from the oven and let cool completely 13. At this point, your chocolate chip muffins are ready to be decorated. Remove the paper cases 14, then apply the sugar eyes 15.\n\n[Image: pasted image — use Add image to insert a local copy]\n\nStack the muffins on a small plate 16 and prepare the glaze: bring some water to a boil in a saucepan. Turn off the heat and place the cocoa glaze packet inside for 7-8 minutes. Take it out and dry the packet well before opening. Pour the glaze into a pitcher, then let it drizzle over the cupcakes 17. Your Halloween muffins are ready to be served 18!\n\nStorage\n\nWe recommend consuming the Halloween muffins immediately. Alternatively, you can store them without glaze for a couple of days under a glass dome.\n\nTip\n\nInstead of orange zest, you can use vanilla extract to flavor the batter.\n\nInstead of the piping bag, you can use a spoon to fill the paper cases."}],"actions":[{"action":"combine ingredients","source":"For 12 muffins, the ingredients are as follows: Type 00 flour - 2 cups (265 g), Sugar - 0.67 cup (135 g), Whole milk - 0.6 cup (135 g) - at room temperature, Butter - 0.55 cup (125 g) - at room temperature, Eggs - 3.9 oz (110 g) - (2 medium), Dark chocolate chips - 3.5 oz (100 g), Baking powder - 1.3 tsp (6 g), Orange peel - 1 - to be grated, Baking soda - 0.8 tsp (4 g), Fine salt - 1 pinch."}]}
+
+--- Interpreting cooking actions · correction · 3054 characters ---
+{"setup":[{"text":"INGREDIENTS\n\n\n\n\n\n\n\nFor 12 muffinsType 00 flour 2 cups (265 g)Sugar 0.67 cup (135 g) - at room temperatureWhole milk 0.6 cup (135 g) - at room temperatureButter 0.55 cup (125 g) - at room temperatureEggs 3.9 oz (110 g) - (2 medium)Dark chocolate chips 3.5 oz (100 g)Baking powder 1.3 tsp (6 g)Orange peel 1 - (to be grated)Baking soda 0.8 tsp (4 g)Fine salt 1 pinchfor decorationCocoa glaze 4.4 oz (125 g)Food decorations 24 - small eyes\n\n\n\n\nPreparation\n\nHow to prepare Halloween Muffins\n\n[Image: pasted image — use Add image to insert a local copy]\n\nTo prepare the Halloween muffins, pour the sugar into a bowl and add the softened butter 1. Scent with grated orange zest 2, then start beating the mixture with an electric whisk, adding the eggs one at a time 3.\n\n[Image: pasted image — use Add image to insert a local copy]\n\nWork with the electric whisk until you get a light and fluffy mixture 4. Now sift the flour, baking powder, and baking soda directly into the bowl with the mixture 5. Also, add the pinch of salt and turn on the whisk again to incorporate the powders. You will notice that the batter becomes thicker, so thin it with the milk poured in a trickle 6.\n\n[Image: pasted image — use Add image to insert a local copy]\n\nWhen the mixture is soft and homogeneous 7, add the chocolate chips 8 and mix with a spatula to combine them 9.\n\n[Image: pasted image — use Add image to insert a local copy]\n\nTransfer the mixture to a disposable piping bag without a nozzle 10, this way you can work more precisely. Place the paper cases in a 12-muffin tray and fill them two-thirds full 11, leaving about half an inch from the edge 12.\n\n[Image: pasted image — use Add image to insert a local copy]\n\nBake in a preheated oven at 350°F for 18-20 minutes in static mode. Remove from the oven and let cool completely 13. At this point, your chocolate chip muffins are ready to be decorated. Remove the paper cases 14, then apply the sugar eyes 15.\n\n[Image: pasted image — use Add image to insert a local copy]\n\nStack the muffins on a small plate 16 and prepare the glaze: bring some water to a boil in a saucepan. Turn off the heat and place the cocoa glaze packet inside for 7-8 minutes. Take it out and dry the packet well before opening. Pour the glaze into a pitcher, then let it drizzle over the cupcakes 17. Your Halloween muffins are ready to be served 18!\n\nStorage\n\nWe recommend consuming the Halloween muffins immediately. Alternatively, you can store them without glaze for a couple of days under a glass dome.\n\nTip\n\nInstead of orange zest, you can use vanilla extract to flavor the batter.\n\nInstead of the piping bag, you can use a spoon to fill the paper cases.","source":"https://www.tasteofhome.com/recipes/halloween-chocolate-chip-muffins/"}],"actions":[{"action":"combine ingredients","source":"Pour the sugar into a bowl and add the softened butter. Scent with grated orange zest, then start beating the mixture with an electric whisk, adding the eggs one at a time."}]}
