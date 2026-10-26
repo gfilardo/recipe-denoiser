@@ -129,7 +129,7 @@ To compare extraction behavior, expand **Extraction experiment** and toggle **En
 
 ## GitHub Pages deployment
 
-The [Pages workflow](.github/workflows/pages.yml) runs tests, packages the site and deploys an artifact on each push to `master` (or a manual workflow run). Set repository **Settings → Pages → Source → GitHub Actions**. There is no generated-site branch and no compiled output to commit.
+The [Pages workflow](.github/workflows/pages.yml) uses Node 25.9.0 (matching the tested local runtime), runs tests, packages the site and deploys an artifact on each push to `master` (or a manual workflow run). Set repository **Settings → Pages → Source → GitHub Actions**. There is no generated-site branch and no compiled output to commit.
 
 `npm run build` copies browser-ready source into ignored `_site/`. It includes application assets, prepared examples and the browser evaluation runner/cases; it excludes tests, documentation and archived diagnostic traces. Local preview: `python3 -m http.server 8000 --directory _site --bind 127.0.0.1`. Relative URLs support the repository subpath, including the WebLLM worker. External model/runtime downloads remain external.
 
