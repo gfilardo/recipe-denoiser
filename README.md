@@ -50,7 +50,7 @@ Serve the files rather than double-clicking `index.html`; browser modules and AI
 
 ## Use the app
 
-1. Choose **Try demo** to see a prepared Banana Bread table, or paste a recipe into the editor.
+1. Paste your own recipe, or expand **Or try a sample** and choose **Banana Nut Bread**, **Halloween Muffins**, **Autumn Cake** or **Sheet-pan pizza made with a spoon** from the sample dropdown. **Load sample** loads its source for AI conversion; **View prepared demo** shows a hand-authored example grid. You can also paste your own recipe.
 2. Choose **Convert to Recipe Grid** for local AI conversion. The first run may download the model. The progress dialog shows each phase; you can cancel at any time.
 3. Review the table against the source. Original instructions remain in the text view and on hover when a procedure label is shortened.
 4. Use **Inspect / Edit Extracted JSON** for manual corrections, or **Copy HTML**, **Download HTML**, and **Print / Save PDF** to export.
@@ -97,7 +97,7 @@ npm test
 
 Tests cover model request contracts, graph/layout invariants, cancellation and cleanup. They do not prove model accuracy. Run the [real-browser evaluation](evaluation/README.md) to assess ingredient coverage, portion allocation, dependency quality, summary fidelity and latency on your Chrome/device combination.
 
-The current pipeline is **`model-led-v13-direct-graph`**. The earlier working rule-based implementation is preserved as tag **`working-rules-v11`** (`ad1d60d`). The new model-led path needs fresh real-device evaluation. Review quantities and steps: a model can omit information or produce a structurally valid but incorrect interpretation. The table supports a single-consumer tree, not arbitrary shared graph nodes. A Chrome extension is planned, not implemented.
+The current pipeline is **`model-led-v14-extraction-comparison`**. The earlier working rule-based implementation is preserved as tag **`working-rules-v11`** (`ad1d60d`). The new model-led path needs fresh real-device evaluation. Review quantities and steps: a model can omit information or produce a structurally valid but incorrect interpretation. The table supports a single-consumer tree, not arbitrary shared graph nodes. A Chrome extension is planned, not implemented.
 
 ## Further documentation
 
@@ -116,3 +116,21 @@ The current pipeline is **`model-led-v13-direct-graph`**. The earlier working ru
 Select **Chrome built-in AI** or **WebLLM · Qwen2.5 7B** in the page. Both run the same pipeline locally. WebLLM requires WebGPU, substantial GPU memory and a multi-GB first download; it does not require the Chrome Prompt API flags. Runtime/model downloads use external hosts, but recipe inference stays on your device. No backend silently falls back to the other.
 
 See [comparison protocol and limitations](docs/backend-comparison.md) for settings, the Mermaid diagram and how to evaluate correctness. This project is an experiment in browser-local AI, not a validated cooking tool.
+
+The Halloween Muffins sample preserves the supplied concatenated ingredient list, method, storage and tips for realistic extraction tests. Demo graphs are display fixtures only: they are never used as model answers or automatic fallbacks.
+
+The Autumn Cake demo keeps batter and garnish pistachios separate and retains the source’s differing juice quantities. Its source uses one ingredient per line.
+
+
+The sheet-pan pizza sample retains the supplied source formatting, storage and tips. Its prepared grid reuses the hand-authored pizza example and keeps dough, pan and topping oil separate, with the two topping uses sharing the stated total.
+
+To compare extraction behavior, expand **Extraction experiment** and toggle **Enforce JSON format during extraction**. It is on by default. Turning it off still requests and validates JSON but removes native format constraints during extraction and plan review. Keep the source and engine unchanged between runs; see the [experiment protocol](docs/backend-comparison.md#v14-extraction-constraints-experiment).
+
+
+## GitHub Pages deployment
+
+The [Pages workflow](.github/workflows/pages.yml) runs tests, packages the site and deploys an artifact on each push to `master` (or a manual workflow run). Set repository **Settings → Pages → Source → GitHub Actions**. There is no generated-site branch and no compiled output to commit.
+
+`npm run build` copies browser-ready source into ignored `_site/`. It includes application assets, prepared examples and the browser evaluation runner/cases; it excludes tests, documentation and archived diagnostic traces. Local preview: `python3 -m http.server 8000 --directory _site --bind 127.0.0.1`. Relative URLs support the repository subpath, including the WebLLM worker. External model/runtime downloads remain external.
+
+Commit source and workflow changes only. The Actions deployment result supplies the live URL; a passing local build alone does not confirm publication. See [GitHub's artifact deployment documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).

@@ -75,3 +75,14 @@ Initial model loading has a separate two-minute inactivity timer, refreshed by d
 
 
 V13 changes both engines together: no provisional linking requests, revised setup/action instructions without illustrative placeholder values, and one reserved graph correction. This is a combined pipeline revision, not a single-factor experiment. Compare it with v12 as a whole; do not attribute any accuracy change to one component without further testing.
+
+
+## V14: extraction constraints experiment
+
+Expand **Extraction experiment** below the engine selector. **Enforce JSON format during extraction** is checked by default (baseline). Uncheck it for ordinary generation during ingredients, cooking actions and plan review, including their correction. Run the same unchanged source twice with the same engine; then repeat with the other engine. Record failures as well as successes.
+
+Both conditions receive identical application prompts and an explicit `output_schema` in the request. The unchecked condition omits Chrome's `responseConstraint`/`omitResponseConstraintInput` options and WebLLM's `response_format`. It still asks for JSON; this tests native JSON enforcement, not a free-form prose extraction task. Chrome may internally add schema guidance when enforcement is enabled, so internal model inputs are not guaranteed identical.
+
+JSON parsing, source/numeric validation, correction budgets, time limits and whitespace guards remain unchanged. There is no Markdown stripping or salvage of malformed output. Graph generation and optional labels stay constrained in both conditions. Reports and snapshots include the extraction mode and per-request constraint setting.
+
+The pipeline identifier is `model-led-v14-extraction-comparison`. Adding explicit schema text changes the baseline relative to v13: compare the two v14 conditions to isolate enforcement, rather than attributing every v13/v14 difference to constraints. No real-browser accuracy improvement has been established.

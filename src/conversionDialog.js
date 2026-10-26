@@ -91,7 +91,7 @@ export function setupConversionDialog(onCancel) {
           el('conversion-inputs').textContent += ` Backend: ${event.backend}. Model: ${event.model}. Settings: ${JSON.stringify(event.settings)}. Browser: ${event.browser}.`;
           break;
         case 'initializing':
-          el('conversion-inputs').textContent += ` Source: ${event.sourceChars} characters. Pipeline: ${event.pipeline}. Schema guidance: ${event.schemaGuidance ? 'enabled' : 'not reported'}. Per-request sizes appear in the history; these are characters, not tokens.`;
+          el('conversion-inputs').textContent += ` Source: ${event.sourceChars} characters. Pipeline: ${event.pipeline}. Extraction JSON constraints: ${event.constrainExtraction === false ? 'off (ordinary generation)' : 'on'}. Graph JSON constraints: enabled. Per-request sizes appear in the history; these are characters, not tokens.`;
           log('Preparing local model.'); break;
         case 'download':
           el('conversion-stage').textContent = `Downloading local model · ${Math.round(event.progress * 100)}%`;
@@ -136,7 +136,7 @@ export function setupConversionDialog(onCancel) {
           attemptStarted = Date.now(); lastOutputAt = null; streaming = event.streaming;
           el('conversion-first').textContent = 'Not yet'; el('conversion-output').textContent = '0 characters';
           el('conversion-stage').textContent = `${event.label}…`;
-          log(`${event.label}: response requested. Prompt: ${event.promptChars} characters; instructions: ${event.systemChars}; schema: ${event.schemaChars}.`);
+          log(`${event.label}: response requested. Prompt: ${event.promptChars} characters; instructions: ${event.systemChars}; schema: ${event.schemaChars}. JSON constraints: ${event.constrained === false ? 'off' : 'on'}.`);
           if (!streaming) log('Streaming unavailable; first-output timing cannot be measured.');
           tick(); break;
         case 'output':

@@ -6,7 +6,7 @@
 
 The local model interprets language. Application code owns schemas, IDs, source-excerpt checks, input availability, graph integrity, resource limits and rendering. There are no cooking-verb dictionaries, ingredient aliases, section parsers, role heuristics, pronoun rules, predetermined shortening candidates or recipe-specific fallbacks in the runtime.
 
-The working rule-based baseline is preserved in tag **`working-rules-v11`**, commit `ad1d60d`. The current pipeline identifier is **`model-led-v13-direct-graph`**. It is a new experimental interpretation path, not a claim of improved accuracy.
+The working rule-based baseline is preserved in tag **`working-rules-v11`**, commit `ad1d60d`. The current pipeline identifier is **`model-led-v14-extraction-comparison`**. It is a new experimental interpretation path, not a claim of improved accuracy.
 
 ## Stages
 
@@ -68,4 +68,4 @@ Paths in this table are relative to `src/` except `evaluation/`.
 
 ## Verification
 
-Automated tests validate orchestration and mechanical guarantees using explicit mocked responses. They do not substitute schema-permitted answers for failed model output or score semantic understanding. Historical tests enforcing individual cooking rules were removed along with those modules. The [real-model evaluation guide](../evaluation/README.md) separates structural success from manually reviewed semantic accuracy and preserves raw results. No successful real Chrome run of `model-led-v13-direct-graph` has yet been recorded here.
+Automated tests validate orchestration and mechanical guarantees using explicit mocked responses. They do not substitute schema-permitted answers for failed model output or score semantic understanding. Historical tests enforcing individual cooking rules were removed along with those modules. The [real-model evaluation guide](../evaluation/README.md) separates structural success from manually reviewed semantic accuracy and preserves raw results. No successful real Chrome run of `model-led-v14-extraction-comparison` has yet been recorded here.

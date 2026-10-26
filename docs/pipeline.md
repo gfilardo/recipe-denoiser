@@ -2,7 +2,7 @@
 
 [README](../README.md) · [Architecture](architecture.md) · [Lessons learned](lessons-learned.md) · [Engine comparison](backend-comparison.md)
 
-Current version: **model-led-v13-direct-graph**. Both engines use this single pipeline. No provisional linking calls are made.
+Current version: **model-led-v14-extraction-comparison**. Both engines use this single pipeline. No provisional linking calls are made.
 
 ```mermaid
 flowchart TD
@@ -26,3 +26,8 @@ Ingredients are model-selected verbatim excerpts with inferred roles. The model 
 The graph request contains the full source, ingredient roles and fixed actions/excerpts. Its output maps each ingredient and nonfinal result to its next consuming action. Code regroups those destinations and validates all references, nonempty actions and connectivity. Feedback lists all empty actions; code never chooses replacement edges. Graph correction cannot repair a missing or misclassified operation in the fixed plan.
 
 Labels may change wording only; they cannot change graph structure. Failed optional shortening retains full wording. Reports preserve model outputs, correction category and timing. The historical [draft-and-review pipeline](global-graph-review.md) explains earlier experiments, not the current runtime.
+
+
+## Extraction constraint comparison
+
+V14 adds a checked-by-default **Enforce JSON format during extraction** switch under **Extraction experiment**. Turning it off removes engine-enforced JSON constraints only for ingredients, operations and plan review. Explicit schema instructions and validators remain the same in both modes. Graph and label constraints remain enabled. See [comparison protocol](backend-comparison.md#v14-extraction-constraints-experiment).

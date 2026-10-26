@@ -1,5 +1,5 @@
 import {createWebLLMBackend, WEBLLM_MODEL, WEBLLM_VERSION, WEBLLM_SETTINGS} from './webllmBackend.js';
-import { bananaBread, verboseRecipe } from './fixtures/bananaBread.js';
+import { demoRecipes } from './fixtures/demoRecipes.js';
 import { setupEditor } from './editor.js';
 import { layoutRecipe } from './layoutRecipe.js';
 import { renderRecipe, renderText } from './tableRenderer.js';
@@ -8,6 +8,11 @@ import { setupConversionDialog } from './conversionDialog.js';
 import { copyRecipe, downloadRecipe } from './exportRecipe.js';
 
 const $ = id => document.getElementById(id);
+for(const demo of demoRecipes) {
+  const option=document.createElement('option'); option.value=demo.id; option.textContent=demo.label;
+  $('demo-recipe').append(option);
+}
+const selectedDemo = () => demoRecipes.find(demo=>demo.id === $('demo-recipe').value) || demoRecipes[0];
 const CONVERSION_LIMIT_MINUTES = {chrome:10, webllm:30};
 let controller, generation = 0, revision = 0, hasResult = false, timer;
 
@@ -21,6 +26,7 @@ const editor = setupEditor($('editor'), $('image-input'), text => {
 
 function busy(value) {
   document.querySelectorAll('[name=backend]').forEach(input => { input.disabled=value; });
+  $('constrain-extraction').disabled=value;
   $('convert').disabled = value; $('cancel').hidden = !value; $('progress').hidden = true;
 }
 
@@ -40,11 +46,12 @@ function apply(recipe, label, procedureLabels = {}) {
 
 $('sample').addEventListener('click', () => {
   cancel();
-  editor.load(verboseRecipe); message('Sample loaded. Convert with local AI, or use Try demo for the prepared grid.');
+  clearTimeout(timer); editor.load(selectedDemo().source); message('Selected sample loaded. Convert with local AI, or use Try demo for the prepared grid.');
 });
 $('demo').addEventListener('click', () => {
   cancel();
-  clearTimeout(timer); editor.load(verboseRecipe); $('json-input').value = JSON.stringify(bananaBread, null, 2); apply(bananaBread, 'Demo · 10 ingredients'); message('Demo grid loaded. Edit the JSON to explore the layout.');
+  const demo=selectedDemo();
+  clearTimeout(timer); editor.load(demo.source); $('json-input').value = JSON.stringify(demo.recipe, null, 2); apply(demo.recipe, `Prepared demo · ${demo.recipe.ingredients.length} ingredients`); message('Hand-authored demo grid loaded, not an AI result. Edit the JSON to explore the layout.');
 });
 $('json-input').addEventListener('input', () => {
   cancel();
@@ -66,6 +73,7 @@ $('convert').addEventListener('click', async () => {
   try {
     let procedureLabels = {};
     const recipe = await convertRecipe(text, {
+      constrainExtraction:$('constrain-extraction').checked,
       api: local || globalThis.LanguageModel, engineName: local ? 'WebLLM' : 'Chrome',
       onProcedureLabels: labels => { procedureLabels = labels; }, signal: controller.signal,
       inferenceTimeoutMs: conversionMinutes * 60000,

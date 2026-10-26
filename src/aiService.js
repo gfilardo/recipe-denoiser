@@ -19,7 +19,7 @@ export async function availability(api = globalThis.LanguageModel) {
 const labels = { ingredients: 'Extracting ingredients', actions: 'Interpreting cooking actions', review: 'Reviewing the action plan', connections: 'Connecting ingredients and actions' };
 export async function convertRecipe(text, {
   engineName = 'Chrome', signal, onProgress = () => {}, onPhase = () => {}, onDiagnostic = () => {}, api = globalThis.LanguageModel,
-  reviewActions = true, reviewGraph = true, simplifyProcedures = true, onProcedureLabels = () => {},
+  constrainExtraction = true, reviewActions = true, reviewGraph = true, simplifyProcedures = true, onProcedureLabels = () => {},
   initializationTimeoutMs = 120000, inferenceTimeoutMs = 180000
 } = {}) {
   if (!api) throw Error('Chrome local AI is not exposed in this browser. Try Demo or Manual JSON.');
@@ -70,12 +70,13 @@ export async function convertRecipe(text, {
     report('ready', { streaming: typeof session.promptStreaming === 'function' });
   }
   async function generate(prompt, schema, connectionGuard) {
-    const options = { responseConstraint: schema, omitResponseConstraintInput: false, signal: task.signal };
+    const constrained = constrainExtraction || !['ingredients','actions','review'].includes(stage);
+    const options = { ...(constrained ? {responseConstraint:schema, omitResponseConstraintInput:false} : {}), signal:task.signal };
     const attemptStarted = Date.now(), streaming = typeof session.promptStreaming === 'function';
     phase = 'generating'; activeAttempt++; receivedChars = 0; receivedChunks = 0;
     const label = `${stageLabel}${correcting ? ' · correction' : ''}`;
     report('attempt', { attempt: activeAttempt, label, correction: correcting, streaming,
-      promptChars: prompt.length, systemChars: SYSTEM_PROMPTS[stage].length, schemaChars: JSON.stringify(schema).length });
+      promptChars: prompt.length, systemChars: SYSTEM_PROMPTS[stage].length, schemaChars: JSON.stringify(schema).length, constrained });
     onPhase(`Converting recipe: ${label.toLowerCase()}…`);
     let result = '';
     const guard = createOutputGuard();
@@ -117,7 +118,8 @@ export async function convertRecipe(text, {
     while (true) {
       task.signal.throwIfAborted();
       await openSession();
-      const prompt = JSON.stringify({ ...input, ...(feedback ? { correction: feedback, ...(name === 'graphReview' && previousResponse ? {previous_response:previousResponse} : {}) } : {}) });
+      const extractionStage = ['ingredients','actions','review'].includes(name);
+      const prompt = JSON.stringify({ ...input, ...(extractionStage ? {output_schema:schema} : {}), ...(feedback ? { correction: feedback, ...(name === 'graphReview' && previousResponse ? {previous_response:previousResponse} : {}) } : {}) });
       // Transport, timeout, whitespace and output-limit failures are not retried.
       let accepted, validating = false;
       try {
@@ -144,7 +146,7 @@ export async function convertRecipe(text, {
     }
   }
   try {
-    report('initializing', { sourceChars: text.length, pipeline: 'model-led-v13-direct-graph', schemaGuidance: true });
+    report('initializing', { sourceChars: text.length, pipeline: 'model-led-v14-extraction-comparison', schemaGuidance:true, constrainExtraction });
     onPhase('Preparing local model…'); arm(initializationTimeoutMs, startupMessage);
     ticker = setInterval(() => {
       if (!task.signal.aborted) onPhase(`${stageLabel}${correcting ? ' · correction' : ''}… ${Math.floor((Date.now() - started) / 1000)}s elapsed. Cancel remains available.`);

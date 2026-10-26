@@ -29,5 +29,5 @@ export async function runEvaluation(cases, {signal, onCase = () => {}, ...option
     }
     onCase(results.at(-1));
   }
-  return {pipeline:'model-led-v13-direct-graph',browser:navigator.userAgent,recordedAt:new Date().toISOString(),results};
+  return {pipeline:'model-led-v14-extraction-comparison',browser:navigator.userAgent,recordedAt:new Date().toISOString(),results};
 }

@@ -33,6 +33,10 @@
             <label><input type="radio" name="backend" value="chrome" checked> Chrome built-in AI</label>
             <label><input type="radio" name="backend" value="webllm"> WebLLM · Qwen2.5 7B</label>
             <p class="hint">Same pipeline, different engines. WebLLM needs WebGPU, a multi-GB model download and substantial GPU memory. Model files download from external hosts; recipe inference stays on this device.</p>
+            <details class="extraction-experiment"><summary>Extraction experiment</summary>
+                <label><input id="constrain-extraction" type="checkbox" checked> Enforce JSON format during extraction</label>
+                <p class="hint">Uncheck to test ordinary generation for ingredients, actions and plan review. Both modes request JSON and use the same validation. Graph generation stays constrained.</p>
+            </details>
         </fieldset>
         <div class="status-bar"><span id="ai-status" class="badge">Checking local AI…</span><span id="ai-help">Demo and
                 manual mode always work.</span><progress id="progress" max="1" hidden
@@ -42,8 +46,14 @@
                 <div class="panel-heading">
                     <div><span class="step-label">01 / THE SOURCE</span>
                         <h2 id="source-heading">Bring your recipe</h2>
-                    </div><button id="sample" class="quiet">Load sample</button>
+                    </div>
                 </div>
+                <details class="sample-picker">
+                    <summary>Or try a sample</summary>
+                    <div class="demo-controls"><label for="demo-recipe" class="sr-only">Sample recipe</label>
+                        <select id="demo-recipe"></select><button id="sample" class="quiet">Load sample</button>
+                        <button id="demo" class="quiet">View prepared demo</button></div>
+                </details>
                 <label for="editor" class="sr-only">Recipe source, rich text editor</label>
                 <div id="editor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Recipe source"
                     data-placeholder="Paste a recipe here. Formatting and local images are welcome."></div>
@@ -53,8 +63,7 @@
                 <p class="hint">Images stay here for reference. Only recipe text goes to the local model.</p>
                 <p id="message" role="status" aria-live="polite"></p>
                 <div class="convert-row"><button id="convert" class="primary">Convert to Recipe Grid <span
-                            aria-hidden="true">→</span></button><button id="cancel" hidden>Cancel</button><button
-                        id="demo">Try demo</button></div>
+                            aria-hidden="true">→</span></button><button id="cancel" hidden>Cancel</button></div>
                 <details id="json-drawer">
                     <summary>Inspect / Edit Extracted JSON</summary>
                     <p class="hint">Paste your own recipe graph or edit a result. Valid changes update the grid
@@ -74,7 +83,7 @@
                     <div class="empty">
                         <div class="empty-icon" aria-hidden="true">▤</div>
                         <h3>All the recipe. None of the noise.</h3>
-                        <p>Paste your recipe and convert it, or try the banana bread demo to see the grid in action.</p>
+                        <p>Paste your recipe and convert it, or try a selected recipe demo to see the grid in action.</p>
                     </div>
                 </div>
                 <details id="text-view" hidden>

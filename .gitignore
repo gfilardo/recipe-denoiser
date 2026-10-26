@@ -1,0 +1,4 @@
+# Generated deployment artifact; built locally or in GitHub Actions.
+/_site/
+/node_modules/
+.DS_Store

@@ -47,7 +47,7 @@ Procedure shortening changes only display labels. Full model-generated wording r
 
 The project is static and uses relative asset paths; no build command or server-side AI service is needed. GitHub Pages supplies HTTPS, but hosting does not enable Chrome AI capabilities on a visitor's device. Test Demo, Manual JSON and automatic conversion separately on the deployed origin. The sampling-mode setup may differ from localhost development.
 
-See [GitHub's publishing-source guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) for deployment settings. This documentation does not imply that Pages has been enabled for the repository.
+See [GitHub's publishing-source guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) for deployment settings. Pages deployment uses the committed Actions workflow and an ignored `_site/` artifact. Repository Pages settings must use GitHub Actions, rather than deployment from a branch. Check the Publish GitHub Pages workflow for deployment status.
 
 
 ## WebLLM loading or inference errors

@@ -1,0 +1,263 @@
+--- Run configuration ---
+Conversion limit: 10 minutes (shared by extraction, global graph interpretation and procedure labels; at most one extraction/plan correction and one separate graph correction). Backend: chrome. Model: Chrome-managed (exact build unknown). Settings: {"samplingMode":"most-predictable"}. Browser: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36. Source: 2622 characters. Pipeline: model-led-v13-direct-graph. Schema guidance: enabled. Per-request sizes appear in the history; these are characters, not tokens.
+
+--- Status and timing history ---
+The model generated 512 consecutive whitespace characters without adding recipe content. Stopped early to avoid another output-limit failure. Inspect the output snapshot; no incomplete recipe was applied.
+0.0s · Conversion requested.
+0.0s · Preparing local model.
+0.0s · Preparing a fresh session for extracting ingredients.
+0.0s · Model download: 0%.
+0.0s · Model download: 100%.
+5.1s · Model session ready.
+5.1s · Extracting ingredients: response requested. Prompt: 2656 characters; instructions: 1369; schema: 300.
+6.8s · First output received 1.7s after this attempt started.
+14.3s · Response complete in 9.3s · 1064 characters.
+14.3s · Validating extracting ingredients.
+14.3s · Extracting ingredients: validation passed.
+14.3s · Ingredients and roles: model output accepted structurally; meaning requires review.
+14.3s · Preparing a fresh session for interpreting cooking actions.
+14.5s · Model session ready.
+14.5s · Interpreting cooking actions: response requested. Prompt: 5047 characters; instructions: 1458; schema: 450.
+16.3s · First output received 1.7s after this attempt started.
+35.5s · Response complete in 21.0s · 2839 characters.
+35.5s · Validating interpreting cooking actions.
+35.5s · Validation failed: step_1 source: wording or numbers do not match the source. Copy the source phrase verbatim.
+35.5s · Using the extraction correction for interpreting cooking actions. Accepted earlier work stays unchanged.
+35.5s · Preparing a fresh session for interpreting cooking actions.
+35.6s · Model session ready.
+35.6s · Interpreting cooking actions · correction: response requested. Prompt: 5362 characters; instructions: 1458; schema: 450.
+37.5s · First output received 1.9s after this attempt started.
+51.4s · Model operation stopped during actions / generating: The model generated 512 consecutive whitespace characters without adding recipe content. Stopped early to avoid another output-limit failure. Inspect the output snapshot; no incomplete recipe was applied.
+51.4s · Browser error (WhitespaceLoopError): The model generated 512 consecutive whitespace characters without adding recipe content. Stopped early to avoid another output-limit failure. Inspect the output snapshot; no incomplete recipe was applied.
+51.4s · Attempt 3: 632 characters in 547 streamed chunks received; category: whitespace-loop.
+51.4s · The model generated 512 consecutive whitespace characters without adding recipe content. Stopped early to avoid another output-limit failure. Inspect the output snapshot; no incomplete recipe was applied.
+
+--- Ingredients and roles (model interpretation) ---
+{
+  "title": "Halloween Muffins",
+  "ingredients": [
+    {
+      "id": "ing_1",
+      "text": "Type 00 flour",
+      "prep": ""
+    },
+    {
+      "id": "ing_2",
+      "text": "2 cups (265 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_3",
+      "text": "Sugar",
+      "prep": ""
+    },
+    {
+      "id": "ing_4",
+      "text": "0.67 cup (135 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_5",
+      "text": "Whole milk",
+      "prep": ""
+    },
+    {
+      "id": "ing_6",
+      "text": "0.6 cup (135 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_7",
+      "text": "Butter",
+      "prep": ""
+    },
+    {
+      "id": "ing_8",
+      "text": "0.55 cup (125 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_9",
+      "text": "Eggs",
+      "prep": ""
+    },
+    {
+      "id": "ing_10",
+      "text": "3.9 oz (110 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_11",
+      "text": "Dark chocolate chips",
+      "prep": ""
+    },
+    {
+      "id": "ing_12",
+      "text": "3.5 oz (100 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_13",
+      "text": "Baking powder",
+      "prep": ""
+    },
+    {
+      "id": "ing_14",
+      "text": "1.3 tsp (6 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_15",
+      "text": "Orange peel",
+      "prep": ""
+    },
+    {
+      "id": "ing_16",
+      "text": "1 - (to be grated)",
+      "prep": ""
+    },
+    {
+      "id": "ing_17",
+      "text": "Baking soda",
+      "prep": ""
+    },
+    {
+      "id": "ing_18",
+      "text": "0.8 tsp (4 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_19",
+      "text": "Fine salt",
+      "prep": ""
+    },
+    {
+      "id": "ing_20",
+      "text": "1 pinch",
+      "prep": ""
+    },
+    {
+      "id": "ing_21",
+      "text": "Cocoa glaze",
+      "prep": ""
+    },
+    {
+      "id": "ing_22",
+      "text": "4.4 oz (125 g)",
+      "prep": ""
+    },
+    {
+      "id": "ing_23",
+      "text": "Food decorations",
+      "prep": ""
+    }
+  ],
+  "context": {
+    "ing_1": {
+      "source": "Type 00 flour",
+      "role": "ingredient"
+    },
+    "ing_2": {
+      "source": "2 cups (265 g)",
+      "role": "ingredient"
+    },
+    "ing_3": {
+      "source": "Sugar",
+      "role": "ingredient"
+    },
+    "ing_4": {
+      "source": "0.67 cup (135 g)",
+      "role": "ingredient"
+    },
+    "ing_5": {
+      "source": "Whole milk",
+      "role": "ingredient"
+    },
+    "ing_6": {
+      "source": "0.6 cup (135 g)",
+      "role": "ingredient"
+    },
+    "ing_7": {
+      "source": "Butter",
+      "role": "ingredient"
+    },
+    "ing_8": {
+      "source": "0.55 cup (125 g)",
+      "role": "ingredient"
+    },
+    "ing_9": {
+      "source": "Eggs",
+      "role": "ingredient"
+    },
+    "ing_10": {
+      "source": "3.9 oz (110 g)",
+      "role": "ingredient"
+    },
+    "ing_11": {
+      "source": "Dark chocolate chips",
+      "role": "ingredient"
+    },
+    "ing_12": {
+      "source": "3.5 oz (100 g)",
+      "role": "ingredient"
+    },
+    "ing_13": {
+      "source": "Baking powder",
+      "role": "ingredient"
+    },
+    "ing_14": {
+      "source": "1.3 tsp (6 g)",
+      "role": "ingredient"
+    },
+    "ing_15": {
+      "source": "Orange peel",
+      "role": "ingredient"
+    },
+    "ing_16": {
+      "source": "1 - (to be grated)",
+      "role": "ingredient"
+    },
+    "ing_17": {
+      "source": "Baking soda",
+      "role": "ingredient"
+    },
+    "ing_18": {
+      "source": "0.8 tsp (4 g)",
+      "role": "ingredient"
+    },
+    "ing_19": {
+      "source": "Fine salt",
+      "role": "ingredient"
+    },
+    "ing_20": {
+      "source": "1 pinch",
+      "role": "ingredient"
+    },
+    "ing_21": {
+      "source": "Cocoa glaze",
+      "role": "ingredient"
+    },
+    "ing_22": {
+      "source": "4.4 oz (125 g)",
+      "role": "ingredient"
+    },
+    "ing_23": {
+      "source": "Food decorations",
+      "role": "ingredient"
+    }
+  }
+}
+
+--- Extracting ingredients · 1064 characters ---
+{"title":"Halloween Muffins","ingredients":[{"text":"Type 00 flour","role":"ingredient"},{"text":"2 cups (265 g)","role":"ingredient"},{"text":"Sugar","role":"ingredient"},{"text":"0.67 cup (135 g)","role":"ingredient"},{"text":"Whole milk","role":"ingredient"},{"text":"0.6 cup (135 g)","role":"ingredient"},{"text":"Butter","role":"ingredient"},{"text":"0.55 cup (125 g)","role":"ingredient"},{"text":"Eggs","role":"ingredient"},{"text":"3.9 oz (110 g)","role":"ingredient"},{"text":"Dark chocolate chips","role":"ingredient"},{"text":"3.5 oz (100 g)","role":"ingredient"},{"text":"Baking powder","role":"ingredient"},{"text":"1.3 tsp (6 g)","role":"ingredient"},{"text":"Orange peel","role":"ingredient"},{"text":"1 - (to be grated)","role":"ingredient"},{"text":"Baking soda","role":"ingredient"},{"text":"0.8 tsp (4 g)","role":"ingredient"},{"text":"Fine salt","role":"ingredient"},{"text":"1 pinch","role":"ingredient"},{"text":"Cocoa glaze","role":"ingredient"},{"text":"4.4 oz (125 g)","role":"ingredient"},{"text":"Food decorations","role":"ingredient"}]}
+
+--- Interpreting cooking actions · 2839 characters ---
+{"setup": [{"text": "pour the sugar into a bowl and add the softened butter 1", "source": "pour the sugar into a bowl and add the softened butter 1"}, {"text": "Scent with grated orange zest 2", "source": "Scent with grated orange zest 2"}], "actions": [{"action": "start beating the mixture with an electric whisk, adding the eggs one at a time 3", "source": "start beating the mixture with an electric whisk, adding the eggs one at the time 3"}, {"action": "Work with the electric whisk until you get a light and fluffy mixture 4", "source": "Work with the electric whisk until you get a light and fluffy mixture 4"}, {"action": "sift the flour, baking powder, and baking soda directly into the bowl with the mixture 5", "source": "ift the flour, baking powder, and baking soda directly into the bowl with the mixture 5"}, {"action": "add the pinch of salt and turn on the whisk again to incorporate the powders.", "source": "add the pinch of the salt and turn on whisk again to incorporate the powders."}, {"action": "thin it with the milk poured in a trickle 6", "source": "thin it with the milk poured in a trickle 6"}, {"action": "add the chocolate chips and mix with a spatula to combine them 9", "source": "add the chocolate chips and mix with a spatula to combine them9"}, {"action": "Transfer the mixture to a disposable piping bag without a nozzle 10", "source": "Transfer the mixture to a disposable piping bag without a nozzle 10"}, {"action": "Place the paper cases in a 12 and fill them two-thirds full 111, leaving about half an inch from the edge 12.", "source": "Place the paper cases in a 12-muffin tray and fill them two-thirds full 11, leaving about half an inch from the edge 12."}, {"action": "Bake in a preheated oven at 350°F for 18-20 minutes in static mode.", "source": "Bake in a preheated oven at 350°F for 18-20 minutes in static mode."}, {"action": "Remove from the oven and let cool completely 13.", "source": "Remove from the oven and let cool completely 13."}, {"action": "Remove the paper cases 14, then apply the sugar eyes 15.", "source": "Remove the paper cases 4, then apply the sugar eyes 15"}, {"action": "Stack the muffins on a small plate 16 and prepare the glaze: bring some water to a boil in a saucepan.", "source": "Stack the muffins on a small plate 6 and prepare the glaze: bring some water to boil in a saucepan."}, {"action": "Turn off the heat and place the cocoa glaze packet inside for 7-8 minutes.", "source": "Turn off the heat and place the cocoa glaze packet inside for 7-8 minutes."}, {"action": "Take it out and dry the packet well before opening.", "source": "Take it out and dry well before opening."}, {"action": "Pour the glaze into a pitcher, then let it drizzle over the cupcakes 17.", "source": "Pour the glaze into a pitcher, then let it drizzle over the cupcakes 17."}]}
+
+--- Interpreting cooking actions · correction · 632 characters ---
+{
+  "setup": [
+    {
+      "text": "pour the sugar into a bowl and add the softened butter 1",
+      "source": "source:"	
+    																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										

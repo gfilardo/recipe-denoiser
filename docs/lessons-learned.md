@@ -667,3 +667,19 @@ This is a combined change to call count, prompts and correction budget. It is no
 This checkpoint saves the accumulated transition from the tagged rule-based baseline to the v13 model-led experiment. It includes Chrome/WebLLM selection, verbatim ingredient extraction, direct global material destinations, separate bounded graph correction, numeric/source checks, refreshed diagnostic snapshots and documented failed browser runs. The old cooking-specific runtime modules are removed; the earlier working baseline remains available under `working-rules-v11`.
 
 Validation: 112 automated tests cover structural contracts, orchestration, adapters and cancellation. They do not establish semantic recipe accuracy. The latest observed v12 WebLLM run failed graph validation; v13 still needs real-browser evaluation. This checkpoint is not labeled a working or accuracy-validated release.
+
+
+## V13 Chrome: whitespace loop in action correction
+
+The [Halloween Muffins trace](../evaluation/legacy-traces/chrome-v13-muffins-whitespace.txt) records Chrome 155, most-predictable sampling, schema guidance enabled, a 2622-character source and the v13 pipeline. The initial ingredient output passed mechanical checks but split names and quantities into 23 entries. The initial action response misplaced food operations in setup and altered source quotations and numbers. Validation rejected its first action citation at 35.5 seconds.
+
+The fresh correction session emitted an unfinished object ending in a source value of `source:`, followed by tabs and other whitespace. The 512-consecutive-whitespace guard stopped the conversion at 51.4 seconds, with 632 characters received in 547 chunks. This was neither the ten-minute deadline nor a completed JSON response followed by harmless trailing whitespace. No graph request occurred; the reserved graph correction cannot address this earlier failure.
+
+The trace shows that v13's graph changes and removal of illustrative action placeholders did not resolve extraction on this input. It does not prove that constrained decoding caused the loop. Preserve the guard and source checks; increasing the whitespace allowance or time budget would not repair the already incorrect interpretation. The proposed extraction-only comparison of constrained and unconstrained output remains the next diagnostic experiment, with source, backend and settings recorded and one factor changed at a time. No runtime behavior was changed for this observation.
+
+
+## V14: compare native JSON enforcement without changing validators
+
+The Chrome v13 whitespace loop motivates a controlled switch, not an assumption that grammar constraints caused the failure. Both engines now support extraction with or without native JSON enforcement. Both modes receive the same prompts and explicit output schema, still request JSON and use strict parsing, source/numeric checks and the same bounded correction. Graph and label stages remain constrained. Reports identify the condition per request.
+
+This is an enforcement comparison rather than free-form prose extraction. Adding explicit schema text also changes the baseline from v13, so use matched v14 runs to interpret results. Automated tests verify prompt equality, option omission, validation and WebLLM request translation; actual model quality remains unmeasured for these conditions.

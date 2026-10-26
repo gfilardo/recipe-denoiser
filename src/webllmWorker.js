@@ -10,7 +10,7 @@ self.onmessage = async ({data}) => {
     } else if(data.type === 'generate') {
       await engine.resetChat();
       const output=await engine.chat.completions.create({messages:data.messages,stream:true,temperature:settings.temperature,max_tokens:settings.maxTokens,
-        response_format:{type:'json_object',schema:JSON.stringify(data.schema)}});
+        ...(data.schema ? {response_format:{type:'json_object',schema:JSON.stringify(data.schema)}} : {})});
       for await(const chunk of output) {
         const choice=chunk.choices[0];
         if(choice?.finish_reason === 'length') throw Error('WebLLM reached its 4096-token response limit; incomplete output was discarded.');
